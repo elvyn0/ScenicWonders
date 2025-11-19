@@ -29,12 +29,14 @@ function NavBar() {
             </div>
             {/* Blog Nav */}
             <div className="flex flex-col gap-2 justify-center items-center">
-              <li
-                className="   bg-red-600   px-4 py-3 rounded-md shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
-                type="button"
-              >
-                <NotebookPen className="size-7 text-white" />
-              </li>
+              <NavLink to="/stories">
+                <li
+                  className="   bg-red-600   px-4 py-3 rounded-md shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
+                  type="button"
+                >
+                  <NotebookPen className="size-7 text-white" />
+                </li>
+              </NavLink>
               <p className="font-bold text-sm">Write up's</p>
             </div>
             {/* Hotels Nav */}

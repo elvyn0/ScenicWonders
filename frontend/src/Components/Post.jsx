@@ -9,7 +9,7 @@ function Post() {
     e.preventDefault();
   };
   return (
-    <form onSubmit={handleSubmit} className=" pt-5">
+    <form onSubmit={handleSubmit} className=" pt-5 px-[5%]">
       <h3 className="font-bold mb-5">Creat Post</h3>
       <div className="flex flex-row gap-5 items-center  justify-center mt-5">
         <label

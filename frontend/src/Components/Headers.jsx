@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 // This component displays the top navigation bar
 const AppHeader = ({ onLoginClick }) => {
   return (
-    <div className="flex items-center justify-between border-b border-gray-200 px-4 py-4 md:px-6">
+    <div className="flex flex-1 items-center justify-between border-b border-gray-200 px-4 py-4 md:px-6">
       {/* Logo/Title */}
       <div className="flex items-center  justify-center gap-2">
         <img src={assets.sw_logo} className="size-10 text-blue-600" />
@@ -19,26 +19,6 @@ const AppHeader = ({ onLoginClick }) => {
         {/* Favorite Icon */}
         <button aria-label="Favorites" className="text-gray-600 hover:text-gray-900 transition-colors">
           <Heart className="size-6" />
-        </button>
-
-        {/* Messages Icon with Notification Badge */}
-        <NavLink to="/message">
-          <button aria-label="Messages" className="relative text-gray-600 hover:text-gray-900 transition-colors">
-            <MessageCircle className="size-6" />
-            {/*Message Notification badge */}
-            <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-medium text-white">
-              3
-            </span>
-          </button>
-        </NavLink>
-
-        {/* Notification  */}
-        <button aria-label="Messages" className="relative text-gray-600 hover:text-gray-900 transition-colors">
-          <Bell className="size-6" />
-          {/* Notification badge */}
-          <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-medium text-white">
-            3
-          </span>
         </button>
 
         {/* Sign In Button */}
