@@ -35,8 +35,8 @@ const App = () => {
     <div>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route element={<LayoutWithSidebar />}>
+          <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/nepal" element={<Nepal />} />
           <Route path="/kerala" element={<Kerala />} />

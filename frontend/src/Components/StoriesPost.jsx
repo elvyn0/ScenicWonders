@@ -8,7 +8,7 @@ function StoriesPost() {
     e.preventDefault();
   };
   return (
-    <form onSubmit={handileSubmit} className="p-5 ">
+    <form onSubmit={handileSubmit} className="pt-5 px-[5%] ">
       <h3 className="font-bold"> Stories</h3>
       <div className="flex  justify-center items-center mt-5 ">
         <div className="flex flex-col gap-5 bg-gray-300 w-[50%] p-5 rounded-lg shadow-xl ">
