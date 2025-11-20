@@ -38,6 +38,15 @@ const AppHeader = ({ onLoginClick }) => {
 //  The pop-up modal for logging in
 const LoginModal = ({ onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [currentState, setCurrentState] = useState("Login");
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+  };
 
   return (
     // Modal Overlay (dimmed background)
@@ -61,19 +70,40 @@ const LoginModal = ({ onClose }) => {
 
         {/* Modal Header */}
         <div className="flex flex-col items-center">
-          <MountainSnow className="size-10 text-blue-600 mb-4" />
-          <h1 className="mb-6 text-center text-3xl font-bold text-gray-900">Welcome to Scenic Wonders</h1>
+          <img className="size-16 mb-4" src={assets.sw_logo} />
+          <h1 className="mb-6 text-center text-sm font-bold text-gray-900">Welcome to Scenic Wonders</h1>
         </div>
 
         {/* Login Form */}
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={onSubmitHandler}>
+          {currentState === "Login" ? (
+            ""
+          ) : (
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                Name
+              </label>
+
+              <input
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                type="text"
+                className="w-full rounded-lg border-gray-300 p-3 text-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                placeholder="Name"
+                required
+              />
+            </div>
+          )}
+
           {/* Email Input */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
             <input
+              onChange={(e) => setEmail(e.target.value)}
               id="email"
+              value={email}
               placeholder="Email"
               type="email"
               required
@@ -88,7 +118,9 @@ const LoginModal = ({ onClose }) => {
             </label>
             <div className="relative">
               <input
+                onChange={(e) => setPassword(e.target.value)}
                 id="password"
+                value={password}
                 placeholder="Password"
                 type={showPassword ? "text" : "password"}
                 required
@@ -105,8 +137,22 @@ const LoginModal = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Forgot Password Link */}
-          <p className="text-sm font-medium text-blue-600 hover:underline cursor-pointer">Forgot your password?</p>
+          {/* Forgot Password Link & login or sing up */}
+          <div className="w-full flex justify-between text-sm ">
+            {currentState === "Sing Up" ? null : (
+              <p className="cursor-pointer hover:text-blue-800">Forgot your password?</p>
+            )}
+
+            {currentState === "Sing Up" ? (
+              <p onClick={() => setCurrentState("Login")} className="cursor-pointer hover:text-blue-800">
+                Login here
+              </p>
+            ) : (
+              <p onClick={() => setCurrentState("Sing Up")} className="cursor-pointer hover:text-blue-800">
+                Create account
+              </p>
+            )}
+          </div>
 
           {/* Login Button */}
           <div>
@@ -114,7 +160,7 @@ const LoginModal = ({ onClose }) => {
               type="submit"
               className="w-full rounded-full bg-red-600 py-3 text-md font-semibold text-white transition-colors hover:bg-red-700"
             >
-              Login
+              {currentState === "Login" ? "Sing In" : "Sing up"}
             </button>
           </div>
         </form>
