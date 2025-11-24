@@ -8,9 +8,19 @@ const userSchema = new mongoose.Schema(
     profilePic: { type: String },
     bio: { type: String },
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: true }
 );
 
-const userModel = mongoose.models.user || mongoose.model("user", userSchema);
+userSchema.virtual("totalBookings", {
+  ref: "Booking",
+  localField: "_id",
+  foreignField: "user",
+  count: true,
+});
+
+userSchema.set("toJSON", { virtuals: true });
+userSchema.set("toObject", { virtuals: true });
+
+const userModel = mongoose.models.User || mongoose.model("User", userSchema);
 
 module.exports = userModel;
