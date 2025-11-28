@@ -28,3 +28,4 @@ dist-ssr
 # Ignore the folder containing large image binaries.
 # These should be uploaded to a CDN or cloud storage and fetched via URL.
 src/assets/images/
+src/assets/images/hotels/
