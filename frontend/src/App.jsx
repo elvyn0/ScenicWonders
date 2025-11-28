@@ -16,6 +16,7 @@ import Profile from "./Pages/Profile";
 import Stories from "./Pages/Stories";
 import Message from "./Pages/Message";
 import About from "./Pages/About";
+import Hotels from "./Pages/Hotels";
 
 // Layout with sibeBar
 const LayoutWithSidebar = () => {
@@ -35,6 +36,7 @@ const App = () => {
     <div>
       <ToastContainer />
       <Routes>
+        <Route path="/hotels" element={<Hotels />} />
         <Route element={<LayoutWithSidebar />}>
           <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
