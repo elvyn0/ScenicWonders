@@ -1,4 +1,4 @@
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Outlet } from "react-router-dom";
 import Home from "./Pages/Home";
@@ -34,7 +34,7 @@ const LayoutWithSidebar = () => {
 const App = () => {
   return (
     <div>
-      <ToastContainer />
+      <Toaster />
       <Routes>
         <Route path="/hotels" element={<Hotels />} />
         <Route element={<LayoutWithSidebar />}>
