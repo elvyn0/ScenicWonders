@@ -1,5 +1,5 @@
 import { assets } from "../assets/assets";
-import SearchBar_main from "../Components/SearchBar_main";
+import SearchBar_main from "../components/common/SearchBar_main";
 
 function Stories() {
   function timeAgo(dateString) {

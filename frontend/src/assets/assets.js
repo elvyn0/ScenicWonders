@@ -2,6 +2,8 @@
 import upLoad from "./images/upload_area.png";
 import profile1 from "./images/Profilepic1.jpg";
 import sw_logo from "./images/sw_logo.jpg";
+import inFlag from "./images/inflag.webp";
+import stripe from "./images/stripe_logo.png";
 
 //Hero slide image
 
@@ -199,6 +201,8 @@ export const assets = {
   upLoad,
   profile1,
   hotelBanner,
+  inFlag,
+  stripe,
 
   //Hearo slide image
 

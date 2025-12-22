@@ -1,5 +1,5 @@
 import { assets } from "../assets/assets";
-import Footer from "../Components/Footer";
+import Footer from "../components/common/Footer";
 
 function About() {
   return (

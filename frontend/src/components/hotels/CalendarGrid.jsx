@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { MONTHS, DAYS_OF_WEEK, getDaysInMonth, getFirstDayOfMonth } from "../utils/hotelBookingUtils";
+import { MONTHS, DAYS_OF_WEEK, getDaysInMonth, getFirstDayOfMonth } from "../../utils/hotelBookingUtils";
 
 function CalendarGrid({ year, monthIndex, selectedDates, handleDateClick, activeInput }) {
   const daysInMonth = getDaysInMonth(year, monthIndex);
@@ -24,12 +24,12 @@ function CalendarGrid({ year, monthIndex, selectedDates, handleDateClick, active
   // To check if a date falls within the selected range
 
   const isDateInRange = (date) => {
-    if (!checkIn) {
+    if (!checkIn || !checkOut) {
       return false;
     }
 
     const dateMs = date.getTime();
-    const checkInMs = date.getTime();
+    const checkInMs = checkIn.getTime();
     const checkOutMs = checkOut ? checkOut.getTime() : null;
 
     if (checkOutMs) {
@@ -48,7 +48,7 @@ function CalendarGrid({ year, monthIndex, selectedDates, handleDateClick, active
     const isCheckOut = checkOut && date.toDateString() === checkOut.toDateString();
     const isInRange = isDateInRange(date);
 
-    let classes = "text-gray-900 hover:bg-gray-100";
+    let classes = "text-gray-900 ";
 
     if (isCheckIn || isCheckOut) {
       classes = "bg-orange-500 text-white font-semibold shadow-lg relative z-10";
@@ -56,7 +56,7 @@ function CalendarGrid({ year, monthIndex, selectedDates, handleDateClick, active
       if (isCheckOut && checkIn) classes += "rounded-l-none";
       if (isCheckIn && isCheckOut) classes += "rounded-full";
     } else if (isInRange) {
-      classes = "bg-orange-100 text-orange-800 rounded-none";
+      classes = "bg-orange-100 text-orange-800  rounded-full hover:bg-gray-300";
     } else {
       // Handle base rounded corners for non-range days
       classes += "rounded-full";
@@ -72,7 +72,7 @@ function CalendarGrid({ year, monthIndex, selectedDates, handleDateClick, active
       <div className="grid grid-cols-7 gap-1">
         {/* Day of week headers */}
         {DAYS_OF_WEEK.map((day, index) => (
-          <div key={`headers-${index}`} className="text-center text-sm font-medium  text-gray-500">
+          <div key={`headers-${index}`} className="text-center text-md font-bold  text-black">
             {day}
           </div>
         ))}
@@ -84,7 +84,9 @@ function CalendarGrid({ year, monthIndex, selectedDates, handleDateClick, active
               <button
                 onClick={() => handleDateClick(new Date(year, monthIndex, day))}
                 disabled={activeInput !== "dates"}
-                className={`w-10 h-10 text-sm transition-all duration-150 ${getSelectedStyles(day)}`}
+                className={`w-10 h-10 text-sm transparent-all hover:bg-gray-200 rounded-full duration-150 ${getSelectedStyles(
+                  day
+                )}`}
               >
                 {day}
               </button>

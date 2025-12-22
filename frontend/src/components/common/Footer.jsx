@@ -1,4 +1,4 @@
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 function Footer() {
