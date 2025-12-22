@@ -1,7 +1,7 @@
-import Footer from "../Components/Footer";
-import Headers from "../Components/Headers";
-import Hero from "../Components/Hero";
-import Navbar from "../Components/Navbar";
+import Footer from "../components/common/Footer";
+import Headers from "../components/common/Headers";
+import Hero from "../components/common/Hero";
+import Navbar from "../components/common/Navbar";
 
 function Home() {
   return (

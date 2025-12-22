@@ -1,6 +1,5 @@
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
-import SearchBar_main from "./SearchBar_main";
 
 function storiesCategories() {
   function timeAgo(dateString) {

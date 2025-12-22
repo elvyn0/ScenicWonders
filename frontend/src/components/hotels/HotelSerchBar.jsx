@@ -1,11 +1,10 @@
-import React from "react";
 import { Calendar, Search, User } from "lucide-react";
 
 function HotelSerchBar({
   activeInput,
   setActiveInput,
-  destination,
-  setDestination,
+  search,
+  setSearch,
   guests,
   setGuests,
   checkInDisplay,
@@ -13,19 +12,19 @@ function HotelSerchBar({
   onSearchClick,
 }) {
   return (
-    <div>
+    <div className="flex">
       {/* Destination Input */}
       <div
         onClick={() => setActiveInput("destination")}
-        className={`flex items-center flex-1 p-3 rounded-1 xl cursor-pointer transition duration-200 ${
+        className={`flex  items-center flex-1 p-3 rounded-1 xl cursor-pointer transition duration-200 ${
           activeInput === "destination" ? "bg-orange-50 border-orange-500 shadow-inner " : "hover:bg-gray-100"
         } min-w-[200px]`}
       >
         <Search className="w-5 h-5 text-gray-500 mr-2" />
         <input
           type="text"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="Book Your Hotels"
           className="flex-1 bg-transparent text-gray-800 font-medium placeholder-gray-500 focus:outline-none"
         />
@@ -67,7 +66,7 @@ function HotelSerchBar({
           value={guests}
           onChange={(e) => setGuests(e.target.value)}
           placeholder="Add Guests"
-          className="flex-1 bg-transparent text-gray-800 font-medium placeholder-gray-500 focus:outline-none"
+          className="flex-1  bg-transparent text-gray-800 font-medium  focus:outline-none"
         />
       </div>
       {/* Search Button */}

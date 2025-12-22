@@ -7,7 +7,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { LuMessageCircleMore } from "react-icons/lu";
 import { RiCameraAiLine } from "react-icons/ri";
 import { FaRegPenToSquare } from "react-icons/fa6";
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 
 function SideBar() {
   const [showPopup, setShowPopup] = useState(false);
