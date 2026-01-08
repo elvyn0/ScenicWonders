@@ -11,6 +11,8 @@ const connectCloudinary = require("./config/cloudinary");
 const userRouter = require("./routes/userRoute");
 const postRouter = require("./routes/postRoute");
 const blogRouter = require("./routes/blogRoute");
+const hotelRouter = require("./routes/hotelRoute");
+const bookingRouter = require("./routes/bookingRoute");
 
 // App config
 const app = express();
@@ -27,6 +29,8 @@ app.use("uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/blog", blogRouter);
+app.use("/api/hotels", hotelRouter);
+app.use("/api/bookings", bookingRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");

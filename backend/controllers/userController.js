@@ -1,5 +1,5 @@
 const validator = require("validator");
-const userModel = require("../models/userModel");
+const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -13,9 +13,9 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     // checking user already exist or not
-    const exists = await userModel.findOne({ email });
+    const exists = await User.findOne({ email });
     if (exists) {
-      res.status(409).json({ message: "This email is already exist", error_code: "EMAIL_CONFLICT" });
+      return res.status(409).json({ message: "This email is already exist", error_code: "EMAIL_CONFLICT" });
     }
 
     // Validating email
@@ -35,8 +35,8 @@ const registerUser = async (req, res) => {
 
     // Creating a new user
 
-    const newUser = new userModel({
-      user,
+    const newUser = new User({
+      name,
       email,
       password: hashPassword,
     });
@@ -51,48 +51,37 @@ const registerUser = async (req, res) => {
   }
 };
 
-// User Login
-
 const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await userModel.findOne({ email });
+    const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(404).json({ message: "User not exitst" });
+      return res.status(404).json({ message: "User not exitst" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (isMatch) {
-      const token = createToken(user.id);
-      res.status(200).json({ token });
-    } else {
-      res.status(401).json({ message: "Invalid Credentials" });
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.status(200).json({ token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// Admin login
-
-const adminLogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-      const token = jwt.sign(email + password, process.env.JWT_SECRET);
-      res.status(200).json({ success: true, token });
-    } else {
-      res.status(401).json({ success: false, message: "Invalid Credentials" });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
-  }
-};
-
-module.exports = { registerUser, userLogin, adminLogin };
+module.exports = { registerUser, userLogin };

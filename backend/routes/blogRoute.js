@@ -1,5 +1,5 @@
 const express = require("express");
-const { addBlog, listBlog, removeBlog, singleBlog } = require("../controllers/blogcontroller");
+const { addBlog, listBlog, removeBlog, singleBlog } = require("../controllers/blogController");
 const auth = require("../middlewares/auth");
 
 const blogRouter = express.Router();

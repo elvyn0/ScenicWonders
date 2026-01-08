@@ -3,9 +3,14 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    profilePic: { type: String },
+    profilePic: { url: { type: String }, publicId: { type: String } },
     bio: { type: String },
   },
   { timestamps: true }

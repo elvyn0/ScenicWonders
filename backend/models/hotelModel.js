@@ -5,7 +5,7 @@ const hotelSchema = new mongoose.Schema({
   destination: { type: String, required: true },
   pricePerNight: { type: Number, required: true },
   description: { type: String },
-  imageUrl: { type: String },
+  image: [{ url: { type: String }, publicId: { type: String } }],
   totalRooms: { type: Number, required: true },
   rating: { type: Number, default: 4.0 },
   weekendDeals: { type: Boolean },

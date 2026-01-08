@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
-  mongoose.connection.on("connected", () => {
-    console.log("MongoDB connected successfully");
-  });
+  try {
+    const conn = await mongoose.connect(mongoose.connect(process.env.MONGODB_URL));
 
-  await mongoose.connect(`${process.env.MONGODB_URL}/scenicwonders`);
+    console.log(`MongoDB connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`MongoDB connection failed: ${error.message}`);
+    process.exit(1);
+  }
 };
 
 module.exports = connectDB;

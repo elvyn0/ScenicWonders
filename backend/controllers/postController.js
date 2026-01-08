@@ -6,43 +6,35 @@ const fs = require("fs").promises;
 
 const addPost = async (req, res) => {
   try {
-    const { userId } = req.body;
-    const { caption } = req.body;
-
-    const imageFiles = req.files && req.files.image;
+    const { userId, caption } = req.body;
+    const imageFiles = req.files;
 
     if (!imageFiles || imageFiles.length === 0) {
-      return res.status(400).json({ message: "A post image is required." });
+      return res.status(400).json({ message: "Post image required" });
     }
 
-    const imageUrls = await Promise.all(
-      imageFiles.map(async (item) => {
-        try {
-          let result = await cloudinary.uploader.upload(item.path, {
-            folder: "social_media_posts",
-            resource_type: "image",
-          });
+    const uploadResult = await cloudinary.uploader.upload(imageFiles[0].path, {
+      folder: "social_media_posts",
+      resource_type: "image",
+    });
 
-          return result.secure_url;
-        } finally {
-          await fs.unlink(item.path);
-        }
-      })
-    );
+    await fs.unlink(imageFiles[0].path);
 
-    const postData = {
+    const post = await postModel.create({
       user: userId,
-      image: imageUrls[0],
+      image: uploadResult.secure_url,
       caption,
       likes: 0,
       time: Date.now(),
-    };
-    const post = new postModel(postData);
-    await post.save();
+    });
 
-    res.status(201).json({ success: true, message: "Post added successfully" });
+    res.status(201).json({
+      success: true,
+      message: "Post added successfully",
+      post,
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -52,7 +44,7 @@ const listPost = async (req, res) => {
     const posts = await postModel
       .find({})
       .sort({ time: -1 }) // sort by newest first
-      .populate("user", "username profilePicture");
+      .populate("user", "name profilePic");
     res.status(200).json({ success: true, posts });
   } catch (error) {
     console.log(error);
@@ -64,21 +56,25 @@ const listPost = async (req, res) => {
 
 const removePost = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { userId } = req.body;
+    const { postId } = req.params.id;
+    const { userId } = req.user.id;
 
-    const post = await postModel.findById(id);
+    const post = await post.findById(postId);
     if (!post) {
       return res.status(404).json({ success: false, message: "Post not found" });
     }
 
     //Authorization check: only the author can delete their post
     if (post.user.toString() !== userId.toString()) {
-      return res.status(403).json({ success: false, message: "Not authorized to delete this post." });
+      return res.status(403).json({ success: false, message: "Unauthorized " });
     }
 
-    // perform deletion
-    await postModel.findByIdAndDelete(id);
+    if (post.image?.publicId) {
+      await cloudinary.uploader.destroy(post.image.publicId);
+    }
+
+    await post.deleteOne();
+
     res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     console.log(error);
@@ -91,7 +87,7 @@ const removePost = async (req, res) => {
 const singlePost = async (req, res) => {
   try {
     const { id } = req.params;
-    const post = await postModel.findById(id).populate("user", "username profilePicture"); //
+    const post = await postModel.findById(id).populate("user", "name profilePic"); //
 
     if (!post) {
       return res.status(404).json({ success: false, message: "Post not found" });

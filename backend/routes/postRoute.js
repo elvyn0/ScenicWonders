@@ -6,7 +6,7 @@ const auth = require("../middlewares/auth");
 const postRouter = express.Router();
 
 // PROTECTED ROUTES
-postRouter.post("/add", auth, upload.fields([{ name: "image", maxCount: 1 }]), addPost);
+postRouter.post("/add", auth, upload.single("image"), addPost);
 postRouter.post("/remove", auth, removePost);
 
 // PUBLIC ROUTES (Anyone can view)
