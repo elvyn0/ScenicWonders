@@ -3,12 +3,14 @@ import { NavLink } from "react-router-dom";
 
 function NavBar() {
   return (
-    <div className="bg-gray-200 py-5 px-8 rounded-lg mt-5 mx-5 items-center  ">
+    <div className="bg-gray-200 py-4 px-8 rounded-lg mt-5 mx-5 items-center  ">
       <div className="flex flex-col gap-5">
         {/*  Heading */}
-        <div>
-          <h1 className="text-4xl  font-bold text-black text-center">
-            TRAVELERES ARE DREAMERS WHO MAKE THEIR DESIRES FOR ADVENTURE A REALITY.
+
+        <div className="text-center w-full mx-auto p-2 bg-white rounded-xl shadow-md mt-2">
+          <h1 className=" text-lg font-semibold  ">
+            Scenic Wonders is a social platform for travelers to share real travel experiences through blogs, explore
+            destinations, and discover places to stay.
           </h1>
         </div>
 
@@ -25,7 +27,8 @@ function NavBar() {
                   <Telescope className="size-7 text-white" />
                 </li>
               </NavLink>
-              <p className=" font-bold  text-sm">Explore</p>
+              <p className=" font-bold  text-sm mb-0">Explore</p>
+              <span className="text-sm text-gray-500">Discover places, stories, and posts</span>
             </div>
             {/* Blog Nav */}
             <div className="flex flex-col gap-2 justify-center items-center">
@@ -37,7 +40,8 @@ function NavBar() {
                   <NotebookPen className="size-7 text-white" />
                 </li>
               </NavLink>
-              <p className="font-bold text-sm">Write up's</p>
+              <p className="font-bold text-sm mb-0">Stories</p>
+              <span className="text-sm text-gray-500">Share travel stories</span>
             </div>
             {/* Hotels Nav */}
             <a href="/HotelBookings" target="_blank" rel="noopener noreferrer" className="no-underline">
@@ -48,7 +52,8 @@ function NavBar() {
                 >
                   <Hotel className="size-7 text-white" />
                 </li>
-                <p className="font-bold text-sm text-black ">Hotels</p>
+                <p className="font-bold text-sm text-black  mb-0">Hotels</p>
+                <span className="text-sm text-gray-500 ">Find places to stay</span>
               </div>
             </a>
             {/* Ai Nav */}
@@ -59,7 +64,8 @@ function NavBar() {
               >
                 <Bot className="size-7 text-white" />
               </li>
-              <p className="font-bold text-sm">Ai</p>
+              <p className="font-bold text-sm mb-0">Ai</p>
+              <span className="text-sm text-gray-500">Smart travel help</span>
             </div>
             {/* About */}
             <div className="flex flex-col gap-2 justify-center items-center">
@@ -71,7 +77,8 @@ function NavBar() {
                   <BadgeInfo className="size-7 text-white" />
                 </li>
               </NavLink>
-              <p className="font-bold text-sm">About</p>
+              <p className="font-bold text-sm mb-0">About</p>
+              <span className="text-sm text-gray-500">Our story</span>
             </div>
           </ul>
         </nav>
