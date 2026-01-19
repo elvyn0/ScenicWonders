@@ -329,7 +329,7 @@ export const hotels = [
     totalRooms: 60,
     destination: "Kerala",
     rooms: [room5, room6],
-    weekendDeals: false,
+    weekendDeals: true,
   },
   {
     id: 4,
@@ -389,7 +389,7 @@ export const hotels = [
     totalRooms: 30,
     destination: "Kerala",
     rooms: [room15, room16],
-    weekendDeals: true,
+    weekendDeals: false,
   },
   {
     id: 9,
@@ -401,7 +401,7 @@ export const hotels = [
     totalRooms: 85,
     destination: "Kerala",
     room: [room17, room18],
-    weekendDeals: false,
+    weekendDeals: true,
   },
   {
     id: 10,

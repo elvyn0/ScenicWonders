@@ -13,7 +13,7 @@ function Hotels() {
       const text = search.toLowerCase();
 
       tempHotels = tempHotels.filter(
-        (item) => item.name.toLowerCase().includes(text) || item.destination.toLowerCase().includes(text)
+        (item) => item.name.toLowerCase().includes(text) || item.destination.toLowerCase().includes(text),
       );
     }
 

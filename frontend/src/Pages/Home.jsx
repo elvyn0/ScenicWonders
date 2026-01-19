@@ -2,6 +2,7 @@ import Footer from "../components/common/Footer";
 import Headers from "../components/common/Headers";
 import Hero from "../components/common/Hero";
 import Navbar from "../components/common/Navbar";
+import WeekendDeals from "../components/hotels/WeekendDeals";
 
 function Home() {
   return (
@@ -9,6 +10,7 @@ function Home() {
       <Headers />
       <Hero />
       <Navbar />
+      <WeekendDeals />
       <Footer />
     </div>
   );
