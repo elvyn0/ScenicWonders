@@ -10,7 +10,7 @@ const createBooking = async (req, res) => {
     const userId = req.user._id;
     const { hotelId, checkInDate, checkOutDate, numberOfRooms, numberOfGuest } = req.body;
 
-    if (!hotelId || !checkInDate || !checkOutDate || numberOfRooms) {
+    if (!hotelId || !checkInDate || !checkOutDate || !numberOfRooms) {
       return res.status(400).json({ success: false, message: "Misssing required booking deatiles" });
     }
 
@@ -24,24 +24,24 @@ const createBooking = async (req, res) => {
 
     // fetch hotel
     const hotel = await Hotel.findById(hotelId);
-    if (!hotelId) {
-      return res.status(400).json({ success: false, message: "Hoel not found" });
+    if (!hotel) {
+      return res.status(400).json({ success: false, message: "Hotel not found" });
     }
 
     // Availability checking
     const overLappingBookings = await Booking.find({
       hotel: hotelId,
-      bookingStatus: { $in: ["Pending", confirmed] },
+      bookingStatus: { $in: ["Pending", "Confirmed"] },
       checkInDate: { $lt: checkIn },
       checkOutDate: { $gt: checkOut },
     });
 
-    const bookedRooms = overlappingBookings.reduce((sum, booking) => sum + booking.numberOfRooms, 0);
+    const bookedRooms = overLappingBookings.reduce((sum, booking) => sum + booking.numberOfRooms, 0);
 
     const availableRooms = hotel.totalRooms - bookedRooms;
 
     if (availableRooms < numberOfRooms) {
-      return res.status().json({ success: true, message: "Not enough are available" });
+      return res.status(406).json({ success: true, message: "Not enough are available" });
     }
 
     // Calculate nights and price

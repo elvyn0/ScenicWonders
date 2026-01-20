@@ -21,12 +21,12 @@ const registerUser = async (req, res) => {
     // Validating email
 
     if (!validator.isEmail(email)) {
-      res.status(406).json({ message: "Please enter a valid Email", error_code: "INVALID_EMAIL" });
+      return res.status(406).json({ message: "Please enter a valid Email", error_code: "INVALID_EMAIL" });
     }
 
     // checking password is strong or not
     if (password.length < 8) {
-      res.status(412).json({ message: "Please enter a strong password" });
+      return res.status(412).json({ message: "Please enter a strong password" });
     }
 
     //encripting and hasing the password
@@ -74,7 +74,7 @@ const userLogin = async (req, res) => {
         role: user.role,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     res.status(200).json({ token });
@@ -84,4 +84,16 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, userLogin };
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { registerUser, userLogin, getUser };
