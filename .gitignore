@@ -1,12 +1,16 @@
-# Dependencies (all apps)
+# Node
 node_modules/
 
-# Environment variables
+# Env
 .env
+
+# Multer uploads
+backend/uploads/
+
+# Frontend build
+frontend/dist/
+frontend/build/
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
-
-# OS files
-.DS_Store

@@ -11,31 +11,43 @@ const createHotel = async (req, res) => {
     const roomImage1 = req.files?.roomImage1?.[0];
     const roomImage2 = req.files?.roomImage2?.[0];
 
+    console.log("files", req.files);
     if (!hotelImage) {
       return res.status(400).json({ success: false, message: "Hotel image is required" });
     }
 
     const images = [hotelImage, roomImage1, roomImage2].filter(Boolean);
 
-    const uploadedUrls = await Promise.all(
+    const uploadedImages = await Promise.all(
       images.map(async (file) => {
         let result = await cloudinary.uploader.upload(file.path, {
           resource_type: "image",
           folder: "hotels",
         });
-        return result.secure_url;
-      })
+        return {
+          url: result.secure_url,
+          publicId: result.public_id,
+        };
+      }),
     );
+    console.log("pricePerNight value:", JSON.stringify(req.body.pricePerNight));
+
+    const price = Number(pricePerNight);
+    if (isNaN(price)) {
+      return res.status(400).json({ message: "Invalid pricePerNight" });
+    }
+    console.log("uploadedImages:", uploadedImages);
+    console.log("hotelImage to save:", uploadedImages[0]);
 
     const hotelData = {
       name,
       description,
-      pricePerNight: Number(pricePerNight),
+      pricePerNight: price,
       totalRooms: Number(totalRooms),
       destination,
       weekendDeals: weekendDeals === "true" ? true : false,
-      image: uploadedUrls[0],
-      roomImage: uploadedUrls.slice(1),
+      hotelImage: uploadedImages[0],
+      roomImages: uploadedImages.slice(1),
     };
 
     await Hotel.create(hotelData);

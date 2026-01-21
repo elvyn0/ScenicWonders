@@ -14,17 +14,30 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
-    const uniqueName = `${Date.now()}-${req.body.userId}${ext}`;
+    const uniqueName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}${ext}`;
+
     cb(null, uniqueName);
   },
 });
 
 const fileFilter = (req, file, cb) => {
   if (!file.mimetype.startsWith("image/")) {
-    cb(new Error("Only image allowed"), false);
+    return cb(new Error("Only image allowed"), false);
   }
+
   cb(null, true);
 };
-const upload = multer({ storage, fileFilter });
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 50 * 1024 * 1024 },
+});
+
+// Add logging to see if multer is even invoked
+const originalFields = upload.fields.bind(upload);
+upload.fields = function (...args) {
+  return originalFields(...args);
+};
 
 module.exports = upload;

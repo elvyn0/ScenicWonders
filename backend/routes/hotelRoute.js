@@ -19,7 +19,7 @@ hotelRouter.post(
     { name: "roomImage1", maxCount: 1 },
     { name: "roomImage2", maxCount: 1 },
   ]),
-  createHotel
+  createHotel,
 );
 
 hotelRouter.get("/list", listAllHotels);

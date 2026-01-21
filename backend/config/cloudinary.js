@@ -3,7 +3,7 @@ const cloudinary = require("cloudinary").v2;
 const connectCloudinary = async () => {
   try {
     cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_NAME,
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
 
       api_key: process.env.CLOUDINARY_API_KEY,
 
@@ -13,5 +13,4 @@ const connectCloudinary = async () => {
     console.log(error);
   }
 };
-
 module.exports = connectCloudinary;
