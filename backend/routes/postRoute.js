@@ -7,10 +7,10 @@ const postRouter = express.Router();
 
 // PROTECTED ROUTES
 postRouter.post("/add", auth, upload.single("image"), addPost);
-postRouter.post("/remove", auth, removePost);
+postRouter.delete("/remove/:postId", auth, removePost);
 
 // PUBLIC ROUTES (Anyone can view)
 postRouter.get("/list", listPost);
-postRouter.get("/get/:id", singlePost);
+postRouter.get("/:id", singlePost);
 
 module.exports = postRouter;

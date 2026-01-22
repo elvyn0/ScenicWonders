@@ -1,5 +1,5 @@
 const cloudinary = require("cloudinary").v2;
-const postModel = require("../models/postModel");
+const Post = require("../models/postModel");
 const fs = require("fs").promises;
 
 // Add post
@@ -7,24 +7,26 @@ const fs = require("fs").promises;
 const addPost = async (req, res) => {
   try {
     const { userId, caption } = req.body;
-    const imageFiles = req.files;
+    const image = req.file;
 
-    if (!imageFiles || imageFiles.length === 0) {
+    if (!image) {
       return res.status(400).json({ message: "Post image required" });
     }
 
-    const uploadResult = await cloudinary.uploader.upload(imageFiles[0].path, {
+    const uploadResult = await cloudinary.uploader.upload(image.path, {
       folder: "social_media_posts",
-      resource_type: "image",
     });
 
-    await fs.unlink(imageFiles[0].path);
+    await fs.unlink(image.path);
 
-    const post = await postModel.create({
+    const post = await Post.create({
       user: userId,
-      image: uploadResult.secure_url,
+      image: {
+        url: uploadResult.secure_url,
+        publicId: uploadResult.public_id,
+      },
       caption,
-      likes: 0,
+
       time: Date.now(),
     });
 
@@ -41,25 +43,21 @@ const addPost = async (req, res) => {
 // Function for list post
 const listPost = async (req, res) => {
   try {
-    const posts = await postModel
-      .find({})
-      .sort({ time: -1 }) // sort by newest first
-      .populate("user", "name profilePic");
-    res.status(200).json({ success: true, posts });
+    const post = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json({ success: true, post });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-
 // Function for remove post
 
 const removePost = async (req, res) => {
   try {
-    const { postId } = req.params.id;
-    const { userId } = req.user.id;
+    const postId = req.params.postId;
+    const userId = req.user._id;
 
-    const post = await post.findById(postId);
+    const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ success: false, message: "Post not found" });
     }
@@ -86,8 +84,8 @@ const removePost = async (req, res) => {
 
 const singlePost = async (req, res) => {
   try {
-    const { id } = req.params;
-    const post = await postModel.findById(id).populate("user", "name profilePic"); //
+    const postId = req.params.id;
+    const post = await Post.findById(postId).populate("user", "name profilePic"); //
 
     if (!post) {
       return res.status(404).json({ success: false, message: "Post not found" });

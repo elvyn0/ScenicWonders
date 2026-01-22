@@ -11,7 +11,6 @@ const createHotel = async (req, res) => {
     const roomImage1 = req.files?.roomImage1?.[0];
     const roomImage2 = req.files?.roomImage2?.[0];
 
-    console.log("files", req.files);
     if (!hotelImage) {
       return res.status(400).json({ success: false, message: "Hotel image is required" });
     }
@@ -30,14 +29,11 @@ const createHotel = async (req, res) => {
         };
       }),
     );
-    console.log("pricePerNight value:", JSON.stringify(req.body.pricePerNight));
 
     const price = Number(pricePerNight);
     if (isNaN(price)) {
       return res.status(400).json({ message: "Invalid pricePerNight" });
     }
-    console.log("uploadedImages:", uploadedImages);
-    console.log("hotelImage to save:", uploadedImages[0]);
 
     const hotelData = {
       name,

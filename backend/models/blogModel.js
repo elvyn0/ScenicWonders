@@ -7,7 +7,7 @@ const blogSchema = new mongoose.Schema(
     content: { type: String, required: true }, // the travel storys
     likes: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], default: [] },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-module.exports = mongoose.model("blog", blogSchema);
+module.exports = mongoose.model("Blog", blogSchema);

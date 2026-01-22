@@ -8,7 +8,7 @@ const Hotel = require("../models/hotelModel");
 const createBooking = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { hotelId, checkInDate, checkOutDate, numberOfRooms, numberOfGuest } = req.body;
+    const { hotelId, checkInDate, checkOutDate, numberOfRooms, numberOfGuests } = req.body;
 
     if (!hotelId || !checkInDate || !checkOutDate || !numberOfRooms) {
       return res.status(400).json({ success: false, message: "Misssing required booking deatiles" });
@@ -56,7 +56,7 @@ const createBooking = async (req, res) => {
       checkInDate: checkIn,
       checkOutDate: checkOut,
       numberOfRooms,
-      numberOfGuest,
+      numberOfGuests,
       totalPrice,
       bookingStatus: "Pending",
     });
