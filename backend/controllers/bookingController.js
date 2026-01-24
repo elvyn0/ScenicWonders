@@ -142,6 +142,43 @@ const cancelBooking = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+// To check availabilty
+
+const checkHotelAvailability = async (req, res) => {
+  const hotelId = req.params.id;
+  const hotel = await Hotel.findById(hotelId);
+  const { checkIn, checkOut } = req.query;
+
+  if (!hotel) {
+    return res.status(404).json({ success: false, message: "Hotel not found" });
+  }
+
+  if (!checkIn || !checkOut) {
+    return res.status(400).json({ success: false, message: "Please select check-In and check-Out dates" });
+  }
+
+  try {
+    // Find bookings that overlap the request period
+    const overLapingBookings = await Booking.find({
+      hotel: hotelId,
+      bookingStatus: { $in: ["Confirmed", "Pending"] },
+      checkInDate: { $lt: new Date(checkOut) },
+      checkOutDate: { $gt: new Date(checkIn) },
+    });
+    const bookedRooms = overLapingBookings.reduce((sum, booking) => sum + booking.numberOfRooms, 0);
+    const availableRooms = hotel.totalRooms - bookedRooms;
+
+    res.json({
+      success: true,
+      available: availableRooms > 0,
+      availableRooms: availableRooms,
+      pricePerNight: hotel.pricePerNight,
+    });
+  } catch (error) {
+    console.error("Availability check error", error);
+    res.status(500).json({ success: false, message: "Server error during availabilty check." });
+  }
+};
 
 /// Admin ///
 
@@ -214,4 +251,5 @@ module.exports = {
   getAllBookings,
   deleteBooking,
   getAdminStatus,
+  checkHotelAvailability,
 };

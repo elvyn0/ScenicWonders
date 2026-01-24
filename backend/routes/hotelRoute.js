@@ -25,6 +25,5 @@ hotelRouter.post(
 hotelRouter.get("/list", listAllHotels);
 hotelRouter.get("/:id", getHotelDetails);
 hotelRouter.delete("/delete/:id", adminAuth, deleteHotel);
-hotelRouter.get("/:hotelId/availability", checkHotelAvailability);
 
 module.exports = hotelRouter;

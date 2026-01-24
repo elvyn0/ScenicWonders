@@ -82,40 +82,6 @@ const getHotelDetails = async (req, res) => {
   }
 };
 
-// check hotel availability
-
-const checkHotelAvailability = async (req, res) => {
-  const { hotelId } = req.params;
-  const hotel = await Hotel.findById(hotelId);
-  const { checkIn, checkOut } = req.query;
-
-  if (!checkIn || !checkOut) {
-    return res.status(400).json({ success: false, message: "Hotel not found" });
-  }
-
-  try {
-    // Find bookings that overlap the request period
-    const overLapingBookings = await Booking.find({
-      hotel: hotelId,
-      bookingStatus: { $in: ["Confirmed", "Pending"] },
-      checkInDate: { $lt: new Date(checkOut) },
-      checkOutDate: { $gt: new Date(checkIn) },
-    });
-    const bookedRooms = overLapingBookings.length;
-    const availableRooms = hotel.totalRooms - bookedRooms;
-
-    res.json({
-      success: true,
-      available: availableRooms > 0,
-      availableRooms: availableRooms,
-      pricePerNight: hotel.pricePerNight,
-    });
-  } catch (error) {
-    console.error("Availability check error", error);
-    res.status(500).json({ success: false, message: "Server error during availabilty check." });
-  }
-};
-
 // Admin: delete hotel
 
 const deleteHotel = async (req, res) => {
@@ -139,4 +105,4 @@ const deleteHotel = async (req, res) => {
   }
 };
 
-module.exports = { createHotel, listAllHotels, getHotelDetails, checkHotelAvailability, deleteHotel };
+module.exports = { createHotel, listAllHotels, getHotelDetails, deleteHotel };

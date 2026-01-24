@@ -7,6 +7,7 @@ const {
   getAdminStatus,
   deleteBooking,
   cancelBooking,
+  checkHotelAvailability,
 } = require("../controllers/bookingController");
 const auth = require("../middlewares/auth");
 const adminAuth = require("../middlewares/adminAuth");
@@ -18,6 +19,7 @@ bookingRouter.post("/create", auth, createBooking);
 bookingRouter.get("/myBookings", auth, getMyBookings);
 bookingRouter.get("/booking/:id", auth, getBookingById);
 bookingRouter.post("/cancelBooking/:id", auth, cancelBooking);
+bookingRouter.get("/:hotelId/checkHotelAvailability", auth, checkHotelAvailability);
 
 // Admin
 bookingRouter.get("/admin/allBooking", adminAuth, getAllBookings);

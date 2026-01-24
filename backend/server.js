@@ -23,7 +23,7 @@ connectCloudinary();
 // middlerwares
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-app.use(cors());
+
 app.use("uploads", express.static(path.join(__dirname, "uploads")));
 
 // api endpoints
@@ -35,6 +35,17 @@ app.use("/api/bookings", bookingRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
+});
+
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL, process.env.ADMIN_URL],
+    credentials: true,
+  }),
+);
+
+app.get("/health", (req, res) => {
+  res.json({ success: true, message: "Backend is alive" });
 });
 
 // Server listen
