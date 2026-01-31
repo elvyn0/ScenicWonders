@@ -5,7 +5,6 @@ const {
   getBookingById,
   getAllBookings,
   getAdminStatus,
-  deleteBooking,
   cancelBooking,
   checkHotelAvailability,
 } = require("../controllers/bookingController");
@@ -22,8 +21,7 @@ bookingRouter.post("/cancelBooking/:id", auth, cancelBooking);
 bookingRouter.get("/:hotelId/checkHotelAvailability", auth, checkHotelAvailability);
 
 // Admin
-bookingRouter.get("/admin/allBooking", adminAuth, getAllBookings);
-bookingRouter.get("/dmin/bookingStatus", adminAuth, getAdminStatus);
-bookingRouter.delete("/admin/deleteBooking/:id", adminAuth, deleteBooking);
+bookingRouter.get("/allBooking", adminAuth, getAllBookings);
+bookingRouter.get("/admin/bookingStatus", adminAuth, getAdminStatus);
 
 module.exports = bookingRouter;

@@ -1,11 +1,5 @@
 const express = require("express");
-const {
-  createHotel,
-  listAllHotels,
-  getHotelDetails,
-  checkHotelAvailability,
-  deleteHotel,
-} = require("../controllers/hotelController");
+const { createHotel, listAllHotels, getHotelDetails, deleteHotel } = require("../controllers/hotelController");
 const upload = require("../middlewares/multer");
 const adminAuth = require("../middlewares/adminAuth");
 

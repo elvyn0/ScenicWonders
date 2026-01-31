@@ -5,11 +5,15 @@ const cloudinary = require("cloudinary").v2;
 // Admin: Create / add hotel
 const createHotel = async (req, res) => {
   try {
-    const { name, description, pricePerNight, totalRooms, destination, weekendDeals } = req.body;
+    const { name, description, pricePerNight, totalRooms, location, weekendDeals } = req.body;
 
     const hotelImage = req.files?.hotelImage?.[0];
     const roomImage1 = req.files?.roomImage1?.[0];
     const roomImage2 = req.files?.roomImage2?.[0];
+
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
+    console.log(req.headers["content-type"]);
 
     if (!hotelImage) {
       return res.status(400).json({ success: false, message: "Hotel image is required" });
@@ -40,7 +44,7 @@ const createHotel = async (req, res) => {
       description,
       pricePerNight: price,
       totalRooms: Number(totalRooms),
-      destination,
+      location,
       weekendDeals: weekendDeals === "true" ? true : false,
       hotelImage: uploadedImages[0],
       roomImages: uploadedImages.slice(1),

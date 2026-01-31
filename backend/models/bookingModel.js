@@ -44,15 +44,15 @@ const bookingSchema = new mongoose.Schema(
     },
     bookingStatus: {
       type: String,
-      enum: ["Pending", "Confirmed", "Cancelled", "Completed"],
-      default: "Pending",
+      enum: ["pending", "confirmed", "cancelled", "completed"],
+      default: "pending",
     },
     bookedAt: {
       type: Date,
       default: Date.now,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Booking", bookingSchema);

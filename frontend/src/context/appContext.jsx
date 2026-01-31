@@ -7,6 +7,8 @@ const AppContextProvider = (props) => {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
 
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   const currency = "₹";
   const taxes = 600;
 

@@ -1,49 +1,62 @@
 import React, { useState } from "react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
-function Login() {
+function Login({ setToken }) {
   const [email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
+  const [password, setPassword] = useState("");
 
   const submitHandler = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      const response = await api.post("/api/admin/login", {
+        email,
+        password,
+      });
+
+      if (response.data.success) {
+        setToken(response.data.token);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went worng");
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
-        <button className="absolute top-4 right-4 rounded-full p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600">
-          <X className="size-5" />
-        </button>
-        <div className="flex flex-col items-center">
-          <div>
-            <h1>Admin panel</h1>
-          </div>
-          <form onClick={submitHandler}>
-            <div>
-              <p>Email adress</p>
-              <input
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder="your@gmail.com"
-                value={email}
-                required
-              />
-            </div>
-            <div>
-              <p>Password</p>
-              <input
-                onChange={(e) => setPassword(e.target.value)}
-                type="email"
-                placeholder="Password"
-                value={Password}
-                required
-              />
-            </div>
-            <div>
-              <button>Login</button>
-            </div>
-          </form>
+    <div className="min-h-screen flex items-center justify-center w-full bg-gradient-to-tr from-gray-950 via-gray-500 to-white from-5%">
+      <div>
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4">Admin Panel</h1>
         </div>
+        <form onSubmit={submitHandler}>
+          <div className="mb-3 min-w-72">
+            <p className="text-sm font-medium text-gray-200 mb-2">Email Address</p>
+            <input
+              className="rounded-sm w-full px-3 py-3 border border-gray-300  text-gray-300 outline-none "
+              type="email"
+              placeholder="your@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3 min-w-72">
+            <p className="text-sm font-medium text-gray-200 mb-2">Password</p>
+            <input
+              className="rounded-sm w-full px-3 py-3 border border-gray-300  text-gray-300 outline-none"
+              type="password"
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="mt-2 w-full py-2 px-4 rounded-sm text-white bg-black">
+            Login
+          </button>
+        </form>
       </div>
     </div>
   );

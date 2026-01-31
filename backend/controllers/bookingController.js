@@ -31,7 +31,7 @@ const createBooking = async (req, res) => {
     // Availability checking
     const overLappingBookings = await Booking.find({
       hotel: hotelId,
-      bookingStatus: { $in: ["Pending", "Confirmed"] },
+      bookingStatus: { $in: ["pending", "confirmed"] },
       checkInDate: { $lt: checkIn },
       checkOutDate: { $gt: checkOut },
     });
@@ -58,7 +58,7 @@ const createBooking = async (req, res) => {
       numberOfRooms,
       numberOfGuests,
       totalPrice,
-      bookingStatus: "Pending",
+      bookingStatus: "pending",
     });
 
     // Respond to frontend
@@ -125,15 +125,15 @@ const cancelBooking = async (req, res) => {
       return res.status(400).json({ success: false, message: "Booking not found" });
     }
 
-    if (booking.bookingStatus === "Completed") {
+    if (booking.bookingStatus === "completed") {
       return res.status(400).json({ success: false, messsage: "Completed bookings cannot be Cancel" });
     }
 
-    if (booking.bookingStatus === "Cancelled") {
+    if (booking.bookingStatus === "cancelled") {
       return res.status(400).json({ success: false, message: "This booking already cancelled" });
     }
 
-    booking.bookingStatus === "Cancelled";
+    booking.bookingStatus === "cancelled";
     await booking.save();
 
     res.status(200).json({ success: true, message: "Booking cancelled" });
@@ -161,7 +161,7 @@ const checkHotelAvailability = async (req, res) => {
     // Find bookings that overlap the request period
     const overLapingBookings = await Booking.find({
       hotel: hotelId,
-      bookingStatus: { $in: ["Confirmed", "Pending"] },
+      bookingStatus: { $in: ["confirmed", "pending"] },
       checkInDate: { $lt: new Date(checkOut) },
       checkOutDate: { $gt: new Date(checkIn) },
     });
@@ -188,9 +188,9 @@ const getAllBookings = async (req, res) => {
   try {
     const bookings = await Booking.find()
       .populate("user", "name email")
-      .populate("hotel", "name destination")
+      .populate("hotel", "name location")
       .sort({ createdAt: -1 });
-    res.status().json({ success: true, count: bookings.length, bookings });
+    res.status(200).json({ success: true, count: bookings.length, bookings });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
@@ -201,14 +201,10 @@ const getAllBookings = async (req, res) => {
 
 const getAdminStatus = async (req, res) => {
   try {
-    if (req.user.role !== "admin") {
-      return res.status(403).json({ message: "Admin only access" });
-    }
-
-    const [totalUsers, totalBookings, totalPrice, revenue] = await Promise.all([
-      User.countDocuments(),
-      Hotel.countDocuments(),
+    const [totalUsers, totalBookings, totalHotels, revenue] = await Promise.all([
+      User.countDocuments({ role: "user" }),
       Booking.countDocuments(),
+      Hotel.countDocuments(),
       Booking.aggregate([
         { $match: { paymentStatus: "paid" } },
         { $group: { _id: null, total: { $sum: "totalPrice" } } },
@@ -217,26 +213,7 @@ const getAdminStatus = async (req, res) => {
 
     res
       .status(200)
-      .json({ success: true, totalBookings, totalUsers, totalPrice, totalRevenue: revenue[0]?.total || 0 });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// To Delete bookings
-
-const deleteBooking = async (req, res) => {
-  try {
-    const bookingId = req.params.id;
-
-    const booking = await Booking.findById(bookingId);
-    if (!booking) {
-      return res.status(404).json({ success: false, message: "Booking not found" });
-    }
-    await booking.deleteOne();
-
-    res.status(200).json({ success: true, message: "Booking deleted " });
+      .json({ success: true, totalBookings, totalUsers, totalHotels, totalRevenue: revenue[0]?.total || 0 });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
@@ -249,7 +226,6 @@ module.exports = {
   getBookingById,
   cancelBooking,
   getAllBookings,
-  deleteBooking,
   getAdminStatus,
   checkHotelAvailability,
 };

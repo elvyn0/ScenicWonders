@@ -20,7 +20,7 @@ function Nav() {
           <img className="w-full mt-5" src={assets.hotelList} />
         </NavLink>
         <NavLink
-          to="bookingsList"
+          to="/bookingsList"
           className="rounded-2xl shadow-2xl w-80 bg-white h-100 hover:scale-110 ease-in-out transition duration-300 font-bold p-5 text-2xl"
         >
           Bookings List
