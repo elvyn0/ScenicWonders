@@ -1,4 +1,5 @@
 import { Toaster } from "react-hot-toast";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Outlet } from "react-router-dom";
 import Home from "./Pages/Home";
@@ -38,26 +39,25 @@ const App = () => {
     <div>
       <Toaster />
       <Routes>
-        <Route path="/HotelBookings" element={<HotelBookings />} />
-        <Route path="hotels/hotel/:hotelId" element={<Hotel />} />
-        <Route path="/booknow" element={<Booknow />} />
         <Route element={<LayoutWithSidebar />}>
           <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
+          <Route path="/stories" element={<Stories />} />
+          <Route path="/post" element={<Post />} />
+          <Route path="/hotelBookings" element={<HotelBookings />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/message" element={<Message />} />
+          <Route path="/storiesPost" element={<StoriesPost />} />
           <Route path="/nepal" element={<Nepal />} />
           <Route path="/kerala" element={<Kerala />} />
-          <Route path="/tamilnadu" element={<TamilNadu />} />
+          <Route path="/tamilNadu" element={<TamilNadu />} />
           <Route path="/maharashtra" element={<Maharashtra />} />
-          <Route path="/punjab" element={<Punjab />} />
           <Route path="/rajasthan" element={<Rajasthan />} />
-          <Route path="/post" element={<Post />} />
-          <Route path="/storiesPost" element={<StoriesPost />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/stories" element={<Stories />} />
-          <Route path="/message" element={<Message />} />
-
-          <Route path="/about" element={<About />} />
+          <Route path="/punjab" element={<Punjab />} />
         </Route>
+        <Route path="/hotels/hotel/:hotelId" element={<Hotel />} />
+        <Route path="/booknow" element={<Booknow />} />
       </Routes>
     </div>
   );
