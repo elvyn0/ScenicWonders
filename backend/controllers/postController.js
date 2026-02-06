@@ -6,7 +6,8 @@ const fs = require("fs").promises;
 
 const addPost = async (req, res) => {
   try {
-    const { userId, caption } = req.body;
+    const userId = req.user._id;
+    const { caption } = req.body;
     const image = req.file;
 
     if (!image) {
@@ -43,8 +44,8 @@ const addPost = async (req, res) => {
 // Function for list post
 const listPost = async (req, res) => {
   try {
-    const post = await Post.find().sort({ createdAt: -1 });
-    res.status(200).json({ success: true, post });
+    const posts = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json({ success: true, posts });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });

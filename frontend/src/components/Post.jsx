@@ -1,12 +1,37 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GrUploadOption } from "react-icons/gr";
+import { AppContext } from "../context/appContext";
+import { toast } from "react-hot-toast";
 
 function Post() {
+  const { api, token } = useContext(AppContext);
   const [image, setImage] = useState(false);
-  const [description, setDescription] = useState("");
+  const [caption, setCaption] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("caption", caption);
+      image && formData.append("image", image);
+
+      const response = await api.post("/api/post/add", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setCaption("");
+        setImage(false);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
   };
   return (
     <form onSubmit={handleSubmit} className=" pt-5 px-[5%]">
@@ -36,8 +61,8 @@ function Post() {
           <label htmlFor="description">
             <p className="text-sm">Description</p>
             <input
-              onChange={(e) => setDescription(e.target.value)}
-              value={description}
+              onChange={(e) => setCaption(e.target.value)}
+              value={caption}
               placeholder="Add a detailed description"
               type="text"
               id="description"
@@ -60,7 +85,3 @@ function Post() {
 }
 
 export default Post;
-
-{
-  /* <GrUploadOption className="size-10 mb-3" /> */
-}

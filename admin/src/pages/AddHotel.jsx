@@ -30,13 +30,9 @@ function AddHotel({ token }) {
       roomImage1 && formData.append("roomImage1", roomImage1);
       roomImage2 && formData.append("roomImage2", roomImage2);
 
-      console.log("this is formData", formData);
-      console.log("ADMIN TOKEN:", token);
-
       const responce = await api.post("/api/hotels/create", formData, {
         headers: { token },
       });
-      console.log("this iss ittttt", responce);
 
       if (responce.data.success) {
         toast.success(responce.data.message);

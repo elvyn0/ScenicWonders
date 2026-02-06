@@ -3,27 +3,43 @@ const User = require("../models/userModel");
 
 const authUser = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1] || req.headers.token;
-    if (!token) {
-      return res.status(401).json({ success: false, message: "Not Authorized Login Again" });
+    // Support both `Authorization: Bearer <token>` and `Authorization: <token>`
+    const authHeader = req.headers.authorization || req.headers.token;
+    let token;
+
+    if (!authHeader) {
+      return res.status(401).json({ success: false, message: "Not Authorized, Login Again" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    } else {
+      token = authHeader;
+    }
+
+    if (!token) {
+      return res.status(401).json({ success: false, message: "Not Authorized, Login Again" });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      console.error("JWT verify error:", err.message);
+      return res.status(401).json({ success: false, message: "Invalid or expired token" });
+    }
+
     const user = await User.findById(decoded.id);
-    
+
     if (!user) {
       return res.status(401).json({ success: false, message: "User not found" });
     }
-    
-    req.user = {
-      _id: user._id,
-      role: user.role,
-      email: user.email,
-    };
+
+    req.user = user;
     next();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: error?.message || "Authentication error" });
   }
 };
 

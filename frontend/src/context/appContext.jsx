@@ -9,7 +9,7 @@ const AppContextProvider = (props) => {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [token, setToken] = useState(useState(localStorage.getItem("token")));
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const navigate = useNavigate();
 
   const api = axios.create({
