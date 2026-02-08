@@ -10,7 +10,7 @@ const connectCloudinary = require("./config/cloudinary");
 // Route Imports
 const userRouter = require("./routes/userRoute");
 const postRouter = require("./routes/postRoute");
-const blogRouter = require("./routes/blogRoute");
+const storiesRouter = require("./routes/storyRoute");
 const hotelRouter = require("./routes/hotelRoute");
 const bookingRouter = require("./routes/bookingRoute");
 
@@ -29,7 +29,7 @@ app.use("uploads", express.static(path.join(__dirname, "uploads")));
 // api endpoints
 app.use("/api", userRouter);
 app.use("/api/post", postRouter);
-app.use("/api/blog", blogRouter);
+app.use("/api/story", storiesRouter);
 app.use("/api/hotels", hotelRouter);
 app.use("/api/bookings", bookingRouter);
 
