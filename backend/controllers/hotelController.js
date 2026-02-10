@@ -10,10 +10,7 @@ const createHotel = async (req, res) => {
     const hotelImage = req.files?.hotelImage?.[0];
     const roomImage1 = req.files?.roomImage1?.[0];
     const roomImage2 = req.files?.roomImage2?.[0];
-
-    console.log("BODY:", req.body);
     console.log("FILES:", req.files);
-    console.log(req.headers["content-type"]);
 
     if (!hotelImage) {
       return res.status(400).json({ success: false, message: "Hotel image is required" });
@@ -24,8 +21,9 @@ const createHotel = async (req, res) => {
     const uploadedImages = await Promise.all(
       images.map(async (file) => {
         let result = await cloudinary.uploader.upload(file.path, {
-          resource_type: "image",
           folder: "hotels",
+          quality: "auto",
+          fetch_format: "auto",
         });
         return {
           url: result.secure_url,
@@ -73,9 +71,9 @@ const listAllHotels = async (req, res) => {
 // get hotel deatiles
 
 const getHotelDetails = async (req, res) => {
-  const { hotelId } = req.params;
+  const { id } = req.params;
   try {
-    const hotel = await Hotel.findById(hotelId);
+    const hotel = await Hotel.findById(id);
     if (!hotel) {
       return res.status(404).json({ success: false, message: "Hotel not found." });
     }

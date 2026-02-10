@@ -1,38 +1,39 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/appContext";
 import HotelItems from "./HotelItems";
+import toast from "react-hot-toast";
 
 function Hotels() {
-  const { hotels, showSearch, search } = useContext(AppContext);
-  const [filteredHotels, setFilteredHotels] = useState([]);
+  const { hotels, api } = useContext(AppContext);
+  const [hotelsList, setHotelsList] = useState([]);
 
-  const applyFilter = () => {
-    let tempHotels = hotels.slice();
-
-    if (showSearch && search) {
-      const text = search.toLowerCase();
-
-      tempHotels = tempHotels.filter(
-        (item) => item.name.toLowerCase().includes(text) || item.destination.toLowerCase().includes(text),
-      );
+  const fetchHotelLists = async () => {
+    try {
+      const response = await api.get("/api/hotels/list");
+      if (response.data.success) {
+        setHotelsList(response.data.hotels);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
-
-    setFilteredHotels(tempHotels);
   };
 
   useEffect(() => {
-    applyFilter();
-  }, [hotels, search, showSearch]);
+    fetchHotelLists();
+  }, [hotels]);
 
   return (
     <div className="grid grid-flow-col gap-2 ">
       <div>
-        {filteredHotels.map((item) => (
+        {hotelsList.map((item) => (
           <HotelItems
-            key={item.id}
-            id={item.id}
+            key={item._id}
+            id={item._id}
+            image={item.hotelImage?.url}
             name={item.name}
-            image={item.image}
             pricePerNight={item.pricePerNight}
             destination={item.destination}
           />

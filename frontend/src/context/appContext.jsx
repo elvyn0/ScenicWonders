@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
-  const [search, setSearch] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const navigate = useNavigate();
@@ -34,10 +32,6 @@ const AppContextProvider = (props) => {
     hotels,
     currency,
     taxes,
-    search,
-    setSearch,
-    showSearch,
-    setShowSearch,
   };
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;
 };

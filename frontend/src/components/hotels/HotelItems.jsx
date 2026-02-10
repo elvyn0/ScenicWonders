@@ -9,7 +9,7 @@ function HotelItems({ id, name, image, pricePerNight, destination }) {
     <Link className=" w-full no-underline " to={`/hotels/hotel/${id}`}>
       <div className="flex flex-1 text-gray-700 shadow-md bg-white p-3 mb-5 rounded-lg">
         <div>
-          <img className="max-w-[300px] max-h-[300px] rounded-md" src={image} />
+          <img className="max-w-[300px]  max-h-[300px] rounded-md" src={image} />
         </div>
         <div className="flex p-3">
           <div className="w-[300px] ">

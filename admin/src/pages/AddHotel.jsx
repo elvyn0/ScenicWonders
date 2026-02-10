@@ -4,6 +4,8 @@ import { toast } from "react-hot-toast";
 import api from "../api/axios";
 
 function AddHotel({ token }) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [hotelImage, setHotelImage] = useState(false);
   const [roomImage1, setRoomImage1] = useState(false);
   const [roomImage2, setRoomImage2] = useState(false);
@@ -18,6 +20,9 @@ function AddHotel({ token }) {
   const submitHandler = async (event) => {
     event.preventDefault();
     try {
+      setUploading(true);
+      setUploadProgress(0);
+
       const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
@@ -26,16 +31,20 @@ function AddHotel({ token }) {
       formData.append("location", location);
       formData.append("weekendDeals", String(weekendDeals));
 
-      hotelImage && formData.append("hotelImage", hotelImage);
-      roomImage1 && formData.append("roomImage1", roomImage1);
-      roomImage2 && formData.append("roomImage2", roomImage2);
-
-      const responce = await api.post("/api/hotels/create", formData, {
+      if (hotelImage) formData.append("hotelImage", hotelImage);
+      if (roomImage1) formData.append("roomImage1", roomImage1);
+      if (roomImage2) formData.append("roomImage2", roomImage2);
+      const response = await api.post("/api/hotels/create", formData, {
         headers: { token },
+        onUploadProgress: (ProgressEvent) => {
+          if (!ProgressEvent.total) return;
+          const percent = Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total);
+          setUploadProgress(percent);
+        },
       });
 
-      if (responce.data.success) {
-        toast.success(responce.data.message);
+      if (response.data.success) {
+        toast.success(response.data.message);
         setName("");
         setDescription("");
         setLocation("");
@@ -44,12 +53,19 @@ function AddHotel({ token }) {
         setHotelImage(false);
         setRoomImage1(false);
         setRoomImage2(false);
+        setUploading(false);
+        setUploadProgress(0);
+        setWeekendDeals(false);
       } else {
-        toast.error(responce.data.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error);
-      toast.error(error.responce?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      // 🔐 ALWAYS runs
+      setUploading(false);
+      setUploadProgress(0);
     }
   };
   return (
@@ -154,9 +170,22 @@ function AddHotel({ token }) {
           </label>
         </div>
       </div>
-
-      <button className=" py-2 px-10 rounded-sm mt-4 bg-black text-white mb-16" type="submit">
-        Add
+      {uploading && (
+        <div className="w-full max-w-[500px] bg-gray-200 rounded-full h-2 mt-2">
+          <div
+            className="bg-black h-2 rounded-full transition-all duration-300"
+            style={{ width: `${uploadProgress}%` }}
+          />
+        </div>
+      )}
+      <button
+        type="submit"
+        disabled={uploading}
+        className={`py-2 px-10 rounded-sm mt-4 mb-16 text-white
+    ${uploading ? "bg-gray-400 cursor-not-allowed" : "bg-black"}
+  `}
+      >
+        {uploading ? "Uploading…" : "Upload"}
       </button>
     </form>
   );

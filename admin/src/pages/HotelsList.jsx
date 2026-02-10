@@ -59,6 +59,8 @@ function HotelsList({ token }) {
         {list.map((item) => (
           <div className="grid grid-cols-[1fr_3fr_1fr_1fr_1fr_1fr]" key={item._id}>
             <img className="w-full" src={item.hotelImage?.url} />
+            {console.log(list.hotelImage)}
+
             <p>{item.name}</p>
             <p>{item.location}</p>
             <p>{item.totalRooms}</p>

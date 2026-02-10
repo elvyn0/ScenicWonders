@@ -357,7 +357,7 @@ export const hotels = [
   },
   {
     id: 6,
-    name: "Expora",
+    name: "Explora",
     description:
       "Discover a practical and affordable stay at our hotel. We provide all the necessary amenities to ensure a comfortable visit, perfect for guests who value simplicity and efficiency.",
     image: hotel6,
@@ -418,8 +418,7 @@ export const hotels = [
   {
     id: 11,
     name: "Happy Wally",
-    description:
-      "Our hotel offers a budget-friendly stay with all the necessary amenities for a comfortable visit. Ideal for travelers seeking value and convenience in [Location Type, e.g., the city center].",
+    description: "",
     image: hotel11,
     pricePerNight: 2200,
     totalRooms: 55,
