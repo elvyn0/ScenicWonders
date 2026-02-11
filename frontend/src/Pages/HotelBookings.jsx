@@ -87,7 +87,7 @@ function HotelBookings() {
   const handleSearchClick = () => {
     // In a real application, this is where you would handle routing/API calls
     console.log("--- SEARCH TRIGGERED ---");
-    console.log("Destination:", destination);
+    console.log("location", location);
     console.log("Check-in:", selectedDates.checkIn ? selectedDates.checkIn.toDateString() : "N/A");
     console.log("Check-out:", selectedDates.checkOut ? selectedDates.checkOut.toDateString() : "N/A");
     console.log("Guests:", guests);

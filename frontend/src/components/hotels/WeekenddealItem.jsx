@@ -6,14 +6,10 @@ function WeekendDealsItem({ id, name, image, pricePerNight, destination }) {
   const { currency } = useContext(AppContext);
 
   return (
-    <Link to={`/product/${id}`} className="no-underline">
+    <Link to={`/hotels/hotel/${id}`} className="no-underline">
       <div className="bg-white rounded-2xl shadow-md min-w-[260px] hover:shadow-lg transition-all duration-300 p-3 hover:scale-110 ease-in-out ">
         <div className="overflow-hidden rounded-t-2xl">
-          <img
-            src={image}
-            alt={name}
-            className="h-40 w-full object-cover hover:scale-105 transition-transform duration-300"
-          />
+          <img src={image} className="h-40 w-full object-cover hover:scale-105 transition-transform duration-300" />
         </div>
 
         <div className="p-4 space-y-2">

@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import { AppContext } from "../../context/appContext";
 import { Link } from "react-router-dom";
+import { Star } from "lucide-react";
 
-function HotelItems({ id, name, image, pricePerNight, destination }) {
+function HotelItems({ id, name, image, pricePerNight, location, rating }) {
   const { currency } = useContext(AppContext);
 
   return (
@@ -17,7 +18,12 @@ function HotelItems({ id, name, image, pricePerNight, destination }) {
               <p className="text-lg font-bold mb-0">{name}</p>
             </div>
             <div>
-              <p className="text-sm">{destination}</p>
+              <p className="text-sm">{location}</p>
+            </div>
+            <div className="mt-5 flex items-center gap-1 ">
+              {Array.from({ length: rating }).map((_, i) => (
+                <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+              ))}
             </div>
           </div>
           <div className="flex flex-col  justify-end   ">

@@ -46,6 +46,7 @@ const createHotel = async (req, res) => {
       weekendDeals: weekendDeals === "true" ? true : false,
       hotelImage: uploadedImages[0],
       roomImages: uploadedImages.slice(1),
+      rating,
     };
 
     await Hotel.create(hotelData);

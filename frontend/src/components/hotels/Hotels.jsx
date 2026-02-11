@@ -34,6 +34,8 @@ function Hotels() {
             id={item._id}
             image={item.hotelImage?.url}
             name={item.name}
+            location={item.location}
+            rating={item.rating}
             pricePerNight={item.pricePerNight}
             destination={item.destination}
           />

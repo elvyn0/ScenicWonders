@@ -17,7 +17,7 @@ const hotelSchema = new mongoose.Schema({
     },
   ],
   totalRooms: { type: Number, required: true },
-  rating: { type: Number, default: 4.0 },
+  rating: { type: Number, default: 5.0 },
   weekendDeals: { type: Boolean },
 });
 

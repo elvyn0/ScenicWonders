@@ -1,5 +1,4 @@
 import { Toaster } from "react-hot-toast";
-import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Outlet } from "react-router-dom";
 import Home from "./Pages/Home";
@@ -57,7 +56,7 @@ const App = () => {
           <Route path="/punjab" element={<Punjab />} />
         </Route>
         <Route path="/hotels/hotel/:hotelId" element={<Hotel />} />
-        <Route path="/booknow" element={<Booknow />} />
+        <Route path="/booknow/:hotelId" element={<Booknow />} />
       </Routes>
     </div>
   );
