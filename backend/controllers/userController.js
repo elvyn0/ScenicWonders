@@ -2,12 +2,14 @@ const validator = require("validator");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Post = require("../models/postModel");
+const Stories = require("../models/storiesModel");
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
-// User registration
+// User registration //
 
 const registerUser = async (req, res) => {
   try {
@@ -55,12 +57,12 @@ const registerUser = async (req, res) => {
   }
 };
 
-// user Login
+// user Login //
 const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
       return res.status(404).json({ success: false, message: "User not exitst" });
@@ -88,10 +90,26 @@ const userLogin = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+// Get logged user
+const getMe = async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
+//  To get user ///
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const { userId } = req.params;
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
@@ -101,6 +119,33 @@ const getUser = async (req, res) => {
   }
 };
 
+// user Profile //
+const getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const [user, posts, stories] = await Promise.all([
+      User.findById(userId).select("-password"),
+      Post.find({ user: userId }).sort({ createdAt: -1 }),
+      Stories.find({ user: userId }).sort({ createdAt: -1 }),
+    ]);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+      posts,
+      stories,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+///  Admin Login ///
 const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -120,4 +165,4 @@ const adminLogin = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, userLogin, getUser, adminLogin };
+module.exports = { registerUser, userLogin, getUser, adminLogin, getUserProfile, getMe };

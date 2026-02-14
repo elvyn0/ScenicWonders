@@ -3,6 +3,8 @@ import { useContext } from "react";
 import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
+import { assets } from "../assets/assets";
+import { Link } from "react-router-dom";
 
 function PostCategories() {
   const { api } = useContext(AppContext);
@@ -11,6 +13,7 @@ function PostCategories() {
   const fetchList = async () => {
     try {
       const response = await api.get("/api/post/list");
+
       if (response.data.success) {
         setPostList(response.data.posts);
       } else {
@@ -37,6 +40,12 @@ function PostCategories() {
             key={item._id}
             className="group rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-lg transition-all duration-300"
           >
+            <Link to={`/profile/${item.user._id}`} className="no-underline text-black cursor-pointer">
+              <div className="flex gap-2 font-semibold mb-2 ">
+                <img src={assets.profile1} className="w-10 rounded-full" />
+                <p>{item.user?.name || "Unknown"}</p>
+              </div>
+            </Link>
             {/* Image */}
             <div className="relative aspect-[3/4] overflow-hidden">
               <img

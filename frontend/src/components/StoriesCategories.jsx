@@ -41,15 +41,17 @@ function StoriesCategories() {
             className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition"
           >
             {/* User */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
-                {item.user?.name?.charAt(0) || "U"}
+            <Link to={`/profile/${item.user._id}`} className="no-underline text-black cursor-pointer">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
+                  {item.user?.name}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800">{item.user?.name || "Unknown"}</p>
+                  <p className="text-xs text-gray-400">{new Date(item.createdAt).toLocaleDateString()}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-gray-800">{item.user?.name || "Unknown"}</p>
-                <p className="text-xs text-gray-400">{new Date(item.createdAt).toLocaleDateString()}</p>
-              </div>
-            </div>
+            </Link>
 
             {/* Title */}
             <h2 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{item.title}</h2>

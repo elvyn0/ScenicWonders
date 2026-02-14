@@ -44,7 +44,7 @@ function NavBar() {
               <span className="text-sm text-gray-500">Share travel stories</span>
             </div>
             {/* Hotels Nav */}
-            <a href="/hotelBookings" target="_blank" rel="noopener noreferrer" className="no-underline">
+            <a href="/hotelsLists" target="_blank" rel="noopener noreferrer" className="no-underline">
               <div className="flex flex-col gap-2 justify-center items-center">
                 <li
                   className=" bg-red-600   px-4 py-3 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "

@@ -37,14 +37,14 @@ const addPost = async (req, res) => {
       post,
     });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
 // Function for list post
 const listPost = async (req, res) => {
   try {
-    const posts = await Post.find().sort({ createdAt: -1 });
+    const posts = await Post.find().populate("user", " name").sort({ createdAt: -1 });
     res.status(200).json({ success: true, posts });
   } catch (error) {
     console.log(error);
@@ -77,7 +77,7 @@ const removePost = async (req, res) => {
     res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 

@@ -16,9 +16,9 @@ import Profile from "./Pages/Profile";
 import Stories from "./Pages/Stories";
 import Message from "./Pages/Message";
 import About from "./Pages/About";
-import HotelBookings from "./Pages/HotelBookings";
 import Hotel from "./Pages/Hotel";
 import Booknow from "./Pages/Booknow";
+import HotelsLists from "./Pages/HotelsLists";
 
 // Layout with sibeBar
 const LayoutWithSidebar = () => {
@@ -43,9 +43,9 @@ const App = () => {
           <Route path="/explore" element={<Explore />} />
           <Route path="/stories" element={<Stories />} />
           <Route path="/post" element={<Post />} />
-          <Route path="/hotelBookings" element={<HotelBookings />} />
+          <Route path="/hotelsLists" element={<HotelsLists />} />
           <Route path="/about" element={<About />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/message" element={<Message />} />
           <Route path="/storiesPost" element={<StoriesPost />} />
           <Route path="/nepal" element={<Nepal />} />

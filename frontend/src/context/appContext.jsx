@@ -1,19 +1,43 @@
 import { createContext, useState } from "react";
-import { hotels } from "../assets/assets";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
   const [showLogin, setShowLogin] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  {
+    /* Backend  */
+  }
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
   });
+  {
+    /* To get the user */
+  }
+  const fetchUser = async () => {
+    try {
+      const response = await api.get("/api/user/me", { headers: { token } });
+      if (response.data.success) {
+        setUser(response.data.user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
+    if (token) fetchUser();
+  }, [token]);
+
+  {
+    /* Logout */
+  }
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -25,11 +49,12 @@ const AppContextProvider = (props) => {
     api,
     token,
     setToken,
+    setUser,
+    user,
     navigate,
     showLogin,
     setShowLogin,
     handleLogout,
-    hotels,
     currency,
     taxes,
   };

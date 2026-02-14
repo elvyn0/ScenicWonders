@@ -9,11 +9,11 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: false },
     profilePic: { url: { type: String }, publicId: { type: String } },
     bio: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema.virtual("totalBookings", {

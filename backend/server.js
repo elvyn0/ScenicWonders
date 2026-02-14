@@ -27,7 +27,8 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("uploads", express.static(path.join(__dirname, "uploads")));
 
 // api endpoints
-app.use("/api", userRouter);
+
+app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/story", storiesRouter);
 app.use("/api/hotels", hotelRouter);
