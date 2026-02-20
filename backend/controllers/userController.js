@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Post = require("../models/postModel");
 const Stories = require("../models/storiesModel");
+const ConversationModel = require("../models/Conversation");
+const MessageModel = require("../models/Message");
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
@@ -65,7 +67,7 @@ const userLogin = async (req, res) => {
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not exitst" });
+      return res.status(404).json({ success: false, message: "User not exists" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -84,7 +86,13 @@ const userLogin = async (req, res) => {
       { expiresIn: "7d" },
     );
 
-    res.status(200).json({ success: true, token });
+    user.password = undefined;
+
+    res.status(200).json({
+      success: true,
+      token,
+      user,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
@@ -102,6 +110,18 @@ const getMe = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+// To get all Users //
+
+const getUsersList = async (req, res) => {
+  try {
+    const users = await User.find({ role: "user" }).select(" profilePic name");
+
+    res.status(200).json({ success: true, users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -165,4 +185,4 @@ const adminLogin = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, userLogin, getUser, adminLogin, getUserProfile, getMe };
+module.exports = { registerUser, userLogin, getUser, adminLogin, getUserProfile, getMe, getUsersList };
