@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { io } from "socket.io-client";
 
 export const AppContext = createContext();
 
@@ -11,15 +12,21 @@ const AppContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  {
-    /* Backend  */
-  }
+  /// Backend  ///
+
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
   });
-  {
-    /* To get the user */
-  }
+
+  /// Socket-io ///
+
+  const socket = io("http://localhost:4000");
+  socket.on("connect", () => {
+    console.log("Connected with ID:", socket.id);
+  });
+
+  /// To get the user ///
+
   const fetchUser = async () => {
     try {
       const response = await api.get("/api/user/me", { headers: { token } });
@@ -35,9 +42,8 @@ const AppContextProvider = (props) => {
     if (token) fetchUser();
   }, [token]);
 
-  {
-    /* Logout */
-  }
+  /// Logout ///
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -48,6 +54,7 @@ const AppContextProvider = (props) => {
   const value = {
     api,
     token,
+    socket,
     setToken,
     setUser,
     user,

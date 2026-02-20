@@ -14,11 +14,13 @@ import Post from "./components/Post";
 import StoriesPost from "./components/StoriesPost";
 import Profile from "./Pages/Profile";
 import Stories from "./Pages/Stories";
-import Message from "./Pages/Message";
 import About from "./Pages/About";
 import Hotel from "./Pages/Hotel";
 import Booknow from "./Pages/Booknow";
 import HotelsLists from "./Pages/HotelsLists";
+import Message from "./Pages/Message";
+import Test from "./Pages/Test";
+import MessageRoom from "./components/common/MessageRoom";
 
 // Layout with sibeBar
 const LayoutWithSidebar = () => {
@@ -38,6 +40,7 @@ const App = () => {
     <div>
       <Toaster />
       <Routes>
+        <Route path="/test" element={<Test />} />
         <Route element={<LayoutWithSidebar />}>
           <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
@@ -47,6 +50,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/message" element={<Message />} />
+          <Route path="/message/:conversationId" element={<MessageRoom />} />
           <Route path="/storiesPost" element={<StoriesPost />} />
           <Route path="/nepal" element={<Nepal />} />
           <Route path="/kerala" element={<Kerala />} />

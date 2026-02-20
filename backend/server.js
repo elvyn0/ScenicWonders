@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
 const path = require("path");
 
 // Configuration Imports
@@ -13,9 +14,12 @@ const postRouter = require("./routes/postRoute");
 const storiesRouter = require("./routes/storyRoute");
 const hotelRouter = require("./routes/hotelRoute");
 const bookingRouter = require("./routes/bookingRoute");
+const conversationRouter = require("./routes/conversationRoute");
+const messageRouter = require("./routes/messageRoute");
 
 // App config
 const app = express();
+const server = http.createServer(app);
 const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
@@ -33,21 +37,23 @@ app.use("/api/post", postRouter);
 app.use("/api/story", storiesRouter);
 app.use("/api/hotels", hotelRouter);
 app.use("/api/bookings", bookingRouter);
+app.use("/api/conversation", conversationRouter);
+app.use("/api/messages", messageRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
 });
 
-app.use(
-  cors({
+// socket.io
+const socketHandler = require("./sockets/socketHandler");
+
+const io = new Server(server, {
+  cors: {
     origin: [process.env.FRONTEND_URL, process.env.ADMIN_URL],
     credentials: true,
-  }),
-);
-
-app.get("/health", (req, res) => {
-  res.json({ success: true, message: "Backend is alive" });
+  },
 });
+socketHandler(io);
 
 // Server listen
-app.listen(port, () => console.log("Server running on port :" + port));
+server.listen(port, () => console.log("Server running on port :" + port));

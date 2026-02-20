@@ -8,6 +8,7 @@ import { LuMessageCircleMore } from "react-icons/lu";
 import { RiCameraAiLine } from "react-icons/ri";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { assets } from "../../assets/assets";
+import { AppContext } from "../../context/appContext";
 
 function SideBar() {
   const [showPopup, setShowPopup] = useState(false);
@@ -16,6 +17,7 @@ function SideBar() {
 
   const handleSelect = (type) => {
     setShowPopup(false);
+
     if (type === "post") navigate("/post");
     if (type === "stories") navigate("/storiesPost");
   };
