@@ -1,74 +1,91 @@
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../context/appContext";
 import { assets } from "../assets/assets";
-import { MessageCircleMore } from "lucide-react";
+import MessageRoom from "../components/common/MessageRoom";
+import toast from "react-hot-toast";
 
 function Message() {
+  const { api, token, navigate } = useContext(AppContext);
+  const [users, setUsers] = useState([]);
+
+  // To get Users ///
+  const fetchUsers = async () => {
+    try {
+      const response = await api.get("/api/user/users");
+      if (response.data.success) {
+        setUsers(response.data.users);
+      } else {
+        toast.error(response.data.Message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.messages || "Something went wrong");
+    }
+  };
+
+  /// To get conversationId ///
+
+  const fetchConversationId = async (receiverId) => {
+    try {
+      const response = await api.post(
+        "/api/conversation",
+        { receiverId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.data.success) {
+        const conversationId = response.data.conversationId;
+
+        navigate(`/message/${conversationId}`);
+      } else {
+        toast.error("Failed to create conversation");
+      }
+    } catch (error) {
+      console.log(error);
+
+      console.log("FULL ERROR:", error);
+      console.log("SERVER RESPONSE:", error.response);
+      console.log("SERVER DATA:", error.response?.data);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  useEffect(() => {
+    if (token) fetchUsers();
+  }, [token]);
+
+  console.log("users", users);
+
   return (
-    <div className="flex w-full h-screen bg-white ml-[5%]">
-      {/* 1. Left Side (Conversation List)*/}
-      <div className="w-[350px] flex-shrink-0 border-r border-gray-300 p-6 flex flex-col h-full overflow-hidden">
-        {/* Header/Title */}
-        <div className="mb-6">
-          <p className="font-extrabold text-3xl text-gray-800">Messages</p>
+    <div className=" flex w-full h-screen bg-gray-50 ml-[4%]">
+      {/* Left Sidebar */}
+      <div className="w-[320px] border-r border-gray-200 bg-white flex flex-col">
+        {/* Header */}
+        <div className="px-6 py-5 border-b border-gray-200">
+          <h1 className="text-2xl font-bold text-gray-800">Messages</h1>
         </div>
 
-        <div className="flex flex-col flex-1 gap-1 overflow-y-auto">
-          {/* Conversation Item 1 */}
-          <div className="flex gap-4 p-3 rounded-xl cursor-pointer transition duration-150 ease-in-out hover:bg-gray-100">
-            <div className="flex-shrink-0">
-              <img className="size-14 rounded-full object-cover" src={assets.KeralaMunnar} alt="User Avatar" />
-            </div>
-            <div className="flex-grow min-w-0">
-              <p className="font-semibold text-gray-900 truncate">John Doe</p>
-              <p className="text-sm text-gray-500 truncate">That looks like an excellent...</p>
-            </div>
-          </div>
-
-          {/* Conversation Item 2 */}
-          <div className="flex gap-4 p-3 rounded-xl cursor-pointer transition duration-150 ease-in-out hover:bg-gray-100">
-            <div className="flex-shrink-0">
-              <img className="size-14 rounded-full object-cover" src={assets.KeralaMunnar} alt="User Avatar" />
-            </div>
-            <div className="flex-grow min-w-0">
-              <p className="font-semibold text-gray-900 truncate">Sarah Connor</p>
-              <p className="text-sm text-gray-500 truncate">It is very clean now!</p>
-            </div>
-          </div>
-
-          {/* Added more list items to better demonstrate the scrollable view and border stretching */}
-          {[...Array(10)].map((_, index) => (
-            <div
-              key={index}
-              className="flex gap-4 p-3 rounded-xl cursor-pointer transition duration-150 ease-in-out hover:bg-gray-100"
-            >
-              <div className="flex-shrink-0">
-                <img className="size-14 rounded-full object-cover" src={assets.KeralaMunnar} alt="User Avatar" />
+        {/* Conversation List */}
+        <div className="flex-1 overflow-y-auto p-3 space-y-2">
+          <div>
+            {users.map((item) => (
+              <div key={item._id} onClick={() => fetchConversationId(item._id)}>
+                <div className="flex gap-3 border-b-2 p-2 mb-2">
+                  <img src={assets.profile1} className="w-10 rounded-full" />
+                  <p>{item.name}</p>
+                </div>
               </div>
-              <div className="flex-grow min-w-0">
-                <p className="font-semibold text-gray-900 truncate">Contact {index + 3}</p>
-                <p className="text-sm text-gray-500 truncate">New message content...</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* 2. Right Side (Conversation View )*/}
-
-      <div className="flex-1 flex justify-center items-center w-full h-full">
-        <div className="flex flex-col items-center text-center max-w-sm p-8">
-          <div className="w-20 h-20 border border-gray-400 rounded-full flex items-center justify-center mb-4">
-            <MessageCircleMore className="size-10 text-gray-500" />
-          </div>
-
-          <div className="mb-6">
-            <p className="font-bold text-xl text-gray-800">Your messages</p>
-            <p className="text-gray-500 mt-1">Send a message to start a chat.</p>
-          </div>
-          <button className="bg-blue-600 hover:bg-blue-700 transition duration-150 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
-            Send message
-          </button>
-        </div>
-      </div>
+      {/* Right Chat Area */}
+      <MessageRoom />
     </div>
   );
 }
