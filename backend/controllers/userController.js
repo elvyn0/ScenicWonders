@@ -4,9 +4,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Post = require("../models/postModel");
 const Stories = require("../models/storiesModel");
-const ConversationModel = require("../models/Conversation");
-const MessageModel = require("../models/Message");
-
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
@@ -116,7 +113,7 @@ const getMe = async (req, res) => {
 
 const getUsersList = async (req, res) => {
   try {
-    const users = await User.find({ role: "user" }).select(" profilePic name");
+    const users = await User.find({ role: "user", _id: { $ne: req.user.id } }).select(" profilePic name");
 
     res.status(200).json({ success: true, users });
   } catch (error) {

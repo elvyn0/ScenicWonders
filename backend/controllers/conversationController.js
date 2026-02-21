@@ -1,4 +1,4 @@
-const Conversation = require("../models/Conversation");
+const ConversationModel = require("../models/Conversation");
 const User = require("../models/userModel");
 
 // To create conversation //
@@ -8,7 +8,7 @@ const createConverstaion = async (req, res) => {
     const { receiverId } = req.body;
     const senderId = req.user.id;
 
-    const existConversation = await Conversation.findOne({
+    const existConversation = await ConversationModel.findOne({
       members: { $all: [senderId, receiverId] },
     });
 
@@ -19,7 +19,7 @@ const createConverstaion = async (req, res) => {
       });
     }
 
-    const newConversation = await Conversation.create({
+    const newConversation = await ConversationModel.create({
       members: [receiverId, senderId],
     });
 
@@ -33,4 +33,20 @@ const createConverstaion = async (req, res) => {
   }
 };
 
-module.exports = { createConverstaion };
+const getConversationById = async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+
+    const conversation = await ConversationModel.findById(conversationId).populate("members", "name profilePic");
+
+    if (!conversation) {
+      return res.status(404).json({ success: false, message: "No conversationId match" });
+    }
+    res.status(200).json({ success: true, conversation });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { createConverstaion, getConversationById };

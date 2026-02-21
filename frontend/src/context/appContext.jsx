@@ -46,6 +46,7 @@ const AppContextProvider = (props) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setToken(null);
   };
   const currency = "₹";

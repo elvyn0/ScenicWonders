@@ -22,7 +22,6 @@ function Login({ onClose }) {
         if (response.data.success) {
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("user", JSON.stringify(response.data.user));
         } else {
           toast.error(response.data.message);
         }
@@ -31,6 +30,7 @@ function Login({ onClose }) {
         if (response.data.success) {
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
           toast.success("Logged in successfully");
         } else {
           toast.error(response.data.message);
