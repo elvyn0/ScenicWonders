@@ -11,7 +11,12 @@ function Message() {
   // To get Users ///
   const fetchUsers = async () => {
     try {
-      const response = await api.get("/api/user/users");
+      const response = await api.get("/api/user/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       if (response.data.success) {
         setUsers(response.data.users);
       } else {
@@ -46,10 +51,6 @@ function Message() {
       }
     } catch (error) {
       console.log(error);
-
-      console.log("FULL ERROR:", error);
-      console.log("SERVER RESPONSE:", error.response);
-      console.log("SERVER DATA:", error.response?.data);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -57,8 +58,6 @@ function Message() {
   useEffect(() => {
     if (token) fetchUsers();
   }, [token]);
-
-  console.log("users", users);
 
   return (
     <div className=" flex w-full h-screen bg-gray-50 ml-[4%]">
