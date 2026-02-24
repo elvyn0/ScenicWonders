@@ -1,4 +1,4 @@
-const MessageModel = require("../models/Message");
+const MessageModel = require("../models/MessageModel");
 
 // To create a message //
 
@@ -6,6 +6,8 @@ const createMessage = async (req, res) => {
   try {
     const senderId = req.user.id;
     const { conversationId, text } = req.body;
+
+    console.log("senderId", senderId);
 
     if (!conversationId || !text) {
       return res.status(400).json({
@@ -16,7 +18,7 @@ const createMessage = async (req, res) => {
 
     const createNewMessage = await MessageModel.create({
       conversationId,
-      sender: senderId,
+      senderId,
       text,
     });
     res.status(200).json({ success: true, createNewMessage });

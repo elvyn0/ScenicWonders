@@ -60,7 +60,7 @@ function Message() {
   }, [token]);
 
   return (
-    <div className=" flex w-full h-screen bg-gray-50 ml-[4%]">
+    <div className=" flex w-full h-screen bg-gray-100 ml-[4%]">
       {/* Left Sidebar */}
       <div className="w-[320px] border-r border-gray-200 bg-white flex flex-col">
         {/* Header */}

@@ -20,9 +20,8 @@ const AppContextProvider = (props) => {
 
   /// Socket-io ///
 
-  const socket = io("http://localhost:4000");
-  socket.on("connect", () => {
-    console.log("Connected with ID:", socket.id);
+  const socket = io("http://localhost:4000", {
+    auth: { token },
   });
 
   /// To get the user ///
