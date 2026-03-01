@@ -13,7 +13,7 @@ const createBooking = async (req, res) => {
     if (!hotelId || !checkInDate || !checkOutDate || !numberOfRooms) {
       return res.status(400).json({ success: false, message: "Misssing required booking deatiles" });
     }
-
+    console.log("hotelId", hotelId);
     //Date validation
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
@@ -23,17 +23,25 @@ const createBooking = async (req, res) => {
     }
 
     // fetch hotel
-    const hotel = await Hotel.findById(hotelId);
+    const hotel = await Hotel.findById(hotelId).select(" name location pricePerNight  hotelImage ");
     if (!hotel) {
       return res.status(400).json({ success: false, message: "Hotel not found" });
+    }
+    console.log("hotel", hotel);
+
+    if (!hotel.hotelImage || !hotel.hotelImage.publicId || !hotel.hotelImage.url) {
+      return res.status(400).json({
+        success: false,
+        message: "Hotel image missing in database",
+      });
     }
 
     // Availability checking
     const overLappingBookings = await Booking.find({
       hotel: hotelId,
       bookingStatus: { $in: ["pending", "confirmed"] },
-      checkInDate: { $lt: checkIn },
-      checkOutDate: { $gt: checkOut },
+      checkInDate: { $lt: checkOut },
+      checkOutDate: { $gt: checkIn },
     });
 
     const bookedRooms = overLappingBookings.reduce((sum, booking) => sum + booking.numberOfRooms, 0);
@@ -45,14 +53,21 @@ const createBooking = async (req, res) => {
     }
 
     // Calculate nights and price
-    const nights = Math.ceil((checkIn - checkOut) / (1000 * 60 * 60 * 24));
+    const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
 
     const totalPrice = nights * hotel.pricePerNight * numberOfRooms;
+    console.log("Hotel image field:", hotel.hotelImage);
 
     // Create booking
     const booking = await Booking.create({
       user: userId,
       hotel: hotelId,
+      name: hotel.name,
+      location: hotel.location,
+      hotelImage: {
+        publicId: hotel.hotelImage.publicId,
+        url: hotel.hotelImage.url,
+      },
       checkInDate: checkIn,
       checkOutDate: checkOut,
       numberOfRooms,
@@ -60,6 +75,8 @@ const createBooking = async (req, res) => {
       totalPrice,
       bookingStatus: "pending",
     });
+
+    console.log("hotelImage", hotelImage);
 
     // Respond to frontend
 
@@ -83,7 +100,7 @@ const getMyBookings = async (req, res) => {
     const userId = req.user._id;
     const myBookings = await Booking.find({ user: userId })
       .sort({ createdAt: -1 })
-      .populate("hotel", "name image location pricePerNight ");
+      .populate("hotel", "name hotelImage location pricePerNight ");
 
     res.status(200).json({ success: true, myBookings });
   } catch (error) {

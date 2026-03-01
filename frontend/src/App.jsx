@@ -21,6 +21,7 @@ import HotelsLists from "./Pages/HotelsLists";
 import Message from "./Pages/Message";
 import Test from "./Pages/Test";
 import MessageRoom from "./components/common/MessageRoom";
+import MyBookings from "./Pages/MyBookings";
 
 // Layout with sibeBar
 const LayoutWithSidebar = () => {
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/maharashtra" element={<Maharashtra />} />
           <Route path="/rajasthan" element={<Rajasthan />} />
           <Route path="/punjab" element={<Punjab />} />
+          <Route path="/myBookings" element={<MyBookings />} />
         </Route>
         <Route path="/hotels/hotel/:hotelId" element={<Hotel />} />
         <Route path="/booknow/:hotelId" element={<Booknow />} />
