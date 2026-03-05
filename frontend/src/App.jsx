@@ -17,11 +17,10 @@ import Stories from "./Pages/Stories";
 import About from "./Pages/About";
 import Hotel from "./Pages/Hotel";
 import Booknow from "./Pages/Booknow";
-import HotelsLists from "./Pages/HotelsLists";
 import Message from "./Pages/Message";
-import Test from "./Pages/Test";
 import MessageRoom from "./components/common/MessageRoom";
 import MyBookings from "./Pages/MyBookings";
+import HotelsAndBookingbar from "./Pages/HotelsAndBooingbar";
 
 // Layout with sibeBar
 const LayoutWithSidebar = () => {
@@ -41,13 +40,12 @@ const App = () => {
     <div>
       <Toaster />
       <Routes>
-        <Route path="/test" element={<Test />} />
         <Route element={<LayoutWithSidebar />}>
           <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/stories" element={<Stories />} />
           <Route path="/post" element={<Post />} />
-          <Route path="/hotelsLists" element={<HotelsLists />} />
+          <Route path="/hotels&bookings" element={<HotelsAndBookingbar />} />
           <Route path="/about" element={<About />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/message" element={<Message />} />
