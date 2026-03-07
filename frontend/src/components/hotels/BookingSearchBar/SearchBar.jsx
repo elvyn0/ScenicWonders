@@ -26,7 +26,7 @@ function SearchBar({
     <form
       onSubmit={handleSubmit}
       className="w-full max-w-5xl mx-auto 
-                 flex flex-col md:flex-row 
+                 flex flex-col md:flex-row gap-1
                  bg-white rounded-xl shadow-md overflow-hidden"
     >
       {/* Hotel Search */}
@@ -52,7 +52,7 @@ function SearchBar({
       {/* Check In / Out */}
       <div
         onClick={() => setShowCalendar(true)}
-        className="flex flex-1 items-center justify-between px-4 pt-2 min-w-0 hover:bg-gray-200 cursor-pointer"
+        className="flex flex-2 items-center justify-between px-4 pt-2 min-w-0 hover:bg-gray-200 cursor-pointer"
       >
         <div className="text-center">
           <p className="text-xs text-gray-500 font-semibold">CHECK-IN</p>
@@ -87,6 +87,9 @@ function SearchBar({
                  focus:outline-none p-2"
         />
       </div>
+
+      {/* Divider (desktop only) */}
+      <div className="hidden md:block w-px bg-gray-200"></div>
 
       {/* Rooms */}
       <div className="flex items-center flex-1 px-4 min-w-0">
