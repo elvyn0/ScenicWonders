@@ -10,7 +10,6 @@ const createHotel = async (req, res) => {
     const hotelImage = req.files?.hotelImage?.[0];
     const roomImage1 = req.files?.roomImage1?.[0];
     const roomImage2 = req.files?.roomImage2?.[0];
-    console.log("FILES:", req.files);
 
     if (!hotelImage) {
       return res.status(400).json({ success: false, message: "Hotel image is required" });
@@ -85,6 +84,48 @@ const getHotelDetails = async (req, res) => {
   }
 };
 
+// Hotel search
+
+const searchHotel = async (req, res) => {
+  try {
+    const { location, checkIn, checkOut, rooms } = req.query;
+
+    if (!location || !checkIn || !checkOut) {
+      return res.status(400).json({ success: false, message: "Location and Dates are required" });
+    }
+
+    const hotels = await Hotel.find({
+      location: { $regex: location, $options: "i" },
+    });
+
+    const availableHotels = [];
+
+    for (let hotel of hotels) {
+      const overlappingBookings = await Booking.find({
+        hotel: hotel._id,
+        bookingStatus: { $in: ["pending", "confirmed"] },
+        checkInDate: { $lt: new Date(checkOut) },
+        checkOutDate: { $gt: new Date(checkIn) },
+      });
+
+      const bookedRooms = overlappingBookings.reduce((sum, booking) => sum + booking.numberOfRooms, 0);
+
+      const availableRooms = hotel.totalRooms - bookedRooms;
+
+      if (availableRooms >= (rooms || 1)) {
+        availableHotels.push({
+          ...hotel.toObject(),
+          availableRooms,
+        });
+      }
+    }
+    res.status(200).json({ success: true, hotels: availableHotels });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Admin: delete hotel
 
 const deleteHotel = async (req, res) => {
@@ -108,4 +149,4 @@ const deleteHotel = async (req, res) => {
   }
 };
 
-module.exports = { createHotel, listAllHotels, getHotelDetails, deleteHotel };
+module.exports = { createHotel, listAllHotels, getHotelDetails, deleteHotel, searchHotel };

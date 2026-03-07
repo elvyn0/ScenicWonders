@@ -29,8 +29,10 @@ function Hotel() {
   }, [hotelId]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pt-12">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-white rounded-2xl shadow-lg p-6">
+    <div className="mx-auto max-w-6xl px-4 pt-12 mb-5">
+      {/* Booking searchbar */}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-white rounded-2xl shadow-lg p-6 mt-5">
         {/* Hotel details */}
         {hotel && (
           <div className="lg:col-span-2 flex flex-col gap-2">

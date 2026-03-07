@@ -1,5 +1,11 @@
 const express = require("express");
-const { createHotel, listAllHotels, getHotelDetails, deleteHotel } = require("../controllers/hotelController");
+const {
+  createHotel,
+  listAllHotels,
+  getHotelDetails,
+  deleteHotel,
+  searchHotel,
+} = require("../controllers/hotelController");
 const upload = require("../middlewares/multer");
 const adminAuth = require("../middlewares/adminAuth");
 
@@ -17,6 +23,7 @@ hotelRouter.post(
 );
 
 hotelRouter.get("/list", listAllHotels);
+hotelRouter.get("/search", searchHotel);
 hotelRouter.get("/:id", getHotelDetails);
 hotelRouter.delete("/delete/:id", adminAuth, deleteHotel);
 
