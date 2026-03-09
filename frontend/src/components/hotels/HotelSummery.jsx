@@ -3,11 +3,19 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../context/appContext";
 import toast from "react-hot-toast";
+import { useSearchParams } from "react-router-dom";
 
 function HotelSummery() {
   const { hotelId } = useParams();
   const { api } = useContext(AppContext);
   const [hotel, setHotel] = useState(null);
+
+  const [params] = useSearchParams();
+
+  const checkIn = params.get("checkIn");
+  const checkOut = params.get("checkOut");
+  const guests = params.get("guests");
+  const rooms = params.get("rooms");
 
   const fetchhotel = async () => {
     try {
@@ -46,7 +54,7 @@ function HotelSummery() {
               <div>
                 <h3 className="text-lg font-semibold text-gray-800">{hotel.name}</h3>
 
-                <p className="text-sm text-gray-500 mt-1">📍 {hotel.location}</p>
+                <p className="text-sm text-gray-600 mt-1">📍 {hotel.location}</p>
 
                 <div className="flex items-center gap-1 mt-2">
                   {Array.from({ length: hotel?.rating || 0 }).map((_, i) => (
@@ -63,22 +71,30 @@ function HotelSummery() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
               <div>
                 <p className="text-gray-500">Check-in</p>
-                <p className="font-medium text-gray-800">Jan 11, 2026</p>
+                <p className="font-medium text-gray-800">
+                  {checkIn && checkIn !== "undefined" ? checkIn : "Please select a Date"}
+                </p>
               </div>
 
               <div>
                 <p className="text-gray-500">Check-out</p>
-                <p className="font-medium text-gray-800">Jan 14, 2026</p>
+                <p className="font-medium text-gray-800">
+                  {checkOut && checkOut !== "undefined" ? checkOut : "please select a Date"}
+                </p>
               </div>
 
               <div>
-                <p className="text-gray-500">Nights</p>
-                <p className="font-medium text-gray-800">2</p>
+                <p className="text-gray-500">Guests</p>
+                <p className="font-medium text-gray-800">
+                  {guests && guests !== "undefined" && guests !== "null" ? guests : 0}
+                </p>
               </div>
 
               <div>
                 <p className="text-gray-500">Rooms</p>
-                <p className="font-medium text-gray-800">1</p>
+                <p className="font-medium text-gray-800">
+                  {rooms && rooms !== "null" && rooms !== "undefined" ? rooms : 0}
+                </p>
               </div>
             </div>
           </div>
@@ -89,3 +105,11 @@ function HotelSummery() {
 }
 
 export default HotelSummery;
+
+{
+  /**
+  
+  
+  
+  */
+}

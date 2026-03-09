@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import { Star } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 import toast from "react-hot-toast";
 
@@ -9,6 +10,14 @@ function Hotel() {
   const { hotelId } = useParams();
   const { api } = useContext(AppContext);
   const [hotel, setHotel] = useState(null);
+
+  // handling params data
+  const [params] = useSearchParams();
+
+  const checkIn = params.get("checkIn");
+  const checkOut = params.get("checkOut");
+  const guests = params.get("guests");
+  const rooms = params.get("rooms");
 
   const fetchHotel = async () => {
     try {
@@ -48,15 +57,43 @@ function Hotel() {
 
               <p className="text-gray-600 leading-relaxed">{hotel.description}</p>
 
-              <p className="text-sm text-gray-500">📍 {hotel.location}</p>
+              <p className="text-sm text-gray-600">📍 {hotel.location}</p>
             </div>
           </div>
         )}
 
         {/* Booking / payment card */}
         <div className="flex flex-col gap-6 border border-gray-200 rounded-xl p-5 h-fit sticky top-24">
-          <div className="flex items-center justify-between">
-            <p className="text-lg font-semibold text-gray-800">₹{hotel?.pricePerNight}</p>
+          <div>
+            <div>
+              <div className="flex justify-between font-bold text-lg">
+                <p>Check-In</p>
+                <p>Check-Out</p>
+              </div>
+              <div className="flex justify-between text-sm  text-green-500 font-semibold mt-[-5px]">
+                <p>{checkIn && checkIn !== "null" && checkIn !== "undefined" ? checkIn : "Please select a Date"}</p>
+                <p>{checkOut && checkOut !== "null" && checkOut !== "undefined" ? checkOut : "Please select a Date"}</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-lg font-bold">
+                Number of Guests:
+                <span className="ml-2 text-md text-green-500 font-semibold">
+                  {guests && guests !== "null" && guests !== "undefined" ? guests : 0}
+                </span>
+              </p>
+              <p className="text-lg font-bold">
+                Number of Rooms:
+                <span className="ml-2 text-md text-green-500 font-semibold">
+                  {rooms && rooms !== "null" && rooms !== "undefined" ? guests : 0}
+                </span>
+              </p>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-lg font-semibold text-gray-800">
+                Price per night: <span className="text-green-500 font-semibold">₹{hotel?.pricePerNight}</span>
+              </p>
+            </div>
           </div>
 
           <div className="flex items-center gap-1 ">
@@ -65,7 +102,9 @@ function Hotel() {
             ))}
           </div>
 
-          <Link to={`/booknow/${hotel?._id}`}>
+          <Link
+            to={`/booknow/${hotel?._id}?checkIn=${checkIn}&&checkOut=${checkOut}&&guests=${guests}&&rooms=${rooms}`}
+          >
             <button className="w-full bg-black hover:bg-gray-900 text-white py-3 rounded-xl font-semibold transition">
               Book now
             </button>

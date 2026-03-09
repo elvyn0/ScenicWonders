@@ -3,11 +3,15 @@ import { AppContext } from "../../context/appContext";
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 
-function HotelItems({ id, name, image, pricePerNight, location, rating }) {
+function HotelItems({ id, name, image, pricePerNight, location, rating, searchData }) {
   const { currency } = useContext(AppContext);
+  const { checkIn, checkOut, guests, rooms } = searchData;
 
   return (
-    <Link className=" w-full no-underline " to={`/hotels/hotel/${id}`}>
+    <Link
+      className=" w-full no-underline "
+      to={`/hotels/hotel/${id}?&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}&rooms=${rooms}`}
+    >
       <div className="flex flex-1 text-gray-700 shadow-md bg-white p-3 mb-5 rounded-lg">
         <div>
           <img className="max-w-[300px]  max-h-[300px] rounded-md" src={image} />

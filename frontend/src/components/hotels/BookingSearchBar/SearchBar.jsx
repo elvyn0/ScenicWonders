@@ -1,4 +1,4 @@
-import { Calendar, Search, User } from "lucide-react";
+import { Bed, Calendar, Search, User } from "lucide-react";
 import { useEffect } from "react";
 
 function SearchBar({
@@ -75,8 +75,8 @@ function SearchBar({
       <div className="hidden md:block w-px bg-gray-200"></div>
 
       {/* Guest */}
-      <div className="flex items-center flex-1 px-4 min-w-0 ml-10">
-        <User className="w-5 h-5 text-gray-500 mr-3" />
+      <div className="flex items-center flex-1  min-w-0 ml-5">
+        <User className="w-5 h-5 text-gray-500 " />
         <input
           type="text"
           placeholder=" Add Guests"
@@ -92,8 +92,8 @@ function SearchBar({
       <div className="hidden md:block w-px bg-gray-200"></div>
 
       {/* Rooms */}
-      <div className="flex items-center flex-1 px-4 min-w-0">
-        <User className="w-5 h-5 text-gray-500 mr-3" />
+      <div className="flex items-center flex-1  ml-5">
+        <Bed className="w-5 h-5 text-gray-500 mr-1" />
         <input
           type="text"
           placeholder="Number of rooms"

@@ -15,8 +15,8 @@ function HotelsAndBookingbar() {
     location: "",
     checkIn: "",
     checkOut: "",
-    rooms: 1,
-    guests: "",
+    rooms: 0,
+    guests: 0,
   });
 
   // Fetching hotels //
@@ -89,6 +89,7 @@ function HotelsAndBookingbar() {
           showSuggestions={showSuggestions}
           filteredHotels={filteredHotels}
           setShowSuggestions={setShowSuggestions}
+          searchData={searchData}
         />
       </div>
     </div>

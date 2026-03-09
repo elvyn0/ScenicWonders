@@ -1,22 +1,4 @@
-import { useState } from "react";
-
-function BookingForm() {
-  const [formdata, setFormdata] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    zipCode: "",
-    country: "",
-    phone: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormdata((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+function BookingForm({ formdata, handleChange }) {
   return (
     <div className="w-full bg-white border border-gray-200 shadow-md rounded-2xl p-6">
       {/* Header */}
@@ -30,6 +12,7 @@ function BookingForm() {
         {/* First + Last */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
+            name="firstName"
             className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             onChange={handleChange}
             value={formdata.firstName}
@@ -38,6 +21,7 @@ function BookingForm() {
             required
           />
           <input
+            name="lastName"
             className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             onChange={handleChange}
             value={formdata.lastName}
@@ -49,6 +33,7 @@ function BookingForm() {
 
         {/* Email */}
         <input
+          name="email"
           className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
           onChange={handleChange}
           value={formdata.email}
@@ -60,14 +45,16 @@ function BookingForm() {
         {/* Zip + Country */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
+            name="zipCode"
             className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             onChange={handleChange}
             value={formdata.zipCode}
-            type="text"
+            type="numeric"
             placeholder="Zip code"
             required
           />
           <input
+            name="country"
             className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             onChange={handleChange}
             value={formdata.country}
@@ -79,10 +66,11 @@ function BookingForm() {
 
         {/* Phone */}
         <input
+          name="phone"
           className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
           onChange={handleChange}
           value={formdata.phone}
-          type="text"
+          type="numaric"
           placeholder="Phone number"
           required
         />

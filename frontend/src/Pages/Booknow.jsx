@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { assets } from "../assets/assets";
 import HotelSummery from "../components/hotels/HotelSummery";
 import PaymentMethod from "../components/hotels/PaymentMethod";
@@ -5,6 +6,23 @@ import BookingForm from "../components/hotels/BookingForm";
 import PriceBreakdown from "../components/hotels/PriceBreakdown";
 
 function Booknow() {
+  const [formdata, setFormdata] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    zipCode: "",
+    country: "",
+    phone: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormdata((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
   };
@@ -38,7 +56,7 @@ function Booknow() {
         {/* Right - Booking + Payment */}
         <div className="md:col-span-2">
           <form onSubmit={onSubmitHandler} className="space-y-6">
-            <BookingForm />
+            <BookingForm formdata={formdata} handleChange={handleChange} />
             <PriceBreakdown />
             <PaymentMethod />
           </form>

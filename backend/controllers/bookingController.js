@@ -76,8 +76,6 @@ const createBooking = async (req, res) => {
       bookingStatus: "pending",
     });
 
-    console.log("hotelImage", hotelImage);
-
     // Respond to frontend
 
     res.status(201).json({

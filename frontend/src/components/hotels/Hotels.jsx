@@ -4,11 +4,11 @@ import HotelItems from "./HotelItems";
 function Hotels({
   fetchHotelLists,
   showSuggestions,
-  filteredHotels,
-  setSearchQuery,
   setShowSuggestions,
+  filteredHotels,
   hotelsList,
   loading,
+  searchData,
 }) {
   const hotelsToDisplay = showSuggestions && filteredHotels.length > 0 ? filteredHotels : hotelsList;
 
@@ -26,7 +26,6 @@ function Hotels({
             <div
               key={item._id}
               onClick={() => {
-                setSearchQuery(item.name);
                 setShowSuggestions(false);
               }}
             >
@@ -38,6 +37,7 @@ function Hotels({
                 rating={item.rating}
                 pricePerNight={item.pricePerNight}
                 destination={item.destination}
+                searchData={searchData}
               />
             </div>
           ))}
@@ -48,19 +48,3 @@ function Hotels({
 }
 
 export default Hotels;
-
-{
-  /**
-  
-  hotelsList.map((item) => (
-            <HotelItems
-              key={item._id}
-              id={item._id}
-              image={item.hotelImage?.url}
-              name={item.name}
-              location={item.location}
-              rating={item.rating}
-              pricePerNight={item.pricePerNight}
-              destination={item.destination}
-  */
-}
