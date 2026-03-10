@@ -4,8 +4,15 @@ import HotelSummery from "../components/hotels/HotelSummery";
 import PaymentMethod from "../components/hotels/PaymentMethod";
 import BookingForm from "../components/hotels/BookingForm";
 import PriceBreakdown from "../components/hotels/PriceBreakdown";
+import { useSearchParams } from "react-router-dom";
 
 function Booknow() {
+  const [params] = useSearchParams();
+
+  const nights = params.get("nights");
+  const price = params.get("price");
+  const rooms = params.get("rooms");
+
   const [formdata, setFormdata] = useState({
     firstName: "",
     lastName: "",
@@ -57,7 +64,7 @@ function Booknow() {
         <div className="md:col-span-2">
           <form onSubmit={onSubmitHandler} className="space-y-6">
             <BookingForm formdata={formdata} handleChange={handleChange} />
-            <PriceBreakdown />
+            <PriceBreakdown pricePerNight={price} totalNights={nights} rooms={rooms} />
             <PaymentMethod />
           </form>
         </div>

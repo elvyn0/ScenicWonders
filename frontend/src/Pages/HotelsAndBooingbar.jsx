@@ -3,7 +3,6 @@ import BookingBar from "../components/hotels/BookingSearchBar/BookingBar";
 import Hotels from "../components/hotels/Hotels";
 import toast from "react-hot-toast";
 import { AppContext } from "../context/appContext";
-import { ServerCrash } from "lucide-react";
 
 function HotelsAndBookingbar() {
   const { api } = useContext(AppContext);

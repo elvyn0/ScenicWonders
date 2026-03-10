@@ -19,6 +19,9 @@ function Hotel() {
   const guests = params.get("guests");
   const rooms = params.get("rooms");
 
+  // Calculating the total nights
+  const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+
   const fetchHotel = async () => {
     try {
       const response = await api.get(`/api/hotels/${hotelId}`);
@@ -35,7 +38,7 @@ function Hotel() {
 
   useEffect(() => {
     fetchHotel();
-  }, [hotelId]);
+  }, []);
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-12 mb-5">
@@ -66,7 +69,7 @@ function Hotel() {
         <div className="flex flex-col gap-6 border border-gray-200 rounded-xl p-5 h-fit sticky top-24">
           <div>
             <div>
-              <div className="flex justify-between font-bold text-lg">
+              <div className="flex justify-between font-semibold text-md">
                 <p>Check-In</p>
                 <p>Check-Out</p>
               </div>
@@ -76,21 +79,27 @@ function Hotel() {
               </div>
             </div>
             <div>
-              <p className="text-lg font-bold">
+              <p className="text-md font-semibold">
                 Number of Guests:
                 <span className="ml-2 text-md text-green-500 font-semibold">
                   {guests && guests !== "null" && guests !== "undefined" ? guests : 0}
                 </span>
               </p>
-              <p className="text-lg font-bold">
+              <p className="text-md font-semibold ">
                 Number of Rooms:
                 <span className="ml-2 text-md text-green-500 font-semibold">
                   {rooms && rooms !== "null" && rooms !== "undefined" ? guests : 0}
                 </span>
               </p>
             </div>
-            <div className="flex items-center justify-between">
-              <p className="text-lg font-semibold text-gray-800">
+            <div className="flex flex-col  justify-between">
+              <p className="font-semibold text-md ">
+                Number of nights :
+                <span className="text-green-500 ml-2">
+                  {nights && nights !== "undefined" && nights !== "null" ? nights : 0}
+                </span>
+              </p>
+              <p className="text-md font-semibold ">
                 Price per night: <span className="text-green-500 font-semibold">₹{hotel?.pricePerNight}</span>
               </p>
             </div>
@@ -102,13 +111,15 @@ function Hotel() {
             ))}
           </div>
 
-          <Link
-            to={`/booknow/${hotel?._id}?checkIn=${checkIn}&&checkOut=${checkOut}&&guests=${guests}&&rooms=${rooms}`}
-          >
-            <button className="w-full bg-black hover:bg-gray-900 text-white py-3 rounded-xl font-semibold transition">
-              Book now
-            </button>
-          </Link>
+          {hotel && (
+            <Link
+              to={`/booknow/${hotel?._id}?checkIn=${checkIn}&&checkOut=${checkOut}&&guests=${guests}&&rooms=${rooms}&&nights=${nights}&&price=${hotel.pricePerNight}`}
+            >
+              <button className="w-full bg-black hover:bg-gray-900 text-white py-3 rounded-xl font-semibold transition">
+                Book now
+              </button>
+            </Link>
+          )}
 
           <p className="text-xs text-gray-500 text-center">Free cancellation </p>
         </div>

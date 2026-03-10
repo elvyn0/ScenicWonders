@@ -56,7 +56,6 @@ const createBooking = async (req, res) => {
     const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
 
     const totalPrice = nights * hotel.pricePerNight * numberOfRooms;
-    console.log("Hotel image field:", hotel.hotelImage);
 
     // Create booking
     const booking = await Booking.create({
@@ -72,6 +71,7 @@ const createBooking = async (req, res) => {
       checkOutDate: checkOut,
       numberOfRooms,
       numberOfGuests,
+      nights,
       totalPrice,
       bookingStatus: "pending",
     });

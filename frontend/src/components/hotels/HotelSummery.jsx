@@ -16,6 +16,7 @@ function HotelSummery() {
   const checkOut = params.get("checkOut");
   const guests = params.get("guests");
   const rooms = params.get("rooms");
+  const nights = params.get("nights");
 
   const fetchhotel = async () => {
     try {
@@ -94,6 +95,12 @@ function HotelSummery() {
                 <p className="text-gray-500">Rooms</p>
                 <p className="font-medium text-gray-800">
                   {rooms && rooms !== "null" && rooms !== "undefined" ? rooms : 0}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-500">Nights</p>
+                <p className="font-medium text-gray-800">
+                  {nights && nights !== "null" && nights !== "undefined" ? nights : 0}
                 </p>
               </div>
             </div>
