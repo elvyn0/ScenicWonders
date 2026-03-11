@@ -5,13 +5,19 @@ import PaymentMethod from "../components/hotels/PaymentMethod";
 import BookingForm from "../components/hotels/BookingForm";
 import PriceBreakdown from "../components/hotels/PriceBreakdown";
 import { useSearchParams } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "../context/appContext";
+import toast from "react-hot-toast";
 
 function Booknow() {
+  const { api } = useContext(AppContext);
+
   const [params] = useSearchParams();
 
-  const nights = params.get("nights");
-  const price = params.get("price");
-  const rooms = params.get("rooms");
+  const hotelName = params.get("hotelName");
+  const nights = Number(params.get("nights"));
+  const pricePerNight = Number(params.get("price"));
+  const rooms = Number(params.get("rooms"));
 
   const [formdata, setFormdata] = useState({
     firstName: "",
@@ -32,6 +38,24 @@ function Booknow() {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+
+    try {
+      const response = await api.post("/api/payment/create-checkout-session", {
+        hotelName,
+        pricePerNight,
+        nights,
+        rooms,
+        ...formdata,
+      });
+      if (response.data.success) {
+        window.location.href = response.data.url;
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
@@ -61,10 +85,10 @@ function Booknow() {
         </div>
 
         {/* Right - Booking + Payment */}
-        <div className="md:col-span-2">
-          <form onSubmit={onSubmitHandler} className="space-y-6">
+        <div className="md:col-span-2 space-y-6">
+          <form onSubmit={onSubmitHandler}>
             <BookingForm formdata={formdata} handleChange={handleChange} />
-            <PriceBreakdown pricePerNight={price} totalNights={nights} rooms={rooms} />
+            <PriceBreakdown pricePerNight={pricePerNight} totalNights={nights} rooms={rooms} />
             <PaymentMethod />
           </form>
         </div>

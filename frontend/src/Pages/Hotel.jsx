@@ -113,7 +113,7 @@ function Hotel() {
 
           {hotel && (
             <Link
-              to={`/booknow/${hotel?._id}?checkIn=${checkIn}&&checkOut=${checkOut}&&guests=${guests}&&rooms=${rooms}&&nights=${nights}&&price=${hotel.pricePerNight}`}
+              to={`/booknow/${hotel?._id}?hotelName=${hotel.name}&&checkIn=${checkIn}&&checkOut=${checkOut}&&guests=${guests}&&rooms=${rooms}&&nights=${nights}&&price=${hotel.pricePerNight}`}
             >
               <button className="w-full bg-black hover:bg-gray-900 text-white py-3 rounded-xl font-semibold transition">
                 Book now

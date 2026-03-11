@@ -16,6 +16,7 @@ const hotelRouter = require("./routes/hotelRoute");
 const bookingRouter = require("./routes/bookingRoute");
 const conversationRouter = require("./routes/conversationRoute");
 const messageRouter = require("./routes/messageRoute");
+const paymentRouter = require("./routes/paymentRoutes");
 
 // App config
 const app = express();
@@ -39,6 +40,7 @@ app.use("/api/hotels", hotelRouter);
 app.use("/api/bookings", bookingRouter);
 app.use("/api/conversation", conversationRouter);
 app.use("/api/messages", messageRouter);
+app.use("/api/payment", paymentRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
