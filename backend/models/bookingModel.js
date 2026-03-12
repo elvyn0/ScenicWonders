@@ -13,6 +13,7 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
     name: { type: String, ref: "Hotel", required: true },
+    email: { type: String, ref: "User", required: true },
     location: { type: String, ref: "Hotel", required: true },
 
     hotelImage: {
@@ -49,10 +50,11 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    totalNights: { type: Number, required: true },
     bookingStatus: {
       type: String,
-      enum: ["pending", "confirmed", "cancelled", "completed"],
-      default: "pending",
+      enum: ["Pending", "Confirmed", "Cancelled"],
+      default: "Pending",
     },
     bookedAt: {
       type: Date,

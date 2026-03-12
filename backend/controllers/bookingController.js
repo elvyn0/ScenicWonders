@@ -8,12 +8,23 @@ const Hotel = require("../models/hotelModel");
 const createBooking = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { hotelId, checkInDate, checkOutDate, numberOfRooms, numberOfGuests } = req.body;
 
-    if (!hotelId || !checkInDate || !checkOutDate || !numberOfRooms) {
+    const { hotelId, numberOfRooms, numberOfGuests, checkInDate, checkOutDate, firstName, lastName, email } = req.body;
+    console.log(hotelId, numberOfRooms, numberOfGuests, checkInDate, checkOutDate, firstName, lastName, email);
+
+    if (
+      !hotelId ||
+      !checkInDate ||
+      !checkOutDate ||
+      !numberOfGuests ||
+      !numberOfRooms ||
+      !firstName ||
+      !lastName ||
+      !email
+    ) {
       return res.status(400).json({ success: false, message: "Misssing required booking deatiles" });
     }
-    console.log("hotelId", hotelId);
+
     //Date validation
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
@@ -23,11 +34,12 @@ const createBooking = async (req, res) => {
     }
 
     // fetch hotel
+
     const hotel = await Hotel.findById(hotelId).select(" name location pricePerNight  hotelImage ");
+
     if (!hotel) {
       return res.status(400).json({ success: false, message: "Hotel not found" });
     }
-    console.log("hotel", hotel);
 
     if (!hotel.hotelImage || !hotel.hotelImage.publicId || !hotel.hotelImage.url) {
       return res.status(400).json({
@@ -67,20 +79,22 @@ const createBooking = async (req, res) => {
         publicId: hotel.hotelImage.publicId,
         url: hotel.hotelImage.url,
       },
+
+      email,
       checkInDate: checkIn,
       checkOutDate: checkOut,
       numberOfRooms,
       numberOfGuests,
-      nights,
+      totalNights: nights,
       totalPrice,
-      bookingStatus: "pending",
+      bookingStatus: "Confirmed",
     });
 
     // Respond to frontend
 
     res.status(201).json({
       success: true,
-      message: "Booking created proceed to payment",
+      message: "Booking created successfully ",
       bookingId: booking._id,
       totalPrice,
       bookingStatus: booking.bookingStatus,
@@ -98,7 +112,8 @@ const getMyBookings = async (req, res) => {
     const userId = req.user._id;
     const myBookings = await Booking.find({ user: userId })
       .sort({ createdAt: -1 })
-      .populate("hotel", "name hotelImage location pricePerNight ");
+      .populate("hotel", "name hotelImage location pricePerNight ")
+      .populate("user", "name");
 
     res.status(200).json({ success: true, myBookings });
   } catch (error) {

@@ -1,4 +1,4 @@
-function BookingForm({ formdata, handleChange }) {
+function BookingForm({ formData, handleChange }) {
   return (
     <div className="w-full bg-white border border-gray-200 shadow-md rounded-2xl p-6">
       {/* Header */}
@@ -15,7 +15,7 @@ function BookingForm({ formdata, handleChange }) {
             name="firstName"
             className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             onChange={handleChange}
-            value={formdata.firstName}
+            value={formData.firstName}
             type="text"
             placeholder="First name"
             required
@@ -24,7 +24,7 @@ function BookingForm({ formdata, handleChange }) {
             name="lastName"
             className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             onChange={handleChange}
-            value={formdata.lastName}
+            value={formData.lastName}
             type="text"
             placeholder="Last name"
             required
@@ -36,7 +36,7 @@ function BookingForm({ formdata, handleChange }) {
           name="email"
           className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
           onChange={handleChange}
-          value={formdata.email}
+          value={formData.email}
           type="email"
           placeholder="Enter your email"
           required
@@ -48,7 +48,7 @@ function BookingForm({ formdata, handleChange }) {
             name="zipCode"
             className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             onChange={handleChange}
-            value={formdata.zipCode}
+            value={formData.zipCode}
             type="numeric"
             placeholder="Zip code"
             required
@@ -57,7 +57,7 @@ function BookingForm({ formdata, handleChange }) {
             name="country"
             className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
             onChange={handleChange}
-            value={formdata.country}
+            value={formData.country}
             type="text"
             placeholder="Country"
             required
@@ -69,7 +69,7 @@ function BookingForm({ formdata, handleChange }) {
           name="phone"
           className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
           onChange={handleChange}
-          value={formdata.phone}
+          value={formData.phone}
           type="numaric"
           placeholder="Phone number"
           required

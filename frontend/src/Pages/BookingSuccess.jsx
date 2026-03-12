@@ -1,7 +1,36 @@
 import { Link } from "react-router-dom";
 import { assets } from "../assets/assets";
+import { useContext, useEffect } from "react";
+import { AppContext } from "../context/appContext";
+import toast from "react-hot-toast";
 
 function BookingSuccess() {
+  const { api, token } = useContext(AppContext);
+
+  useEffect(() => {
+    const bookingData = JSON.parse(localStorage.getItem("bookingData"));
+
+    if (!bookingData) return;
+
+    const saveBooking = async () => {
+      try {
+        const response = await api.post("/api/bookings/create", bookingData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.data.success) {
+          toast.success(response.data.message);
+          localStorage.removeItem("bookingData");
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    };
+    saveBooking();
+  }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-2xl shadow-md text-center max-w-md">

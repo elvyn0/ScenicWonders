@@ -1,17 +1,18 @@
 const Stripe = require("stripe");
 
+// stripe config //
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// Create checkout session  //
 const createCheckoutSession = async (req, res) => {
   try {
-    const { hotelName, pricePerNight, nights, rooms } = req.body;
+    const { hotelId, hotelName, nights, rooms, firstName, lastName, pricePerNight } = req.body;
 
-    if (!hotelName || !pricePerNight || !nights || !rooms) {
+    if (!hotelId || !hotelName || !nights || !rooms || !firstName || !lastName) {
       return res.status(400).json({ success: false, message: "Required data is empty" });
     }
 
     const totalPrice = pricePerNight * nights * rooms;
-    console.log("totalPrice", totalPrice);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -26,9 +27,10 @@ const createCheckoutSession = async (req, res) => {
             },
             unit_amount: totalPrice * 100,
           },
-          quantity: 1,
+          quantity: rooms,
         },
       ],
+
       success_url: `${process.env.FRONTEND_URL}/booking-success`,
       cancel_url: `${process.env.FRONTEND_URL}/booking-cancel`,
     });

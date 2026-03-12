@@ -34,7 +34,7 @@ function MyBookings() {
     <div className="fixed inset-0 z-50 flex items-center justify-center sm:bg-black/50 sm:backdrop-blur-sm ml-[4%]">
       <div
         className="w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-2xl 
-                  overflow-y-auto bg-white sm:rounded-2xl sm:shadow-2xl p-4 sm:p-6"
+                  overflow-y-auto bg-gray-200 sm:rounded-2xl sm:shadow-2xl p-4 sm:p-6 "
       >
         <div className="sticky top-[-22px] bg-red-600 text-center p-3 rounded-md mb-4">
           <h1 className="font-bold text-white text-lg">My Bookings</h1>
@@ -54,26 +54,39 @@ function MyBookings() {
                 <div className="flex flex-col justify-between flex-1">
                   <div>
                     <h2 className="font-semibold text-lg">{item.hotel?.name}</h2>
-                    <p className="text-gray-500 text-sm">{item.hotel?.location}</p>
+                    <p className="text-gray-500 font-semibold text-sm">📍 {item.hotel?.location}</p>
                   </div>
 
                   <div className="text-sm mt-2 space-y-1">
-                    <p>
-                      <span className="font-medium">Check-in:</span> {new Date(item.checkInDate).toLocaleDateString()}
+                    <p className="font-semibold text-md">
+                      Booked By:
+                      <span className="font-semibold text-lg text-gray-500 ml-1">{item.user?.name}</span>
                     </p>
-                    <p>
-                      <span className="font-medium">Check-out:</span> {new Date(item.checkOutDate).toLocaleDateString()}
+                    <p className="font-semibold text-md">
+                      Check-in:
+                      <span className="font-semibold text-lg text-gray-500 ml-1">
+                        {new Date(item.checkInDate).toLocaleDateString()}
+                      </span>
+                    </p>
+                    <p className="font-semibold text-md">
+                      Check-out:
+                      <span className="font-semibold text-lg text-gray-500 ml-1">
+                        {new Date(item.checkOutDate).toLocaleDateString()}
+                      </span>
                     </p>
                   </div>
 
                   <div className="flex justify-between text-sm mt-3">
-                    <p>
-                      Rooms: <span className="font-semibold">{item.numberOfRooms}</span>
+                    <p className="font-semibold text-md">
+                      Rooms: <span className=" text-lg text-gray-500 ">{item.numberOfRooms}</span>
                     </p>
-                    <p>
-                      Guests: <span className="font-semibold">{item.numberOfGuests}</span>
+                    <p className="font-semibold text-md">
+                      Guests: <span className="text-lg text-gray-500">{item.numberOfGuests}</span>
                     </p>
                   </div>
+                  <p className="font-semibold text-md">
+                    Amount: <span className="text-md text-green-500">{item.totalPrice}</span>
+                  </p>
                 </div>
               </div>
 

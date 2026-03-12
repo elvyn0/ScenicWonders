@@ -4,7 +4,7 @@ import HotelSummery from "../components/hotels/HotelSummery";
 import PaymentMethod from "../components/hotels/PaymentMethod";
 import BookingForm from "../components/hotels/BookingForm";
 import PriceBreakdown from "../components/hotels/PriceBreakdown";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
@@ -12,14 +12,18 @@ import toast from "react-hot-toast";
 function Booknow() {
   const { api } = useContext(AppContext);
 
+  const { hotelId } = useParams();
+
   const [params] = useSearchParams();
-
   const hotelName = params.get("hotelName");
-  const nights = Number(params.get("nights"));
-  const pricePerNight = Number(params.get("price"));
-  const rooms = Number(params.get("rooms"));
+  const pricePerNight = params.get("price");
+  const nights = params.get("nights");
+  const guests = params.get("guests");
+  const rooms = params.get("rooms");
+  const checkIn = params.get("checkIn");
+  const checkOut = params.get("checkOut");
 
-  const [formdata, setFormdata] = useState({
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -30,7 +34,7 @@ function Booknow() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormdata((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -40,12 +44,25 @@ function Booknow() {
     event.preventDefault();
 
     try {
+      const bookingData = {
+        hotelId,
+        numberOfRooms: rooms,
+        numberOfGuests: guests,
+        checkInDate: checkIn,
+        checkOutDate: checkOut,
+        ...formData,
+      };
+
+      /// Saving locally
+      localStorage.setItem("bookingData", JSON.stringify(bookingData));
+
       const response = await api.post("/api/payment/create-checkout-session", {
+        hotelId,
         hotelName,
-        pricePerNight,
         nights,
         rooms,
-        ...formdata,
+        pricePerNight,
+        ...formData,
       });
       if (response.data.success) {
         window.location.href = response.data.url;
@@ -87,7 +104,7 @@ function Booknow() {
         {/* Right - Booking + Payment */}
         <div className="md:col-span-2 space-y-6">
           <form onSubmit={onSubmitHandler}>
-            <BookingForm formdata={formdata} handleChange={handleChange} />
+            <BookingForm formData={formData} handleChange={handleChange} />
             <PriceBreakdown pricePerNight={pricePerNight} totalNights={nights} rooms={rooms} />
             <PaymentMethod />
           </form>

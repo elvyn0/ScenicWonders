@@ -34,7 +34,7 @@ function SearchBar({
         <Search className=" text-gray-500 mr-3" />
         <input
           type="text"
-          placeholder=" Search hotels or location"
+          placeholder=" Search location"
           value={searchData.location}
           onChange={(e) => {
             setSearchData({ ...searchData, location: e.target.value });
