@@ -17,7 +17,7 @@ const bookingRouter = require("./routes/bookingRoute");
 const conversationRouter = require("./routes/conversationRoute");
 const messageRouter = require("./routes/messageRoute");
 const paymentRouter = require("./routes/paymentRoutes");
-const botRouter = require("./routes/chatBotRoute");
+const aiRouter = require("./routes/aiBotRoute");
 
 // App config
 const app = express();
@@ -42,7 +42,7 @@ app.use("/api/bookings", bookingRouter);
 app.use("/api/conversation", conversationRouter);
 app.use("/api/messages", messageRouter);
 app.use("/api/payment", paymentRouter);
-app.use("/api/ai", botRouter);
+app.use("/api/ai", aiRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
