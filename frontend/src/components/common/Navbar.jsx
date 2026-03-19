@@ -1,7 +1,46 @@
 import { Telescope, Bot, NotebookPen, Hotel, BadgeInfo } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import AiBot from "./AiBot";
+import { useContext } from "react";
+import { AppContext } from "../../context/appContext";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 function NavBar() {
+  // function   for  Ai chat bot //
+  const { api } = useContext(AppContext);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [message, setMessage] = useState([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+
+    const userMessage = { role: "user", text: input };
+
+    setMessage((prev) => [...prev, userMessage]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const response = await api.post("/api/ai/chat", { message: input });
+      if (response.data.success) {
+        const botMessage = { role: "bot", text: response.data.reply };
+        setMessage((prev) => [...prev, botMessage]);
+        console.log(botMessage);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      setMessage((prev) => [...prev, { role: "bot", text: "Something went wrong" }]);
+
+      toast.error(error.response?.data?.message);
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="bg-gray-200 py-4 px-8 rounded-lg mt-5 mx-5 items-center  ">
       <div className="flex flex-col gap-5">
@@ -21,64 +60,69 @@ function NavBar() {
             <div className=" flex flex-col gap-2 justify-center items-center">
               <NavLink to="/explore">
                 <li
-                  className="   bg-red-600   px-4 py-3 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
+                  className="   bg-red-600   px-3 py-2 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
                   type="button"
                 >
-                  <Telescope className="size-7 text-white" />
+                  <Telescope className="size-6 text-white" />
                 </li>
               </NavLink>
               <p className=" font-bold  text-sm mb-0">Explore</p>
-              <span className="text-sm text-gray-500">Discover places, stories, and posts</span>
             </div>
             {/* Blog Nav */}
             <div className="flex flex-col gap-2 justify-center items-center">
               <NavLink to="/stories">
                 <li
-                  className="   bg-red-600   px-4 py-3 rounded-md shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
+                  className="   bg-red-600   px-3 py-2 rounded-md shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
                   type="button"
                 >
-                  <NotebookPen className="size-7 text-white" />
+                  <NotebookPen className="size-6 text-white" />
                 </li>
               </NavLink>
               <p className="font-bold text-sm mb-0">Stories</p>
-              <span className="text-sm text-gray-500">Share travel stories</span>
             </div>
             {/* Hotels Nav */}
-            <a href="/hotels&bookings" target="_blank" rel="noopener noreferrer" className="no-underline">
+            <Link to="/hotels&bookings" target="_blank" rel="noopener noreferrer" className="no-underline">
               <div className="flex flex-col gap-2 justify-center items-center">
                 <li
-                  className=" bg-red-600   px-4 py-3 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
+                  className=" bg-red-600   px-3 py-2 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
                   type="button"
                 >
-                  <Hotel className="size-7 text-white" />
+                  <Hotel className="size-6 text-white" />
                 </li>
-                <p className="font-bold text-sm text-black  mb-0">Hotels</p>
-                <span className="text-sm text-gray-500 ">Find places to stay</span>
+                <p className="font-bold text-sm text-black  mb-0"> Book your hotels</p>
               </div>
-            </a>
+            </Link>
             {/* Ai Nav */}
             <div className="flex flex-col gap-2 justify-center items-center">
               <li
-                className="  bg-red-600  px-4 py-3 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
+                onClick={() => setAiOpen(true)}
+                className="  bg-blue-500  px-3 py-2 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
                 type="button"
               >
-                <Bot className="size-7 text-white" />
+                <Bot className="size-6 text-white" />
               </li>
+              <AiBot
+                aiOpen={aiOpen}
+                setAiOpen={setAiOpen}
+                sendMessage={sendMessage}
+                input={input}
+                setInput={setInput}
+                message={message}
+                loading={loading}
+              />
               <p className="font-bold text-sm mb-0">Ai</p>
-              <span className="text-sm text-gray-500">Smart travel help</span>
             </div>
             {/* About */}
             <div className="flex flex-col gap-2 justify-center items-center">
               <NavLink to="/about">
                 <li
-                  className="  bg-red-600  px-4 py-3 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
+                  className="  bg-red-600  px-3 py-2 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
                   type="button"
                 >
-                  <BadgeInfo className="size-7 text-white" />
+                  <BadgeInfo className="size-6 text-white" />
                 </li>
               </NavLink>
               <p className="font-bold text-sm mb-0">About</p>
-              <span className="text-sm text-gray-500">Our story</span>
             </div>
           </ul>
         </nav>
