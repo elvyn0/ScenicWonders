@@ -1,21 +1,29 @@
 import React, { useState } from "react";
 import api from "../api/axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function Login({ setToken }) {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const submitHandler = async (e) => {
     try {
       e.preventDefault();
+
       const response = await api.post("/api/user/admin/login", {
         email,
         password,
       });
 
       if (response.data.success) {
-        setToken(response.data.token);
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        setToken(token);
+
+        navigate("/");
       } else {
         toast.error(response.data.message);
       }

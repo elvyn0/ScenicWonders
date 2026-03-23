@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import api from "../api/axios";
 
-function HotelsList({ token }) {
+function HotelsList() {
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
@@ -21,7 +21,7 @@ function HotelsList({ token }) {
 
   const removeHotels = async (hotelId) => {
     try {
-      const response = await api.delete(`/api/hotels/delete/${hotelId}`, { headers: { token } });
+      const response = await api.delete(`/api/hotels/delete/${hotelId}`);
       if (response.data.success) {
         toast.success(response.data.message);
         await fetchList();

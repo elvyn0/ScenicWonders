@@ -5,12 +5,13 @@ import api from "../api/axios";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 
-function StatusBanner({ token }) {
+function StatusBanner() {
   const [status, setStatus] = useState(null);
 
   const fetchStatus = async () => {
     try {
-      const response = await api.get("/api/bookings/admin/bookingStatus", { headers: { token } });
+      const response = await api.get("/api/bookings/admin/bookingStatus");
+
       if (response.data.success) {
         setStatus({
           totalUsers: response.data.totalUsers,
