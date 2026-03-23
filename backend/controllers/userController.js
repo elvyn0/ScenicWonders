@@ -174,7 +174,7 @@ const adminLogin = async (req, res) => {
     if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
       return res.status(401).json({ success: false, message: "Not authorized email or password is wrong" });
     }
-    const token = jwt.sign({ email, role: "admin" }, process.env.JWT_SECRET, { expiresIn: "10s" });
+    const token = jwt.sign({ email, role: "admin" }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
     res.status(200).json({ success: true, token });
   } catch (error) {
