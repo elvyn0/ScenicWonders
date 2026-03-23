@@ -3,28 +3,33 @@ import { assets } from "../assets/assets";
 
 function Nav() {
   return (
-    <div className="w-full px-20 mt-6">
-      <div className="flex flex-row gap-10 items-center justify-center ">
+    <div className="w-full px-4 md:px-10 mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
         <NavLink
           to="/addHotel"
-          className="rounded-2xl shadow-2xl p-5 w-80 bg-white h-100 hover:scale-110 ease-in-out transition duration-300  font-bold text-2xl"
+          className="rounded-2xl shadow-xl p-4 w-full max-w-sm bg-white 
+      hover:scale-105 transition duration-300 font-bold text-xl text-center"
         >
-          Add hotels
-          <img className="w-full mt-5" src={assets.addHotel} />
+          Add Hotels
+          <img className="w-full mt-4" src={assets.addHotel} />
         </NavLink>
+
         <NavLink
           to="/hotelsList"
-          className="rounded-2xl shadow-2xl w-80 bg-white h-100 hover:scale-110 ease-out transition duration-300 font-bold p-5 text-2xl"
+          className="rounded-2xl shadow-xl p-4 w-full max-w-sm bg-white 
+      hover:scale-105 transition duration-300 font-bold text-xl text-center"
         >
           Hotels List
-          <img className="w-full mt-5" src={assets.hotelList} />
+          <img className="w-full mt-4" src={assets.hotelList} />
         </NavLink>
+
         <NavLink
           to="/bookingsList"
-          className="rounded-2xl shadow-2xl w-80 bg-white h-100 hover:scale-110 ease-in-out transition duration-300 font-bold p-5 text-2xl"
+          className="rounded-2xl shadow-xl p-4 w-full max-w-sm bg-white 
+      hover:scale-105 transition duration-300 font-bold text-xl text-center"
         >
           Bookings List
-          <img className="w-full mt-5" src={assets.hotelBooking} />
+          <img className="w-full mt-4" src={assets.hotelBooking} />
         </NavLink>
       </div>
     </div>
