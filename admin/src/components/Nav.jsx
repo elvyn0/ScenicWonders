@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 
 function Nav() {
   return (
-    <div className="w-full px-4 md:px-10 mt-6">
+    <div className="w-full px-4 md:px-10 mt-6 mb-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
         <NavLink
           to="/addHotel"

@@ -7,25 +7,26 @@ function Headers({ setToken }) {
     setToken("");
   };
   return (
-    <div className="pt-5 px-3 pb-2  bg-white mb-5 ">
-      <div className="flex flex-row items-center justify-between ">
-        <div className="flex flex-col gap-1 justify-start text-sm font-bold items-center">
-          <img className="size-14" src={assets.sw_logo} />
-          <p>Scenic Wonders</p>
+    <div className="pt-3 px-3 md:px-6 pb-2 bg-white mb-5">
+      <div className="flex items-center justify-between gap-2">
+        {/* Logo */}
+        <div className="flex flex-col items-center text-[10px] md:text-sm font-bold">
+          <img className="w-8 h-8 md:w-12 md:h-12" src={assets.sw_logo} />
+          <p className="hidden sm:block">Scenic Wonders</p>
         </div>
 
-        <div className=" rounded-xl py-4 px-10 bg-black shadow-lg">
-          <p className="text-3xl font-bold  text-white">Admin panel</p>
+        {/* Title */}
+        <div className="rounded-lg px-3 py-1 md:px-6 md:py-3 bg-black shadow-md">
+          <p className="text-sm sm:text-lg md:text-2xl font-bold text-white whitespace-nowrap">Admin Panel</p>
         </div>
 
-        <div>
-          <button
-            onClick={Logout}
-            className="flex-1 flex justify-end px-3 py-1 rounded-lg border text-lg text-blue-900 font-semibold hover:bg-blue-100   transition-all "
-          >
-            LogOut
-          </button>
-        </div>
+        {/* Logout */}
+        <button
+          onClick={Logout}
+          className="px-2 py-1 md:px-4 md:py-2 rounded-lg border text-xs sm:text-sm md:text-lg text-blue-900 font-semibold hover:bg-blue-100 transition-all whitespace-nowrap"
+        >
+          Logout
+        </button>
       </div>
     </div>
   );

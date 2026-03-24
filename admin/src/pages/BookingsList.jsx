@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import api from "../api/axios";
 
-function BookingsList({ token }) {
+function BookingsList() {
   const [active, setActive] = useState("confirmed");
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
     try {
-      const response = await api.get("/api/bookings/allBooking", { headers: { token } });
+      const response = await api.get("/api/bookings/allBooking");
 
       if (response.data.success) {
         setList(response.data.bookings);
@@ -21,6 +21,14 @@ function BookingsList({ token }) {
     }
   };
 
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   useEffect(() => {
     const loadBookings = async () => {
       await fetchList();
@@ -30,50 +38,82 @@ function BookingsList({ token }) {
 
   const filteredList = list.filter((item) => item.bookingStatus === active);
   return (
-    <div className="py-5 pt-10 flex flex-col gap-2 items-center justify-center bg-gray-100">
-      {/* Bookings */}
-
-      <div className="py-5 pt-5 flex flex-col  items-center bg-gray-100 ">
-        {/* Tabs */}
-        <div className="flex gap-8 text-2xl font-semibold">
-          {["confirmed", "pending", "completed"].map((status) => (
-            <div
-              key={status}
-              onClick={() => setActive(status)}
-              className={`p-5 rounded-xl cursor-pointer transition shadow-xl capitalize
-              ${
-                active === status
-                  ? status === "confirmed"
-                    ? "bg-blue-600 text-white"
-                    : status === "pending"
-                      ? "bg-red-600 text-white"
-                      : "bg-green-700 text-white"
-                  : "bg-white text-black"
-              }`}
-            >
-              {status}
-            </div>
-          ))}
-        </div>
+    <div className="py-6 flex flex-col gap-10 items-center bg-gray-100">
+      {/* Tabs */}
+      <div className="flex gap-3 sm:gap-5 text-base sm:text-xl font-semibold">
+        {["confirmed", "pending"].map((status) => (
+          <div
+            key={status}
+            onClick={() => setActive(status)}
+            className={`px-4 py-2 sm:px-6 sm:py-3 rounded-xl cursor-pointer transition shadow capitalize
+          ${
+            active === status
+              ? status === "confirmed"
+                ? "bg-blue-600 text-white"
+                : "bg-red-600 text-white"
+              : "bg-white text-black"
+          }`}
+          >
+            {status}
+          </div>
+        ))}
       </div>
-      {/* List */}
-      <div className="w-full flex flex-col max-w-5xl bg-gray-200 rounded-md shadow overflow-hidden mt-5">
-        {filteredList.length === 0 ? (
-          <p>No {active} bookings found</p>
-        ) : (
-          filteredList.map((item) => (
-            <div
-              key={item._id}
-              className=" w-full flex justify-between p-5 mb-4 bg-white rounded-md shadow overflow-hidden"
-            >
-              <img className="w-14 h-14 object-cover rounded" src={item.hotelImage?.[0]} alt="hotel" />
-              <p className="font-medium">{item.hotel?.name || item.name}</p>
-              <p>{item.pricePerNight}</p>
-              <p>{item.location}</p>
-              <p className="capitalize font-semibold">{item.bookingStatus}</p>
-            </div>
-          ))
-        )}
+
+      <div>
+        {/* Table Header (desktop only) */}
+        <div className="hidden md:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr] w-full max-w-6xl  px-2 text-center text-sm font-bold  ">
+          <p>Booked</p>
+          <p>User</p>
+          <p>Hotel</p>
+          <p>Location</p>
+          <p>Dates</p>
+          <p>Rooms</p>
+          <p>Price</p>
+        </div>
+
+        {/* List */}
+        <div className="w-full max-w-6xl mt-5 px-2 sm:px-4">
+          {filteredList.length === 0 ? (
+            <p className="text-center mt-5">No {active} bookings found</p>
+          ) : (
+            filteredList.map((item) => (
+              <div
+                key={item._id}
+                className="
+            bg-white rounded-lg shadow px-2 mb-4
+            md:grid md:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr] md:items-center md:p-3  w-full max-w-6xl text-center 
+          "
+              >
+                {/* Mobile layout */}
+                <div className="md:hidden text-sm space-y-1">
+                  <p className="font-semibold">{item.user.name}</p>
+                  <p className="text-gray-600">{item.hotel?.name || item.name}</p>
+                  <p className="text-gray-500">{item.location}</p>
+
+                  <p>
+                    {formatDate(item.checkInDate)} → {formatDate(item.checkOutDate)}
+                  </p>
+
+                  <p>Rooms: {item.numberOfRooms}</p>
+                  <p>₹{item.totalPrice}</p>
+
+                  <p className="text-xs text-gray-400">Booked: {formatDate(item.bookedAt)}</p>
+                </div>
+
+                {/* Desktop layout */}
+                <p className="hidden md:block text-sm">{formatDate(item.bookedAt)}</p>
+                <p className="hidden md:block">{item.user.name}</p>
+                <p className="hidden md:block font-medium">{item.hotel?.name || item.name}</p>
+                <p className="hidden md:block">{item.location}</p>
+                <p className="hidden md:block text-sm">
+                  {formatDate(item.checkInDate)} - {formatDate(item.checkOutDate)}
+                </p>
+                <p className="hidden md:block ml-5">{item.numberOfRooms}</p>
+                <p className="hidden md:block">₹{item.totalPrice}</p>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
