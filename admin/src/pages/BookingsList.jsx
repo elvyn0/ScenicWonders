@@ -85,7 +85,7 @@ function BookingsList() {
           "
               >
                 {/* Mobile layout */}
-                <div className="md:hidden text-sm space-y-1">
+                <div className="md:hidden text-sm space-y-1 p-3">
                   <p className="font-semibold">{item.user.name}</p>
                   <p className="text-gray-600">{item.hotel?.name || item.name}</p>
                   <p className="text-gray-500">{item.location}</p>
