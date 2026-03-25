@@ -27,9 +27,13 @@ import BookingCancel from "./Pages/BookingCancel";
 // Layout with sibeBar
 const LayoutWithSidebar = () => {
   return (
-    <div className="relative z-[100] flex">
-      <SideBar />
-      <div className="flex-1">
+    <div className=" flex">
+      {/* sidebar */}
+      <div className="w-[74px] ">
+        <SideBar />
+      </div>
+      {/* main content */}
+      <div className="flex-1 ">
         {/* */}
         <Outlet />
       </div>
@@ -41,6 +45,7 @@ const App = () => {
   return (
     <div>
       <Toaster />
+
       <Routes>
         <Route element={<LayoutWithSidebar />}>
           <Route path="/" element={<Home />} />

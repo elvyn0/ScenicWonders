@@ -65,11 +65,6 @@ function PlacesCategory() {
           </NavLink>
         </div>
       </div>
-      <div className="text-center w-full mt-20 ">
-        <Link to="" className="font-bold bg-gray-200 rounded-xl px-5 p-3 no-underline text-inherit ">
-          See more
-        </Link>
-      </div>
     </div>
   );
 }
