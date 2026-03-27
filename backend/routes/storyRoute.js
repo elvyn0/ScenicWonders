@@ -11,6 +11,6 @@ storiesRouter.post("/remove", auth, removeStory);
 // PUBLIC ROUTES (Anyone can view)
 
 storiesRouter.get("/list", listStories);
-storiesRouter.get("/get/:id", singleStory);
+storiesRouter.get("/:id", singleStory);
 
 module.exports = storiesRouter;
