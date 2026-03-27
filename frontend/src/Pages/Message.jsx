@@ -60,22 +60,22 @@ function Message() {
   }, [token]);
 
   return (
-    <div className=" flex w-full h-screen bg-gray-100 ml-[4%]">
+    <div className=" flex flex-row w-full min-h-screen bg-gray-100">
       {/* Left Sidebar */}
-      <div className="w-[320px] border-r border-gray-200 bg-white flex flex-col">
+      <div className=" border-r border-gray-200 bg-white flex flex-col">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-gray-800">Messages</h1>
+        <div className="px-1 pt-3 pb-1 border-b border-gray-200">
+          <h1 className="text-2xl font-bold text-blue-600">Messages</h1>
         </div>
 
         {/* Conversation List */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-2">
+        <div className="md:min-w-[250px] overflow-y-auto px-3 pt-3 pb-2 border-b-2 space-y-2 cursor-pointer ">
           <div>
             {users.map((item) => (
               <div key={item._id} onClick={() => fetchConversationId(item._id)}>
-                <div className="flex gap-3 border-b-2 p-2 mb-2">
+                <div className="flex gap-3 ">
                   <img src={assets.profile1} className="w-10 rounded-full" />
-                  <p>{item.name}</p>
+                  <p className="text-gray-600 font-semibold">{item.name}</p>
                 </div>
               </div>
             ))}
@@ -84,7 +84,9 @@ function Message() {
       </div>
 
       {/* Right Chat Area */}
-      <MessageRoom />
+      <div className="flex-1 flex items-center justify-center">
+        <MessageRoom />
+      </div>
     </div>
   );
 }

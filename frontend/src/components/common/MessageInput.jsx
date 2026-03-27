@@ -36,13 +36,13 @@ function MessageInput({ conversationId, onNewMessage }) {
   };
 
   return (
-    <form onSubmit={handleSend} className="border p-3 rounded-lg flex gap-3">
+    <form onSubmit={handleSend} className="border p-1 rounded-lg flex gap-3 mb-2">
       <input
         type="text"
         value={newMessage}
         onChange={(e) => setNewMessage(e.target.value)}
         placeholder="Type a message..."
-        className="flex-1 border rounded-lg px-4 py-2 "
+        className="flex-1 border rounded-lg pl-4 py-3 "
       />
 
       <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg ">
