@@ -1,7 +1,7 @@
 const cloudinary = require("cloudinary").v2;
 const Stories = require("../models/storiesModel");
 
-// finction to add
+// Finction to add //
 const addStory = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -25,7 +25,7 @@ const addStory = async (req, res) => {
   }
 };
 
-// function for list stories
+// Function for list stories //
 
 const listStories = async (req, res) => {
   try {
@@ -37,7 +37,7 @@ const listStories = async (req, res) => {
   }
 };
 
-// function for remove stories
+// Function for remove stories //
 
 const removeStory = async (req, res) => {
   try {
@@ -60,7 +60,7 @@ const removeStory = async (req, res) => {
   }
 };
 
-// function for get single story
+// Function for get single story //
 
 const singleStory = async (req, res) => {
   try {
@@ -76,7 +76,7 @@ const singleStory = async (req, res) => {
   }
 };
 
-// update story
+// Update story //
 
 const updateStory = async (req, res) => {
   try {
@@ -103,7 +103,7 @@ const updateStory = async (req, res) => {
       return res.status(400).json({ success: false, message: "No fields provided for update." });
     }
 
-    // perform the update
+    // Perform the update //
 
     const updatedStory = await Stories.findByIdAndUpdate(id, { $set: updateFields }, { new: true });
 
@@ -114,4 +114,39 @@ const updateStory = async (req, res) => {
   }
 };
 
-module.exports = { addStory, listStories, removeStory, singleStory, updateStory };
+// Likes //
+const handleLikes = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { id } = req.params;
+
+    if (!userId) {
+      return res.status(404).json({ success: false, messaage: "User not found" });
+    }
+
+    const post = await Stories.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ success: false, messaage: "Post not found" });
+    }
+
+    const alreadyLiked = post.likes.includes(userId);
+
+    if (alreadyLiked) {
+      // UNLIKE
+      post.likes = post.likes.filter((id) => id.toString() !== userId.toString());
+    } else {
+      // LIKE
+      post.likes.push(userId);
+    }
+
+    await post.save();
+
+    res.status(200).json({ success: true, likes: post.likes, liked: !alreadyLiked });
+  } catch (error) {
+    console.log(error);
+    res.json(500).json({ success: false, messaage: error.messaage });
+  }
+};
+
+module.exports = { addStory, listStories, removeStory, singleStory, updateStory, handleLikes };

@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
 
@@ -53,19 +53,16 @@ function StoriesCategories() {
               </div>
             </Link>
 
-            {/* Title */}
-            <h2 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{item.title}</h2>
+            <NavLink to={`/story/${item._id}`} className={"no-underline"}>
+              {/* Title */}
+              <h2 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1 ">{item.title}</h2>
 
-            {/* Content */}
-            <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">{item.content}</p>
-
+              {/* Content */}
+              <p className="text-gray-600 text-sm leading-relaxed line-clamp-4 ">{item.content}</p>
+            </NavLink>
             {/* Footer */}
-            <div className="flex justify-between items-center mt-5 pt-4 border-t border-gray-100">
-              <span className="text-sm text-gray-400">❤️ {item.like || 0}</span>
-
-              <Link to={`/stories/${item._id}`} className="text-sm font-semibold text-blue-600 hover:underline">
-                Read more →
-              </Link>
+            <div className="flex justify-between items-center mt-5 pt-4 border-t border-gray-100 ">
+              <span className="text-sm text-gray-400 cursor-pointer">❤️ {item.likes.length || 0}</span>
             </div>
           </div>
         ))}
@@ -75,7 +72,7 @@ function StoriesCategories() {
       <div className="text-center mt-16">
         <Link
           to="/stories"
-          className="inline-block font-semibold bg-gray-900 text-white rounded-xl px-8 py-3 hover:bg-gray-800 transition"
+          className="inline-block font-semibold bg-gray-300 text-black rounded-xl px-8 py-3 hover:bg-gray-400 transition no-underline "
         >
           See more
         </Link>

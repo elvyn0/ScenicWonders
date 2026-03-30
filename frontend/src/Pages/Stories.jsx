@@ -1,87 +1,100 @@
-import { assets } from "../assets/assets";
-import SearchBar_main from "../components/common/SearchBar_main";
+import { useContext, useState, useEffect } from "react";
+import { AppContext } from "../context/appContext";
+import toast from "react-hot-toast";
+import { Link } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 function Stories() {
-  function timeAgo(dateString) {
-    const seconds = Math.floor((new Date() - new Date(dateString)) / 1000);
+  const { api, token } = useContext(AppContext);
+  const [list, setList] = useState([]);
 
-    let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) return interval + "y ago";
+  const fetchList = async () => {
+    try {
+      const response = await api.get("/api/story/list");
+      if (response.data.success) {
+        setList(response.data.stories);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
 
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1) return interval + "mo ago";
+  // Handleing Like //
 
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1) return interval + "d ago";
+  const handleLike = async (id) => {
+    try {
+      const response = await api.post(
+        `/api/story/like/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (response.data.success) {
+        setList((prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, likes: response.data.likes, liked: response.data.liked } : item,
+          ),
+        );
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Like failed");
+    }
+  };
 
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1) return interval + "h ago";
-
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1) return interval + "m ago";
-
-    return "Just now";
-  }
+  useEffect(() => {
+    fetchList();
+  }, [token]);
 
   return (
-    <section>
-      <SearchBar_main />
+    <div className="p-5 ml-[4%]">
       {/* Introduction/Heading */}
 
-      <div className="ml-[7%]">
-        <div>
-          <h1 className="font-bold text-3xl mt-5 mb-9">Stories</h1>
-        </div>
+      {/* Stories Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {list.map((item) => (
+          <div
+            key={item._id}
+            className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition"
+          >
+            {/* User */}
+            <Link to={`/profile/${item.user._id}`} className="no-underline text-black cursor-pointer">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
+                  {item.user?.name}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800">{item.user?.name || "Unknown"}</p>
+                  <p className="text-xs text-gray-400">{new Date(item.createdAt).toLocaleDateString()}</p>
+                </div>
+              </div>
+            </Link>
+            <NavLink to={`/story/${item._id}`} className={"no-underline"}>
+              {/* Title */}
+              <h2 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{item.title}</h2>
 
-        {/* Stories Grid Container */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4  items-center">
-          {/* User 1 */}
-          <article className="border-2 p-5 rounded-xl shadow-lg ">
-            {/* Article Header (Profile info) */}
-            <header className="flex w-[60px] mb-10">
-              <img className="rounded-full" src={assets.maharashtra} alt="User Profile" />
-              <p className="ml-4 font-bold">userName</p>
-            </header>
+              {/* Content */}
+              <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">{item.content}</p>
+            </NavLink>
 
-            {/* Article Content */}
-            <p className="ml-5 mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
-
-            {/* Article Footer (Metadata like time) */}
-            <footer className="text-gray-500 ml-1 text-sm">{timeAgo()}</footer>
-          </article>
-
-          {/* User 2 */}
-          <article className="border-2 p-5 rounded-xl shadow-lg ">
-            <header className="flex w-[60px] mb-10 ">
-              <img className="rounded-full" src={assets.maharashtra} alt="User Profile" />
-              <p className="ml-4 font-bold">userName</p>
-            </header>
-            <p className="ml-5 mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
-            <footer className="text-gray-500 ml-1 text-sm">{timeAgo()}</footer>
-          </article>
-
-          {/* User 3 */}
-          <article className="border-2 p-5 rounded-xl shadow-lg ">
-            <header className="flex w-[60px] mb-10 ">
-              <img className="rounded-full" src={assets.maharashtra} alt="User Profile" />
-              <p className="ml-4 font-bold">userName</p>
-            </header>
-            <p className="ml-5 mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
-            <footer className="text-gray-500 ml-1 text-sm">{timeAgo()}</footer>
-          </article>
-
-          {/* User 4 */}
-          <article className="border-2 p-5 rounded-xl shadow-lg ">
-            <header className="flex w-[60px] mb-10 ">
-              <img className="rounded-full" src={assets.maharashtra} alt="User Profile" />
-              <p className="ml-4 font-bold">userName</p>
-            </header>
-            <p className="ml-5 mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
-            <footer className="text-gray-500 ml-1 text-sm">{timeAgo()}</footer>
-          </article>
-        </div>
+            {/* Footer */}
+            <div className="flex justify-between items-center mt-5 pt-4 border-t border-gray-100 ">
+              <span onClick={() => handleLike(item._id)} className="text-sm text-gray-400 cursor-pointer ">
+                ❤️ {item.likes.length || 0}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </div>
   );
 }
 

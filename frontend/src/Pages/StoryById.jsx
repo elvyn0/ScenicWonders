@@ -1,23 +1,26 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/appContext";
-import toast from "react-hot-toast";
+import React from "react";
+import { useContext } from "react";
 import { useParams } from "react-router-dom";
+import { AppContext } from "../context/appContext";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function StoryById() {
   const { id } = useParams();
-  const { api } = useContext(AppContext);
+  const { api, token } = useContext(AppContext);
 
   const [story, setStory] = useState(null);
 
-  const storyById = async () => {
+  // Detail story //
+  const fetchStoryById = async () => {
     try {
       const response = await api.get(`/api/story/${id}`);
-
       if (response.data.success) {
         setStory(response.data.story);
       } else {
-        toast.error(response.data.error);
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.log(error);
@@ -25,8 +28,32 @@ function StoryById() {
     }
   };
 
+  // Handleing Like //
+  const handleLike = async () => {
+    try {
+      const response = await api.post(
+        `/api/story/like/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.data.success) {
+        setStory((prev) => ({ ...prev, likes: response.data.likes, liked: response.data.liked }));
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Like failed");
+    }
+  };
+
   useEffect(() => {
-    storyById();
+    fetchStoryById();
   }, [id]);
 
   return (
@@ -35,7 +62,7 @@ function StoryById() {
         {story && (
           <div key={story._id} className=" w-full bg-white rounded-2xl border border-gray-200 p-6 shadow-md">
             {/* User */}
-            <Link to={`/profile/${story.user._id}`} className="no-underline cursor-pointer">
+            <Link to={`/profile/${story.user}`} className="no-underline cursor-pointer">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
                   {story.user?.name}
@@ -57,7 +84,9 @@ function StoryById() {
 
             {/* Footer */}
             <div className="flex justify-between items-center mt-5 pt-4 border-t border-gray-100">
-              <span className="text-sm text-gray-400">❤️ {story.like || 0}</span>
+              <span onClick={handleLike} className="text-sm text-gray-400 hover:cursor-pointer">
+                ❤️ {story.likes.length || 0}
+              </span>
             </div>
           </div>
         )}
