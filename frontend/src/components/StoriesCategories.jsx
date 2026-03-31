@@ -2,14 +2,19 @@ import { useContext, useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
+import { Heart } from "lucide-react";
 
 function StoriesCategories() {
-  const { api } = useContext(AppContext);
+  const { api, token } = useContext(AppContext);
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
     try {
-      const response = await api.get("/api/story/list");
+      const response = await api.get("/api/story/list", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.data.success) {
         setList(response.data.stories);
       } else {
@@ -61,8 +66,13 @@ function StoriesCategories() {
               <p className="text-gray-600 text-sm leading-relaxed line-clamp-4 ">{item.content}</p>
             </NavLink>
             {/* Footer */}
-            <div className="flex justify-between items-center mt-5 pt-4 border-t border-gray-100 ">
-              <span className="text-sm text-gray-400 cursor-pointer">❤️ {item.likes.length || 0}</span>
+            <div className="flex justify-between items-centers pt-2 pl-2 border-t ">
+              <span className="flex text-sm text-gray-500 gap-1 mt-1 ">
+                <Heart
+                  className={`text-black font-bold ${item?.liked ? "text-white bg-red-500  rounded-full p-1  " : ""}`}
+                />
+                {item.likes.length || 0}
+              </span>
             </div>
           </div>
         ))}

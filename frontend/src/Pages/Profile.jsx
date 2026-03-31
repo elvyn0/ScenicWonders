@@ -4,11 +4,12 @@ import { AppContext } from "../context/appContext";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 function Profile() {
-  const { api, user } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const { userId } = useParams();
   const [active, setActive] = useState("post");
   const [posts, setPosts] = useState([]);
   const [stories, setStories] = useState([]);
+  const [profile, setProfile] = useState(null);
 
   const fetchList = async () => {
     try {
@@ -17,6 +18,7 @@ function Profile() {
       if (response.data.success) {
         setPosts(response.data.posts);
         setStories(response.data.stories);
+        setProfile(response.data.user);
       } else {
         toast.error(response.data.error);
       }
@@ -33,16 +35,16 @@ function Profile() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Profile info */}
-      {(active === "post" || active === "stories") && user && (
+      {(active === "post" || active === "stories") && profile && (
         <div className="flex flex-col items-center text-center gap-3">
           <img
             className="w-28 h-28 rounded-full object-cover"
-            src={user.profileImage || assets.profile1}
+            src={profile.profileImage || assets.profile1}
             alt="profile"
           />
 
           <div>
-            <h2 className="text-xl font-semibold">{user.name}</h2>
+            <h2 className="text-xl font-semibold">{profile.name}</h2>
           </div>
         </div>
       )}

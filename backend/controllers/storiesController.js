@@ -26,11 +26,30 @@ const addStory = async (req, res) => {
 };
 
 // Function for list stories //
-
 const listStories = async (req, res) => {
   try {
+    const userId = req.user?._id; // safe
+
     const stories = await Stories.find().populate("user", "name").sort({ createdAt: -1 });
-    res.status(200).json({ success: true, stories });
+
+    const updatedStories = stories.map((s) => {
+      let liked = false;
+
+      if (userId) {
+        liked = s.likes.some((likedId) => likedId.toString() === userId.toString());
+      }
+
+      return {
+        ...s._doc,
+        likes: s.likes,
+        liked,
+      };
+    });
+
+    res.status(200).json({
+      success: true,
+      stories: updatedStories,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
@@ -64,60 +83,36 @@ const removeStory = async (req, res) => {
 
 const singleStory = async (req, res) => {
   try {
+    const userId = req.user?._id;
     const { id } = req.params;
-    const story = await Stories.findById(id);
+    const story = await Stories.findById(id).populate("user", "name profilePic");
+
     if (!story) {
       return res.status(404).json({ success: false, message: "Story post not found" });
     }
-    res.status(200).json({ success: true, story });
+
+    let liked = false;
+    if (userId) {
+      liked = story.likes.some((likedId) => likedId.toString() === userId.toString());
+    }
+
+    res.status(200).json({
+      success: true,
+      story: {
+        ...story._doc,
+        liked,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// Update story //
-
-const updateStory = async (req, res) => {
-  try {
-    const { id } = req.body;
-    const { userId } = req.body;
-
-    const { title, content } = req.body;
-
-    const story = await Stories.findById(id);
-
-    if (!story) {
-      return res.status(404).json({ status: false, messaage: "Story post not found for update." });
-    }
-
-    if (story.user.toString() !== userId.toString) {
-      return res.status(403).json({ success: false, messaage: "Not authorized to update this post." });
-    }
-
-    const updateFields = {};
-    if (title) updateFields.title = title;
-    if (content) updateFields.content = content;
-
-    if (Object.keys(updateFields).length === 0) {
-      return res.status(400).json({ success: false, message: "No fields provided for update." });
-    }
-
-    // Perform the update //
-
-    const updatedStory = await Stories.findByIdAndUpdate(id, { $set: updateFields }, { new: true });
-
-    res.status(200).json({ success: true, messaage: "story post updated successfully", story: updatedStory });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, messaage: error.messaage });
-  }
-};
-
 // Likes //
 const handleLikes = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user?._id;
     const { id } = req.params;
 
     if (!userId) {
@@ -149,4 +144,4 @@ const handleLikes = async (req, res) => {
   }
 };
 
-module.exports = { addStory, listStories, removeStory, singleStory, updateStory, handleLikes };
+module.exports = { addStory, listStories, removeStory, singleStory, handleLikes };

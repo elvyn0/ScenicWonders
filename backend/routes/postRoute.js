@@ -1,16 +1,18 @@
 const express = require("express");
-const { addPost, listPost, removePost, singlePost } = require("../controllers/postController");
+const { addPost, listPost, removePost, singlePost, handleLike } = require("../controllers/postController");
 const upload = require("../middlewares/multer");
 const auth = require("../middlewares/auth");
+const optionalAuth = require("../middlewares/optionalAuth");
 
 const postRouter = express.Router();
 
-// PROTECTED ROUTES
-postRouter.post("/add", auth, upload.single("image"), addPost);
-postRouter.delete("/remove/:postId", auth, removePost);
-
 // PUBLIC ROUTES (Anyone can view)
 postRouter.get("/list", listPost);
-postRouter.get("/:id", singlePost);
+postRouter.get("/:id", optionalAuth, singlePost);
+
+// PROTECTED ROUTES
+postRouter.post("/add", auth, upload.single("image"), addPost);
+postRouter.post("/like/:id", auth, handleLike);
+postRouter.delete("/remove/:postId", auth, removePost);
 
 module.exports = postRouter;

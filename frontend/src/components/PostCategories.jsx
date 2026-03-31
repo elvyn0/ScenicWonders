@@ -4,7 +4,7 @@ import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { assets } from "../assets/assets";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function PostCategories() {
   const { api } = useContext(AppContext);
@@ -47,21 +47,23 @@ function PostCategories() {
               </div>
             </Link>
             {/* Image */}
-            <div className="relative aspect-[3/4] overflow-hidden">
-              <img
-                src={item.image?.url}
-                alt={item.caption}
-                className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
+            <NavLink to={`/post/${item._id}`} className={"no-underline"}>
+              <div className="relative aspect-[3/4] overflow-hidden">
+                <img
+                  src={item.image?.url}
+                  alt={item.caption}
+                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
 
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all" />
-            </div>
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all" />
+              </div>
 
-            {/* Caption */}
-            <div className="p-3">
-              <p className="text-sm text-gray-800 line-clamp-2">{item.caption}</p>
-            </div>
+              {/* Caption */}
+              <div className="p-3">
+                <p className="text-sm text-gray-800 line-clamp-2">{item.caption}</p>
+              </div>
+            </NavLink>
           </div>
         ))}
       </div>

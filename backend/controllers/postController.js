@@ -85,18 +85,69 @@ const removePost = async (req, res) => {
 
 const singlePost = async (req, res) => {
   try {
+    const userId = req.user?._id;
     const postId = req.params.id;
+
     const post = await Post.findById(postId).populate("user", "name profilePic"); //
 
     if (!post) {
       return res.status(404).json({ success: false, message: "Post not found" });
     }
 
-    res.status(200).json({ success: true, post });
+    let liked = false;
+    if (userId) {
+      liked = post.likes.some((likedId) => likedId.toString() === userId.toString());
+    }
+    res.status(200).json({
+      success: true,
+      post: {
+        ...post._doc,
+        liked,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { addPost, listPost, removePost, singlePost };
+// Handling likes //
+
+const handleLike = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const { id } = req.params;
+
+    if (!userId) {
+      return res.status(404).json({ success: false, message: "userId didn't reached at backend" });
+    }
+
+    if (!id) {
+      return res.status(404).json({ success: false, message: "Post id not received" });
+    }
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ success: false, message: "Post not found" });
+    }
+
+    const alreadyLiked = post.likes.includes(userId);
+
+    if (alreadyLiked) {
+      // UNLIKE
+      post.likes = post.likes.filter((id) => id.toString() !== userId.toString());
+    } else {
+      // LIKE
+      post.likes.push(userId);
+    }
+    await post.save();
+
+    res.status(200).json({ success: true, likes: post.likes, liked: !alreadyLiked });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { addPost, listPost, removePost, singlePost, handleLike };

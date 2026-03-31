@@ -4,16 +4,21 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
+import { Heart } from "lucide-react";
 
 function PostById() {
   const { id } = useParams();
-  const { api } = useContext(AppContext);
+  const { api, token } = useContext(AppContext);
 
   const [post, setPost] = useState(null);
 
   const postById = async () => {
     try {
-      const response = await api.get(`/api/post/${id}`);
+      const response = await api.get(`/api/post/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.data.success) {
         setPost(response.data.post);
       } else {
@@ -22,6 +27,30 @@ function PostById() {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  // Handling Like //
+
+  const handleLike = async () => {
+    try {
+      const response = await api.post(
+        `/api/post/like/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (response.data.success) {
+        setPost((prev) => ({ ...prev, likes: response.data.likes, liked: response.data.liked }));
+      } else {
+        toast.error(response.data.error);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Like failed");
     }
   };
 
@@ -38,16 +67,27 @@ function PostById() {
           className="w-full   max-w-md md:max-w-4xl  
       flex flex-col md:flex-row rounded-xl overflow-hidden bg-gray-50 shadow-md p-2"
         >
-          {/* mobile */}
-          <Link to={`/profile/${post.user._id}`} className="md:hidden  no-underline text-black cursor-pointer mb-2">
-            <div className="flex items-center  gap-3 font-semibold p-3">
-              <img src={assets.profile1} className="w-10 h-10 rounded-full object-cover" />
-              <p>{post.user?.name || "Unknown"}</p>
+          <div>
+            {/* mobile */}
+            <Link to={`/profile/${post.user._id}`} className="md:hidden  no-underline text-black cursor-pointer ">
+              <div className="flex items-center  gap-3 font-semibold p-3">
+                <img src={assets.profile1} className="w-10 h-10 rounded-full object-cover" />
+                <p>{post.user?.name || "Unknown"}</p>
+              </div>
+            </Link>
+            {/* Image */}
+            <div className="w-full md:max-w-[600px] md:h-auto">
+              <img src={post.image?.url} alt={post.caption} className="h-full w-full object-cover rounded-md" />
             </div>
-          </Link>
-          {/* Image */}
-          <div className="w-full md:w-1/2  md:h-auto">
-            <img src={post.image?.url} alt={post.caption} className="h-full w-full object-cover rounded-md" />
+            {/* Like */}
+            <div onClick={handleLike} className="flex justify-between items-centers pt-2 pl-2 hover:cursor-pointer">
+              <span className="flex text-sm text-gray-500 gap-1 ">
+                <Heart
+                  className={`text-black font-bold ${post?.liked ? "text-white bg-red-500  rounded-full p-1  " : ""}`}
+                />
+                {post.likes.length || 0}
+              </span>
+            </div>
           </div>
 
           {/* Right Side */}
@@ -59,9 +99,11 @@ function PostById() {
                 <p>{post.user?.name || "Unknown"}</p>
               </div>
             </Link>
+            <hr className="text-gray-500 mb-1 md:mt-2" />
             {/* Caption */}
-            <div className=" py-4 pl-6 ">
-              <p className="text-sm text-gray-600">{post.caption}</p>
+            <div className="flex flex-col">
+              <p className="text-sm text-gray-400 pl-1">Caption :</p>
+              <p className="text-sm text-gray-600 pl-4">{post.caption}</p>
             </div>
           </div>
         </div>

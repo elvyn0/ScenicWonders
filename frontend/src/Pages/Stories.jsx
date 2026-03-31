@@ -3,6 +3,7 @@ import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
 import { Link } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { Heart } from "lucide-react";
 
 function Stories() {
   const { api, token } = useContext(AppContext);
@@ -10,7 +11,11 @@ function Stories() {
 
   const fetchList = async () => {
     try {
-      const response = await api.get("/api/story/list");
+      const response = await api.get("/api/story/list", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.data.success) {
         setList(response.data.stories);
       } else {
@@ -22,7 +27,7 @@ function Stories() {
     }
   };
 
-  // Handleing Like //
+  // Handling Like //
 
   const handleLike = async (id) => {
     try {
@@ -86,9 +91,15 @@ function Stories() {
             </NavLink>
 
             {/* Footer */}
-            <div className="flex justify-between items-center mt-5 pt-4 border-t border-gray-100 ">
-              <span onClick={() => handleLike(item._id)} className="text-sm text-gray-400 cursor-pointer ">
-                ❤️ {item.likes.length || 0}
+            <div
+              onClick={() => handleLike(item._id)}
+              className="flex justify-between items-centers pt-2 pl-2 border-t hover:cursor-pointer"
+            >
+              <span className="flex text-sm text-gray-500 gap-1 mt-1 ">
+                <Heart
+                  className={`text-black font-bold ${item?.liked ? "text-white bg-red-500  rounded-full p-1  " : ""}`}
+                />
+                {item.likes.length || 0}
               </span>
             </div>
           </div>
