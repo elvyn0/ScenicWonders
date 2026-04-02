@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/appContext";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
+import { Heart, Trash2 } from "lucide-react";
 
 function PostById() {
   const { id } = useParams();
-  const { api, token } = useContext(AppContext);
+  const { api, token, user, navigate } = useContext(AppContext);
 
   const [post, setPost] = useState(null);
 
@@ -54,9 +54,32 @@ function PostById() {
     }
   };
 
+  // Handling  delete post //
+
+  const handleDelte = async () => {
+    try {
+      const response = await api.delete(`/api/post/remove/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.success) {
+        toast.success(response.data.message);
+        navigate(-1);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
   useEffect(() => {
     postById();
   }, [id]);
+
+  console.log(post);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -106,6 +129,7 @@ function PostById() {
               <p className="text-sm text-gray-600 pl-4">{post.caption}</p>
             </div>
           </div>
+          <div onClick={handleDelte}>{user ? <Trash2 className="w-6 text-red-500 cursor-pointer" /> : ""}</div>
         </div>
       )}
     </div>

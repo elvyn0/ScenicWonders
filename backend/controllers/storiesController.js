@@ -1,5 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 const Stories = require("../models/storiesModel");
+const User = require("../models/userModel");
 
 // Finction to add //
 const addStory = async (req, res) => {
@@ -18,7 +19,7 @@ const addStory = async (req, res) => {
       like: 0,
     });
 
-    res.json({ success: true, message: "Stories post added successfully", stories });
+    res.json({ success: true, message: "Your story posted successfully", stories });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
@@ -56,29 +57,6 @@ const listStories = async (req, res) => {
   }
 };
 
-// Function for remove stories //
-
-const removeStory = async (req, res) => {
-  try {
-    const { id } = req.body;
-    const { userId } = req.body;
-
-    const story = await Stories.findById(id);
-    if (!story) {
-      return res.status(404).json({ success: false, message: "Story post not found" });
-    }
-    if (story.user.toString() !== userId.toString()) {
-      return res.status(403).json({ success: false, message: "Not authorized to delte this post" });
-    }
-
-    await Stories.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: "Story post deleted sucessfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
-  }
-};
-
 // Function for get single story //
 
 const singleStory = async (req, res) => {
@@ -88,7 +66,7 @@ const singleStory = async (req, res) => {
     const story = await Stories.findById(id).populate("user", "name profilePic");
 
     if (!story) {
-      return res.status(404).json({ success: false, message: "Story post not found" });
+      return res.status(404).json({ success: false, message: "Story  not found" });
     }
 
     let liked = false;
@@ -119,29 +97,54 @@ const handleLikes = async (req, res) => {
       return res.status(404).json({ success: false, messaage: "User not found" });
     }
 
-    const post = await Stories.findById(id);
+    const story = await Stories.findById(id);
 
-    if (!post) {
-      return res.status(404).json({ success: false, messaage: "Post not found" });
+    if (!story) {
+      return res.status(404).json({ success: false, messaage: "Story not found" });
     }
 
-    const alreadyLiked = post.likes.includes(userId);
+    const alreadyLiked = story.likes.includes(userId);
 
     if (alreadyLiked) {
       // UNLIKE
-      post.likes = post.likes.filter((id) => id.toString() !== userId.toString());
+      story.likes = story.likes.filter((id) => id.toString() !== userId.toString());
     } else {
       // LIKE
-      post.likes.push(userId);
+      story.likes.push(userId);
     }
 
-    await post.save();
+    await story.save();
 
-    res.status(200).json({ success: true, likes: post.likes, liked: !alreadyLiked });
+    res.status(200).json({ success: true, likes: story.likes, liked: !alreadyLiked });
   } catch (error) {
     console.log(error);
     res.json(500).json({ success: false, messaage: error.messaage });
   }
 };
 
-module.exports = { addStory, listStories, removeStory, singleStory, handleLikes };
+// Function for remove stories //
+
+const removeStory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const story = await Stories.findById(id);
+
+    if (!story) {
+      return res.status(404).json({ success: false, message: "Story  not found" });
+    }
+    if (story.user.toString() !== userId.toString()) {
+      return res.status(403).json({ success: false, message: "Not authorized to delete" });
+    }
+
+    await Stories.findByIdAndDelete(id);
+
+    res.status(200).json({ success: true, message: "Story  deleted sucessfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { addStory, listStories, singleStory, handleLikes, removeStory };

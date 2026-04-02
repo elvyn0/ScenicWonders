@@ -13,6 +13,6 @@ postRouter.get("/:id", optionalAuth, singlePost);
 // PROTECTED ROUTES
 postRouter.post("/add", auth, upload.single("image"), addPost);
 postRouter.post("/like/:id", auth, handleLike);
-postRouter.delete("/remove/:postId", auth, removePost);
+postRouter.delete("/remove/:id", auth, removePost);
 
 module.exports = postRouter;

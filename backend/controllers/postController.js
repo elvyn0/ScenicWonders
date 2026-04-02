@@ -2,7 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const Post = require("../models/postModel");
 const fs = require("fs").promises;
 
-// Add post
+// Add post //
 
 const addPost = async (req, res) => {
   try {
@@ -41,7 +41,9 @@ const addPost = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// Function for list post
+
+// Function for list post //
+
 const listPost = async (req, res) => {
   try {
     const posts = await Post.find().populate("user", " name").sort({ createdAt: -1 });
@@ -51,37 +53,8 @@ const listPost = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// Function for remove post
 
-const removePost = async (req, res) => {
-  try {
-    const postId = req.params.postId;
-    const userId = req.user._id;
-
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.status(404).json({ success: false, message: "Post not found" });
-    }
-
-    //Authorization check: only the author can delete their post
-    if (post.user.toString() !== userId.toString()) {
-      return res.status(403).json({ success: false, message: "Unauthorized " });
-    }
-
-    if (post.image?.publicId) {
-      await cloudinary.uploader.destroy(post.image.publicId);
-    }
-
-    await post.deleteOne();
-
-    res.status(200).json({ message: "Post deleted successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-//function for single product info
+// Deatile post  view  //
 
 const singlePost = async (req, res) => {
   try {
@@ -150,4 +123,35 @@ const handleLike = async (req, res) => {
   }
 };
 
-module.exports = { addPost, listPost, removePost, singlePost, handleLike };
+// Function for remove post //
+
+const removePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ success: false, message: "Post not found" });
+    }
+
+    // Authorization check //
+    if (post.user.toString() !== userId.toString()) {
+      return res.status(403).json({ success: false, message: "Unauthorized " });
+    }
+
+    if (post.image?.publicId) {
+      await cloudinary.uploader.destroy(post.image.publicId);
+    }
+
+    await post.deleteOne();
+
+    res.status(200).json({ success: true, message: "Post deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { addPost, listPost, singlePost, handleLike, removePost };

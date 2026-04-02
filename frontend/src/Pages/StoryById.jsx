@@ -6,11 +6,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Heart } from "lucide-react";
+import { Heart, Trash2 } from "lucide-react";
+import { assets } from "../assets/assets";
 
 function StoryById() {
   const { id } = useParams();
-  const { api, token } = useContext(AppContext);
+  const { api, token, user, navigate } = useContext(AppContext);
 
   const [story, setStory] = useState(null);
 
@@ -57,11 +58,30 @@ function StoryById() {
     }
   };
 
+  // Handling  delete story //
+  const handleDelete = async () => {
+    try {
+      const response = await api.delete(`/api/story/remove/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        navigate(-1);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
   useEffect(() => {
     fetchStoryById();
   }, [id]);
-
-  console.log(story);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -69,17 +89,20 @@ function StoryById() {
         {story && (
           <div key={story._id} className=" w-full bg-white rounded-2xl border border-gray-200 p-6 shadow-md">
             {/* User */}
-            <Link to={`/profile/${story.user._id}`} className="no-underline cursor-pointer">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
-                  {story.user?.name}
+            <div className="flex justify-between">
+              <Link to={`/profile/${story.user._id}`} className="no-underline cursor-pointer">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
+                    <img src={assets.profile1} className="rounded-full" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-800">{story.user?.name || "Unknown"}</p>
+                    <p className="text-xs text-gray-400">{new Date(story.createdAt).toLocaleDateString()}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-gray-800">{story.user?.name || "Unknown"}</p>
-                  <p className="text-xs text-gray-400">{new Date(story.createdAt).toLocaleDateString()}</p>
-                </div>
-              </div>
-            </Link>
+              </Link>
+              <div onClick={handleDelete}>{user && <Trash2 className="text-red-500 w-8 hover:cursor-pointer" />}</div>
+            </div>
 
             <div className="min-w-[350px] md:min-w-[600px]">
               {/* Title */}
