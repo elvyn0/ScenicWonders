@@ -9,6 +9,8 @@ import EmptyMessageState from "./EmptyMessageState";
 function MessageRoom() {
   const { conversationId } = useParams();
   const { api, token, socket } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [message, setMessage] = useState([]);
   const [conversation, setConversation] = useState(null);
 
@@ -17,6 +19,9 @@ function MessageRoom() {
 
   const fetchConversation = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get(`/api/conversation/${conversationId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -24,12 +29,17 @@ function MessageRoom() {
       });
       if (response.data.success) {
         setConversation(response.data.conversation);
+        setError(null);
       } else {
         toast.error(response.data.error);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,6 +47,9 @@ function MessageRoom() {
 
   const fetchMessage = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get(`/api/messages/${conversationId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,12 +57,17 @@ function MessageRoom() {
       });
       if (response.data.success) {
         setMessage(response.data.messages);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,6 +98,21 @@ function MessageRoom() {
       socket.off("receiverMessage");
     };
   }, []);
+
+  // Handling Loading state //
+  if (loading)
+    return (
+      <div className="text-center">
+        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+      </div>
+    );
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <div>

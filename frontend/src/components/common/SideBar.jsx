@@ -3,17 +3,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { GoHome } from "react-icons/go";
 import { MdOutlineExplore } from "react-icons/md";
 import { IoAddOutline } from "react-icons/io5";
-import { IoMdNotificationsOutline } from "react-icons/io";
 import { LuMessageCircleMore } from "react-icons/lu";
 import { RiCameraAiLine } from "react-icons/ri";
 import { FaRegPenToSquare } from "react-icons/fa6";
-import { assets } from "../../assets/assets";
+import { useContext } from "react";
 import { AppContext } from "../../context/appContext";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 function SideBar() {
+  const { api, token } = useContext(AppContext);
   const [showPopup, setShowPopup] = useState(false);
-  const [showNotificationPopup, setShowNotificationPopup] = useState(false);
   const navigate = useNavigate();
+  const [count, setCount] = useState(null);
 
   const handleSelect = (type) => {
     setShowPopup(false);
@@ -22,10 +24,33 @@ function SideBar() {
     if (type === "stories") navigate("/storiesPost");
   };
 
+  // Unread message count //
+
+  const messageCount = async () => {
+    try {
+      const response = await api.get("/api/messages/count", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.success) {
+        setCount(response.data.unreadmsgIdCount);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+  useEffect(() => {
+    messageCount();
+  }, []);
+
   return (
     <div>
-      <div className="fixed top-0 left-0 w-[4%] h-full border-r-2 flex flex-col  justify-center items-center">
-        <div className="flex flex-col gap-14 items-center">
+      <div className="fixed bottom-0 md:top-0 left-0 w-full md:w-16 h-16 md:h-full border-t md:border-t-0 md:border-r-2 flex md:flex-col justify-around md:justify-center items-center bg-white z-50">
+        <div className="flex   md:flex-col gap-14 items-center">
           {/* Home */}
 
           <NavLink to="/" className=" p-1 rounded bg-gray-200 text-black hover:bg-gray-300">
@@ -37,7 +62,7 @@ function SideBar() {
             <MdOutlineExplore className="isActive size-6" />
           </NavLink>
 
-          {/* Post */}
+          {/* Post && story */}
           <button>
             <IoAddOutline
               className="isActive size-8 p-1 rounded bg-gray-200 text-black hover:bg-gray-300 border border-solid"
@@ -45,24 +70,12 @@ function SideBar() {
             />
           </button>
 
-          {/* Notifications */}
-          <div>
-            <button className="relative">
-              <span className="absolute left-5 -top-1   flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-medium text-white">
-                3
-              </span>
-              <IoMdNotificationsOutline
-                className="isActive size-8 p-1 rounded bg-gray-200 text-black hover:bg-gray-300 "
-                onClick={() => setShowNotificationPopup(true)}
-              />
-            </button>
-          </div>
-
           {/* Messages */}
-
           <NavLink to="/message" className="relative p-1 rounded bg-gray-200 text-black hover:bg-gray-300">
-            <span className="absolute left-5 -top-1   flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-medium text-white">
-              3
+            <span
+              className={`absolute left-5 -top-1   flex h-4 w-4 items-center justify-center rounded-full ${count !== 0 ? "bg-red-700 text-[10px] font-medium text-white " : ""} `}
+            >
+              {count && count !== "NUN" && count !== "null" ? count : ""}
             </span>
             <LuMessageCircleMore className=" isActive size-6" />
           </NavLink>
@@ -103,41 +116,6 @@ function SideBar() {
                 <FaRegPenToSquare className="size-16  bg-gray-300  px-3 py-2 rounded" />
                 <p className="font-bold text-lg">Stories</p>
                 <p className="text-sm text-gray-500">Write it down — the world wants to feel your journey</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* popup for notification */}
-      {showNotificationPopup && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-all"
-          onClick={() => setShowNotificationPopup(false)}
-        >
-          <div className="bg-white rounded-lg shadow-lg w-[600px] p-6 relative" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="absolute  top-2 right-2 text-xl font-bold hover:bg-gray-800 hover:text-white rounded-full px-1"
-              onClick={() => setShowNotificationPopup(false)}
-            >
-              x
-            </button>
-            <h1 className="text-xl font-semibold mb-4">Notifications</h1>
-            <p className="text-xl font-bold mb-4">New</p>
-            {/* Notifications */}
-            <div>
-              <div className="flex flex-1 gap-3 items-center ">
-                <div className="w-12 rounded-full">
-                  <img src={assets.hampiB} className="w-full rounded-full" />
-                </div>
-                <p className="text-lg font-bold">user Name</p>
-                <p className="text-sm text-gray-600">Liked your post</p>
-              </div>
-              <div className="flex flex-1 gap-3 items-center ">
-                <div className="w-12 rounded-full">
-                  <img src={assets.hampiB} className="w-full rounded-full" />
-                </div>
-                <p className="text-lg font-bold">user Name</p>
-                <p className="text-sm text-gray-600">Liked your post</p>
               </div>
             </div>
           </div>
