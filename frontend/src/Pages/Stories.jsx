@@ -1,16 +1,20 @@
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
-import { Link } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Heart } from "lucide-react";
 
 function Stories() {
   const { api, token } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get("/api/story/list", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -18,12 +22,17 @@ function Stories() {
       });
       if (response.data.success) {
         setList(response.data.stories);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,7 +66,22 @@ function Stories() {
 
   useEffect(() => {
     fetchList();
-  }, [token]);
+  }, []);
+
+  // Handling Loading state //
+  if (loading)
+    return (
+      <div className="text-center">
+        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+      </div>
+    );
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <div className="p-5 ml-[4%]">
@@ -71,7 +95,7 @@ function Stories() {
             className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition"
           >
             {/* User */}
-            <Link to={`/profile/${item.user._id}`} className="no-underline text-black cursor-pointer">
+            <NavLink to={`/profile/${item.user?._id}`} className="no-underline text-black cursor-pointer">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
                   {item.user?.name}
@@ -81,7 +105,8 @@ function Stories() {
                   <p className="text-xs text-gray-400">{new Date(item.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>
-            </Link>
+            </NavLink>
+
             <NavLink to={`/story/${item._id}`} className={"no-underline"}>
               {/* Title */}
               <h2 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{item.title}</h2>

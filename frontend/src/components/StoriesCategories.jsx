@@ -6,10 +6,15 @@ import { Heart } from "lucide-react";
 
 function StoriesCategories() {
   const { api, token } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get("/api/story/list", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -17,18 +22,38 @@ function StoriesCategories() {
       });
       if (response.data.success) {
         setList(response.data.stories);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchList();
   }, []);
+
+  // Handling Loading state //
+  if (loading)
+    return (
+      <div className="text-center">
+        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+      </div>
+    );
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">

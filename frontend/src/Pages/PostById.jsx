@@ -9,11 +9,15 @@ import { Heart, Trash2 } from "lucide-react";
 function PostById() {
   const { id } = useParams();
   const { api, token, user, navigate } = useContext(AppContext);
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
 
   const postById = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get(`/api/post/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -21,12 +25,17 @@ function PostById() {
       });
       if (response.data.success) {
         setPost(response.data.post);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,7 +88,20 @@ function PostById() {
     postById();
   }, [id]);
 
-  console.log(post);
+  // Handling Loading state //
+  if (loading)
+    return (
+      <div className="text-center">
+        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+      </div>
+    );
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex items-center justify-center">

@@ -3,12 +3,13 @@ import { Link, useParams } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import { Star } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
-
 import toast from "react-hot-toast";
 
 function Hotel() {
   const { hotelId } = useParams();
   const { api } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [hotel, setHotel] = useState(null);
 
   // handling params data
@@ -24,15 +25,23 @@ function Hotel() {
 
   const fetchHotel = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get(`/api/hotels/${hotelId}`);
       if (response.data.success) {
         setHotel(response.data.hotel);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,16 +49,29 @@ function Hotel() {
     fetchHotel();
   }, []);
 
+  // Handling Loading state //
+  if (loading)
+    return (
+      <div className="text-center">
+        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+      </div>
+    );
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
+
   return (
     <div className="mx-auto max-w-6xl px-4 pt-12 mb-5">
-      {/* Booking searchbar */}
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-white rounded-2xl shadow-lg p-6 mt-5">
         {/* Hotel details */}
         {hotel && (
           <div className="lg:col-span-2 flex flex-col gap-2">
             <img src={hotel.hotelImage?.url} alt={hotel.name} className="w-full h-[350px] object-cover rounded-xl " />
-            <div className="flex gap-3 mb-5">
+            <div className="flex flex-col md:flex-row gap-3 mb-5">
               {hotel.roomImages?.map((img, i) => (
                 <img key={i} src={img.url} className="w-[340px] rounded-lg object-cover " alt={`Room ${i + 1}`} />
               ))}

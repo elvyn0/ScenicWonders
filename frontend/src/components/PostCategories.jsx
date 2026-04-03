@@ -8,26 +8,52 @@ import { Link, NavLink } from "react-router-dom";
 
 function PostCategories() {
   const { api } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [postList, setPostList] = useState([]);
 
   const fetchList = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get("/api/post/list");
 
       if (response.data.success) {
         setPostList(response.data.posts);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchList();
   }, []);
+
+  // Handling Loading state //
+  if (loading)
+    return (
+      <div className="text-center">
+        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+      </div>
+    );
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
+
   return (
     <div>
       <div>

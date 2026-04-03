@@ -3,67 +3,67 @@ import { assets } from "../assets/assets";
 
 function PlacesCategory() {
   return (
-    <div>
-      <div>
-        <h1 className="font-bold text-3xl flex justify-start mb-9">Placeses</h1>
-      </div>
-      <div className="w-full sm:w-1/2py-10 sm:py-0">
-        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4 gap-y-8 ">
-          {/* First Image with Overlay Text */}
-          <NavLink to="/nepal">
-            <div className="relative">
-              <img className="rounded-[11%] " src={assets.nepal} alt="Nepal" />
-              <div className="absolute bottom-10 left-0 bg-gray-900 bg-opacity-50 text-white w-full p-2 rounded-bl-2xl rounded-br-2xl">
-                <h1 className="font-bold text-lg text-center">Nepal</h1>
-              </div>
+    <div className="px-4 md:px-8">
+      {/* Title */}
+      <h1 className="font-bold text-lg md:text-2xl mb-6">Places</h1>
+
+      {/* Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6">
+        {/* Card */}
+        <NavLink to="/nepal">
+          <div className="relative group">
+            <img className="w-full h-32 sm:h-40 md:h-60 object-cover rounded-xl" src={assets.nepal} alt="Nepal" />
+
+            <div className="absolute bottom-0 left-0 w-full bg-black/50 text-white py-2 rounded-b-xl">
+              <h1 className="text-center text-sm md:text-lg font-semibold">Nepal</h1>
             </div>
-          </NavLink>
-          {/* Second Image with Overlay Text */}
-          <NavLink to="/rajasthan">
-            <div className="relative">
-              <img className="rounded-[11%]" src={assets.rajasthan} alt="Rajasthan" />
-              <div className="absolute bottom-10 left-0 bg-gray-900 bg-opacity-50 text-white w-full p-2 rounded-bl-2xl rounded-br-2xl">
-                <h1 className="font-bold text-lg text-center">Rajasthan</h1>
-              </div>
+          </div>
+        </NavLink>
+
+        <NavLink to="/rajasthan">
+          <div className="relative">
+            <img className="w-full h-32 sm:h-40 md:h-60 object-cover rounded-xl" src={assets.rajasthan} />
+            <div className="absolute bottom-0 w-full bg-black/50 text-white py-2 rounded-b-xl">
+              <h1 className="text-center text-sm md:text-lg font-semibold">Rajasthan</h1>
             </div>
-          </NavLink>
-          {/* Third Image with Overlay Text */}
-          <NavLink to="/tamilnadu">
-            <div className="relative">
-              <img className="rounded-[11%]" src={assets.tamilNadu} alt="TamilNadu" />
-              <div className="absolute bottom-10 left-0 bg-gray-900 bg-opacity-50 text-white w-full p-2 rounded-bl-2xl rounded-br-2xl">
-                <h1 className="font-bold text-lg text-center">Tamil Nadu</h1>
-              </div>
+          </div>
+        </NavLink>
+
+        <NavLink to="/tamilnadu">
+          <div className="relative">
+            <img className="w-full h-32 sm:h-40 md:h-60 object-cover rounded-xl" src={assets.tamilNadu} />
+            <div className="absolute bottom-0 w-full bg-black/50 text-white py-2 rounded-b-xl">
+              <h1 className="text-center text-sm md:text-lg font-semibold">Tamil Nadu</h1>
             </div>
-          </NavLink>
-          {/* Fourth Image with Overlay Text */}
-          <NavLink to="/kerala">
-            <div className="relative">
-              <img className="rounded-[11%]" src={assets.kerala} alt="Kerala" />
-              <div className="absolute bottom-10 left-0 bg-gray-900 bg-opacity-50 text-white w-full p-2 rounded-bl-2xl rounded-br-2xl">
-                <h1 className="font-bold text-lg text-center">Kerala</h1>
-              </div>
+          </div>
+        </NavLink>
+
+        <NavLink to="/kerala">
+          <div className="relative">
+            <img className="w-full h-32 sm:h-40 md:h-60 object-cover rounded-xl" src={assets.kerala} />
+            <div className="absolute bottom-0 w-full bg-black/50 text-white py-2 rounded-b-xl">
+              <h1 className="text-center text-sm md:text-lg font-semibold">Kerala</h1>
             </div>
-          </NavLink>
-          {/* Fifth Image with Overlay Text */}
-          <NavLink to="/maharashtra">
-            <div className="relative">
-              <img className="rounded-[11%]" src={assets.maharashtra} alt="Maharashtra" />
-              <div className="absolute bottom-10 left-0 bg-gray-900 bg-opacity-50 text-white w-full p-2 rounded-bl-2xl rounded-br-2xl">
-                <h1 className="font-bold text-lg text-center">Maharashtra</h1>
-              </div>
+          </div>
+        </NavLink>
+
+        <NavLink to="/maharashtra">
+          <div className="relative">
+            <img className="w-full h-32 sm:h-40 md:h-60 object-cover rounded-xl" src={assets.maharashtra} />
+            <div className="absolute bottom-0 w-full bg-black/50 text-white py-2 rounded-b-xl">
+              <h1 className="text-center text-sm md:text-lg font-semibold">Maharashtra</h1>
             </div>
-          </NavLink>
-          {/* Sixth Image with Overlay Text */}
-          <NavLink to="/punjab">
-            <div className="relative">
-              <img className="rounded-[11%]" src={assets.punjab} alt="Punjab" />
-              <div className="absolute bottom-10 left-0 bg-gray-900 bg-opacity-50 text-white w-full p-2 rounded-bl-2xl rounded-br-2xl">
-                <h1 className="font-bold text-lg text-center">Punjab</h1>
-              </div>
+          </div>
+        </NavLink>
+
+        <NavLink to="/punjab">
+          <div className="relative">
+            <img className="w-full h-32 sm:h-40 md:h-60 object-cover rounded-xl" src={assets.punjab} />
+            <div className="absolute bottom-0 w-full bg-black/50 text-white py-2 rounded-b-xl">
+              <h1 className="text-center text-sm md:text-lg font-semibold">Punjab</h1>
             </div>
-          </NavLink>
-        </div>
+          </div>
+        </NavLink>
       </div>
     </div>
   );

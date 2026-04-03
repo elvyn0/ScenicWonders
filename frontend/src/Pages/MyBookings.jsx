@@ -5,10 +5,15 @@ import { assets } from "../assets/assets";
 
 function MyBookings() {
   const { api, token } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [bookings, setBookings] = useState([]);
 
   const fetchBookings = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get("/api/bookings/myBookings", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -17,18 +22,38 @@ function MyBookings() {
 
       if (response.data.success) {
         setBookings(response.data.myBookings);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchBookings();
   }, []);
+
+  // Handling Loading state //
+  if (loading)
+    return (
+      <div className="text-center">
+        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+      </div>
+    );
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center sm:bg-black/50 sm:backdrop-blur-sm ml-[4%]">

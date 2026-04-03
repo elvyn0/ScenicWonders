@@ -1,11 +1,19 @@
 import { Bot } from "lucide-react";
 import { useEffect, useRef } from "react";
 
-function AiBot({ message, input, setInput, sendMessage, loading, aiOpen, setAiOpen }) {
+function AiBot({ message, input, setInput, sendMessage, loading, aiOpen, setAiOpen, error }) {
   const bottomRef = useRef(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
+
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <>

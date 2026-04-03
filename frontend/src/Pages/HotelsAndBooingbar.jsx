@@ -8,6 +8,7 @@ function HotelsAndBookingbar() {
   const { api } = useContext(AppContext);
   const [hotelsList, setHotelsList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filteredHotels, setFilteredHotels] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [searchData, setSearchData] = useState({
@@ -21,15 +22,21 @@ function HotelsAndBookingbar() {
   // Fetching hotels //
   const fetchHotelLists = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.get("/api/hotels/list");
       if (response.data.success) {
         setHotelsList(response.data.hotels);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
     } finally {
       setLoading(false);
     }
@@ -68,6 +75,14 @@ function HotelsAndBookingbar() {
     }
   };
 
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
+
   return (
     <div className="flex flex-col gap-5 p-5 items-center justify-center">
       <div>
@@ -79,6 +94,7 @@ function HotelsAndBookingbar() {
           setSearchData={setSearchData}
         />
       </div>
+
       <div>
         <Hotels
           fetchHotelLists={fetchHotelLists}

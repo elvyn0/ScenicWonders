@@ -13,6 +13,7 @@ function NavBar() {
   const [message, setMessage] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -24,83 +25,81 @@ function NavBar() {
     setLoading(true);
 
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await api.post("/api/ai/chat", { message: input });
       if (response.data.success) {
         const botMessage = { role: "bot", text: response.data.reply };
         setMessage((prev) => [...prev, botMessage]);
-        console.log(botMessage);
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       setMessage((prev) => [...prev, { role: "bot", text: "Something went wrong" }]);
-
       toast.error(error.response?.data?.message);
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <div className="bg-gray-200 py-4 px-8 rounded-lg mt-5 mx-5 items-center  ">
+    <div className="bg-gray-200 py-4 px-4 md:px-8 rounded-lg mx-3 md:mx-5">
       <div className="flex flex-col gap-5">
-        {/*  Heading */}
-
-        <div className="text-center w-full mx-auto p-2 bg-white rounded-xl shadow-md mt-2">
-          <h1 className=" text-lg font-semibold  ">
-            Scenic Wonders is a social platform for travelers to share real travel experiences through blogs, explore
-            destinations, and discover places to stay.
+        {/* Heading */}
+        <div className="text-center w-full mx-auto p-3 bg-white rounded-xl shadow-md">
+          <h1 className="text-sm md:text-lg font-semibold">
+            Scenic Wonders is a social platform for travelers to share real travel experiences, explore destinations,
+            and discover places to stay.
           </h1>
         </div>
 
         {/* Tabs */}
-        <nav className=" px-5 ">
-          <ul className="flex flex-row  justify-between items-center mx-5">
-            {/* Explore Nav */}
-            <div className=" flex flex-col gap-2 justify-center items-center">
+        <nav className="px-2 md:px-5">
+          <ul className="grid grid-cols-3 sm:grid-cols-5 gap-4 place-items-center">
+            {/* Explore */}
+            <div className="flex flex-col items-center gap-1">
               <NavLink to="/explore">
-                <li
-                  className="   bg-red-600   px-3 py-2 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
-                  type="button"
-                >
-                  <Telescope className="size-6 text-white" />
+                <li className="bg-red-600 p-2 md:px-3 md:py-2 rounded-lg shadow hover:scale-105 transition">
+                  <Telescope className="size-5 md:size-6 text-white" />
                 </li>
               </NavLink>
-              <p className=" font-bold  text-sm mb-0">Explore</p>
+              <p className="text-xs md:text-sm font-bold">Explore</p>
             </div>
-            {/* Blog Nav */}
-            <div className="flex flex-col gap-2 justify-center items-center">
+
+            {/* Stories */}
+            <div className="flex flex-col items-center gap-1">
               <NavLink to="/stories">
-                <li
-                  className="   bg-red-600   px-3 py-2 rounded-md shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
-                  type="button"
-                >
-                  <NotebookPen className="size-6 text-white" />
+                <li className="bg-red-600 p-2 md:px-3 md:py-2 rounded-lg shadow hover:scale-105 transition">
+                  <NotebookPen className="size-5 md:size-6 text-white" />
                 </li>
               </NavLink>
-              <p className="font-bold text-sm mb-0">Stories</p>
+              <p className="text-xs md:text-sm font-bold">Stories</p>
             </div>
-            {/* Hotels Nav */}
-            <Link to="/hotels&bookings" target="_blank" rel="noopener noreferrer" className="no-underline">
-              <div className="flex flex-col gap-2 justify-center items-center">
-                <li
-                  className=" bg-red-600   px-3 py-2 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
-                  type="button"
-                >
-                  <Hotel className="size-6 text-white" />
+
+            {/* Hotels */}
+            <Link to="/hotels&bookings" target="_blank" className="no-underline">
+              <div className="flex flex-col items-center gap-1 text-center">
+                <li className="bg-red-600 p-2 md:px-3 md:py-2 rounded-lg shadow hover:scale-105 transition">
+                  <Hotel className="size-5 md:size-6 text-white" />
                 </li>
-                <p className="font-bold text-sm text-black  mb-0"> Book your hotels</p>
+                <p className="text-xs md:text-sm font-bold leading-tight text-black">Hotels</p>
               </div>
             </Link>
-            {/* Ai Nav */}
-            <div className="flex flex-col gap-2 justify-center items-center">
+
+            {/* AI */}
+            <div className="flex flex-col items-center gap-1">
               <li
                 onClick={() => setAiOpen(true)}
-                className="  bg-blue-500  px-3 py-2 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
-                type="button"
+                className="bg-blue-500 p-2 md:px-3 md:py-2 rounded-lg shadow hover:scale-105 transition cursor-pointer"
               >
-                <Bot className="size-6 text-white" />
+                <Bot className="size-5 md:size-6 text-white" />
               </li>
+
               <AiBot
                 aiOpen={aiOpen}
                 setAiOpen={setAiOpen}
@@ -109,20 +108,20 @@ function NavBar() {
                 setInput={setInput}
                 message={message}
                 loading={loading}
+                error={error}
               />
-              <p className="font-bold text-sm mb-0">Ai</p>
+
+              <p className="text-xs md:text-sm font-bold">AI</p>
             </div>
+
             {/* About */}
-            <div className="flex flex-col gap-2 justify-center items-center">
+            <div className="flex flex-col items-center gap-1">
               <NavLink to="/about">
-                <li
-                  className="  bg-red-600  px-3 py-2 rounded-lg shadow-lg hover:scale-110 transition ease-in-out hover:shadow-xl "
-                  type="button"
-                >
-                  <BadgeInfo className="size-6 text-white" />
+                <li className="bg-red-600 p-2 md:px-3 md:py-2 rounded-lg shadow hover:scale-105 transition">
+                  <BadgeInfo className="size-5 md:size-6 text-white" />
                 </li>
               </NavLink>
-              <p className="font-bold text-sm mb-0">About</p>
+              <p className="text-xs md:text-sm font-bold">About</p>
             </div>
           </ul>
         </nav>
@@ -132,15 +131,3 @@ function NavBar() {
 }
 
 export default NavBar;
-
-{
-  /*
-  // Search Bar Component :
-        <form className="bg-white p-2 rounded-lg shadow mt-12 flex  items-center  w-[1000px] ">
-          <input type="text" placeholder="Search hear" className=" border-none rounded px-3  w-full" />
-          <button className="bg-orange-500 text-white px-6 py-2 rounded-xl">
-            <SearchIcon className="size-6" />
-          </button>
-        </form>
-  */
-}

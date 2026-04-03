@@ -10,8 +10,9 @@ import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
 
 function Booknow() {
-  const { api } = useContext(AppContext);
-
+  const { api, token, user } = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { hotelId } = useParams();
 
   const [params] = useSearchParams();
@@ -44,6 +45,9 @@ function Booknow() {
     event.preventDefault();
 
     try {
+      setLoading(true);
+      setError(null);
+
       const bookingData = {
         hotelId,
         numberOfRooms: rooms,
@@ -56,24 +60,52 @@ function Booknow() {
       /// Saving locally
       localStorage.setItem("bookingData", JSON.stringify(bookingData));
 
-      const response = await api.post("/api/payment/create-checkout-session", {
-        hotelId,
-        hotelName,
-        nights,
-        rooms,
-        pricePerNight,
-        ...formData,
-      });
+      const response = await api.post(
+        "/api/payment/create-checkout-session",
+        {
+          hotelId,
+          hotelName,
+          nights,
+          rooms,
+          pricePerNight,
+          ...formData,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       if (response.data.success) {
         window.location.href = response.data.url;
+        setError(null);
       } else {
         toast.error(response.data.message);
+        setError("Failed to load data");
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setError("Server not responding...");
+    } finally {
+      setLoading(false);
     }
   };
+
+  // Handling Loading state //
+  if (loading)
+    return (
+      <div className="text-center">
+        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+      </div>
+    );
+  // Handling error state //
+  if (error)
+    return (
+      <div className="text-center text-lg text-red-600 font-bold">
+        <p>{error}</p>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
@@ -93,7 +125,7 @@ function Booknow() {
           <span>💳 Trusted Payments</span>
         </div>
       </div>
-
+      {!user && <p className="text-sm text-red-500 text-center mb-0">Please login to proceed with payment</p>}
       {/* Main Content */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6 mt-10">
         {/* Left - Hotel Summary */}
