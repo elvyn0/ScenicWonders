@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { assets } from "../assets/assets";
 import { AppContext } from "../context/appContext";
 import { NavLink, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -7,7 +6,7 @@ import { EllipsisVertical } from "lucide-react";
 import EditProfileModel from "../components/EditProfileModel";
 
 function Profile() {
-  const { api } = useContext(AppContext);
+  const { api, token, navigate, setUser, setToken } = useContext(AppContext);
   const { userId } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,7 +16,9 @@ function Profile() {
   const [profile, setProfile] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
+  // Fetching user profile //
   const fetchList = async () => {
     try {
       setLoading(true);
@@ -38,6 +39,35 @@ function Profile() {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handling Delete user //
+  const handleDeleteUser = async () => {
+    try {
+      setLoading(true);
+
+      const response = await api.delete("/api/user/delete-account", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setUser(null);
+        setToken(null);
+        navigate("/");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -71,26 +101,64 @@ function Profile() {
           <div className="absolute right-6 md:right-10  p-1 rounded-full hover:bg-gray-200 transition hover:cursor-pointer">
             <EllipsisVertical onClick={() => setShowDropdown((prev) => !prev)} />
             {showDropdown && (
-              <div className="absolute right-6 text-sm ">
-                <p
-                  onClick={() => {
-                    setShowEdit(true);
-                  }}
-                  className="bg-gray-300 px-3 py-1 rounded-sm  font-semibold"
-                >
-                  Edit
-                </p>
-                {showEdit && <EditProfileModel setShowEdit={setShowEdit} />}
+              <div className="absolute right-6 text-sm  ">
+                <div className="bg-gray-200 w-full  text-center rounded-sm  font-semibold">
+                  <p
+                    className="px-5 py-2 hover:bg-gray-300 mb-0"
+                    onClick={() => {
+                      setShowEdit(true);
+                    }}
+                  >
+                    Edit
+                  </p>
+
+                  <p
+                    onClick={() => setShowConfirm(true)}
+                    className="text-red-500  text-nowrap hover:bg-gray-300  border-t-2 border-t-white py-2"
+                  >
+                    Delete Acc
+                  </p>
+                </div>
               </div>
             )}
+            {/* show edit profile */}
+            <div>
+              {showEdit && <EditProfileModel setShowEdit={setShowEdit} profile={profile} setProfile={setProfile} />}
+            </div>
+            {/* Delete confirmation */}
+            <div>
+              {showConfirm && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                  <div className="bg-white py-2 px-2 rounded-lg w-[90%] max-w-md">
+                    <div className="flex justify-end">
+                      <p
+                        onClick={() => setShowConfirm(false)}
+                        className="bg-gray-100 rounded-full w-8 p-2 cursor-pointer"
+                      >
+                        X
+                      </p>
+                    </div>
+
+                    <div className="text-center mb-2">
+                      <p>This action will delete all your data.</p>
+                      <button onClick={handleDeleteUser} className="bg-red-600 px-5 py-3 rounded-lg">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           {/* Profile */}
           <div className="flex flex-col items-center text-center gap-3">
-            <img
-              className="w-28 h-28 rounded-full object-cover"
-              src={profile.profileImage || assets.profile1}
-              alt="profile"
-            />
+            {profile.profilePic ? (
+              <img className="w-28 h-28 rounded-full object-cover" src={profile.profilePic} />
+            ) : (
+              <p className="h-32 w-32 rounded-full bg-gray-300 text-sm flex items-center justify-center font-bold text-gray-700">
+                Add Image
+              </p>
+            )}
 
             <div>
               <h2 className="text-xl font-semibold">{profile.name}</h2>

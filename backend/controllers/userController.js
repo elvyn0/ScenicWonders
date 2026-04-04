@@ -1,9 +1,12 @@
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs").promises;
 const validator = require("validator");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Post = require("../models/postModel");
 const Stories = require("../models/storiesModel");
+const Booking = require("../models/bookingModel");
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
@@ -70,7 +73,7 @@ const userLogin = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ success: false, message: "Invalid credentials" });
+      return res.status(401).json({ success: false, message: "user name or password are incorrect" });
     }
 
     const token = jwt.sign(
@@ -162,6 +165,92 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+// Update profile //
+const updateUserprofile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { name } = req.body;
+    const profilePic = req.file;
+
+    const updatedData = {};
+
+    if (name) updatedData.name = name;
+
+    const user = await User.findById(userId);
+
+    if (profilePic) {
+      if (user.profilePic?.publicId) {
+        await cloudinary.uploader.destroy(user.profilePic.publicId);
+      }
+      const profileUpload = await cloudinary.uploader.upload(profilePic.path, { folder: "profileImage" });
+
+      await fs.unlink(profilePic.path);
+
+      updatedData.profilePic = profileUpload.secure_url;
+      updatedData.profilePic = upload.publicId;
+    }
+
+    if (Object.keys(updatedData).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No data to update",
+      });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
+      new: true,
+    });
+
+    res.status(200).json({ success: true, updatedUser });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Delete user //
+const handleDeleteUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Find user //
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Getting user post and delete  //
+    const posts = await Post.find({ user: userId });
+
+    for (const post of posts) {
+      if (post.image?.publicId) {
+        await cloudinary.uploader.destroy(post.image.publicId);
+      }
+    }
+    await Post.deleteMany({ user: userId });
+
+    // Delete stories //
+
+    await Stories.deleteMany({ user: userId });
+
+    // Delete Bookings //
+    await Booking.deleteMany({ user: userId });
+
+    // Delete profilePic //
+    if (user.profilePic?.publicId) {
+      await cloudinary.uploader.destroy(user.profilePic.publicId);
+    }
+
+    await User.deleteOne();
+
+    res.status(200).json({ success: true, message: "User deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 ///  Admin Login ///
 const adminLogin = async (req, res) => {
   try {
@@ -172,7 +261,7 @@ const adminLogin = async (req, res) => {
     }
 
     if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
-      return res.status(401).json({ success: false, message: "Not authorized email or password is wrong" });
+      return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
     const token = jwt.sign({ email, role: "admin" }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
@@ -183,4 +272,14 @@ const adminLogin = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, userLogin, getUser, adminLogin, getUserProfile, getMe, getUsersList };
+module.exports = {
+  registerUser,
+  userLogin,
+  getUser,
+  adminLogin,
+  getUserProfile,
+  getMe,
+  getUsersList,
+  updateUserprofile,
+  handleDeleteUser,
+};
