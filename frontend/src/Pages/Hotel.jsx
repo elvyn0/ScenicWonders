@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import { Star } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
+import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
+import BookingCalender2 from "../components/BookingCalender2";
 
 function Hotel() {
+  const navigate = useNavigate();
   const { hotelId } = useParams();
   const { api } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
@@ -14,16 +17,19 @@ function Hotel() {
 
   // handling params data
   const [params] = useSearchParams();
-
   const checkIn = params.get("checkIn");
   const checkOut = params.get("checkOut");
   const guests = params.get("guests");
   const rooms = params.get("rooms");
 
-  // Calculating the total nights
-  const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+  const [selectedDate, setSelectedDate] = useState({ checkIn: null, checkOut: null });
+  const [bookingInfo, setBookingInfo] = useState({
+    guests: guests || 1,
+    rooms: rooms || 1,
+  });
 
-  const fetchHotel = async () => {
+  // Fetch hotel details
+  const fetchHotelDetails = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -45,8 +51,98 @@ function Hotel() {
     }
   };
 
+  // Calculating the total nights
+  const nights =
+    selectedDate.checkIn && selectedDate.checkOut
+      ? Math.ceil((new Date(selectedDate.checkOut) - new Date(selectedDate.checkIn)) / (1000 * 60 * 60 * 24))
+      : 0;
+
+  //  Update guests
+  const handleGuestsChange = (value) => {
+    const updated = { ...bookingInfo, guests: value };
+    setBookingInfo(updated);
+    updateQuery(updated);
+  };
+
+  // Update rooms
+  const handleRoomsChange = (value) => {
+    const updated = { ...bookingInfo, rooms: value };
+    setBookingInfo(updated);
+    updateQuery(updated);
+  };
+
+  // Validating to prevent forn invalid date
+  const isValidDateString = (value) => {
+    const date = new Date(value);
+    return value && !isNaN(date);
+  };
+  // Sync URL params with state
   useEffect(() => {
-    fetchHotel();
+    if (isValidDateString(checkIn) && isValidDateString(checkOut)) {
+      setSelectedDate({
+        checkIn: new Date(checkIn),
+        checkOut: new Date(checkOut),
+      });
+      setBookingInfo({
+        guests: guests ? Number(guests) : 0,
+        rooms: rooms ? Number(rooms) : 0,
+      });
+    }
+  }, [checkIn, checkOut, guests, rooms]);
+
+  // Updating the dates , guests and rooms
+  const updateQuery = (data) => {
+    const query = new URLSearchParams({
+      checkIn: selectedDate.checkIn?.toISOString(),
+      checkOut: selectedDate.checkOut?.toISOString(),
+      guests: data.guests,
+      rooms: data.rooms,
+    }).toString();
+
+    navigate(`?${query}`, { replace: true });
+  };
+
+  // Validating date
+  const isValidDate = (date) => {
+    return date instanceof Date && !isNaN(date);
+  };
+  // Build booking query params
+  const buildQueryParams = () => {
+    const params = new URLSearchParams();
+
+    if (isValidDate(selectedDate.checkIn)) {
+      params.append("checkIn", selectedDate.checkIn.toISOString());
+    }
+
+    if (isValidDate(selectedDate.checkOut)) {
+      params.append("checkOut", selectedDate.checkOut.toISOString());
+    }
+
+    if (bookingInfo.guests > 0) {
+      params.append("guests", bookingInfo.guests);
+    }
+
+    if (bookingInfo.rooms > 0) {
+      params.append("rooms", bookingInfo.rooms);
+    }
+
+    if (nights > 0) {
+      params.append("nights", nights);
+    }
+    if (hotel?.name) {
+      params.append("hotelName", hotel.name);
+    }
+
+    if (hotel?.pricePerNight) {
+      params.append("price", hotel.pricePerNight);
+    }
+
+    return params.toString();
+  };
+  const queryString = buildQueryParams();
+
+  useEffect(() => {
+    fetchHotelDetails();
   }, []);
 
   // Handling Loading state //
@@ -66,6 +162,17 @@ function Hotel() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-12 mb-5">
+      {/* Calender ,guest and room  */}
+      <div>
+        <BookingCalender2
+          className="w-[300px]"
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          handleGuestsChange={handleGuestsChange}
+          handleRoomsChange={handleRoomsChange}
+          bookingInfo={bookingInfo}
+        />
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-white rounded-2xl shadow-lg p-6 mt-5">
         {/* Hotel details */}
         {hotel && (
@@ -96,30 +203,23 @@ function Hotel() {
                 <p>Check-Out</p>
               </div>
               <div className="flex justify-between text-sm  text-green-500 font-semibold mt-[-5px]">
-                <p>{checkIn && checkIn !== "null" && checkIn !== "undefined" ? checkIn : "Please select a Date"}</p>
-                <p>{checkOut && checkOut !== "null" && checkOut !== "undefined" ? checkOut : "Please select a Date"}</p>
+                <p>{formatDate(selectedDate.checkIn)}</p>
+                <p>{formatDate(selectedDate.checkOut)}</p>
               </div>
             </div>
             <div>
               <p className="text-md font-semibold">
                 Number of Guests:
-                <span className="ml-2 text-md text-green-500 font-semibold">
-                  {guests && guests !== "null" && guests !== "undefined" ? guests : 0}
-                </span>
+                <span className="ml-2 text-md text-green-500 font-semibold">{bookingInfo.guests || 0}</span>
               </p>
               <p className="text-md font-semibold ">
                 Number of Rooms:
-                <span className="ml-2 text-md text-green-500 font-semibold">
-                  {rooms && rooms !== "null" && rooms !== "undefined" ? guests : 0}
-                </span>
+                <span className="ml-2 text-md text-green-500 font-semibold">{bookingInfo.rooms || 0}</span>
               </p>
             </div>
             <div className="flex flex-col  justify-between">
               <p className="font-semibold text-md ">
-                Number of nights :
-                <span className="text-green-500 ml-2">
-                  {nights && nights !== "undefined" && nights !== "null" ? nights : 0}
-                </span>
+                Number of nights :<span className="text-green-500 ml-2">{nights || 0}</span>
               </p>
               <p className="text-md font-semibold ">
                 Price per night: <span className="text-green-500 font-semibold">₹{hotel?.pricePerNight}</span>
@@ -134,9 +234,7 @@ function Hotel() {
           </div>
 
           {hotel && (
-            <Link
-              to={`/booknow/${hotel?._id}?hotelName=${hotel.name}&&checkIn=${checkIn}&&checkOut=${checkOut}&&guests=${guests}&&rooms=${rooms}&&nights=${nights}&&price=${hotel.pricePerNight}`}
-            >
+            <Link to={`/booknow/${hotel?._id}?${queryString}`}>
               <button className="w-full bg-black hover:bg-gray-900 text-white py-3 rounded-xl font-semibold transition">
                 Book now
               </button>
