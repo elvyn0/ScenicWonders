@@ -8,3 +8,55 @@
   }
   background-color: #dc2626;
 }
+
+#ticket {
+  width: 300px;
+  padding: 20px;
+  background: #111;
+  color: white;
+  text-align: center;
+
+  clip-path: polygon(0% 0%, 100% 0%, 100% 40%, 92% 50%, 100% 60%, 100% 100%, 0% 100%, 0% 60%, 8% 50%, 0% 40%);
+}
+
+.icon-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #4b5563;
+  transition: color 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: #111827;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+
+  background: #1f2937;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* Show on hover */
+.icon-btn:hover .tooltip {
+  opacity: 1;
+}
