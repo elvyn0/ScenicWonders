@@ -69,6 +69,7 @@ const getUnreadCount = async (req, res) => {
     const conversationIds = conversations.map((c) => c._id);
 
     const unreadConversations = await MessageModel.distinct("conversationId", {
+      conversationId: { $in: conversationIds },
       senderId: { $ne: userId },
       isRead: false,
     });
