@@ -1,18 +1,15 @@
 import PlacesCategory from "../components/PlacesCategory";
 import StoriesCategories from "../components/StoriesCategories";
 import PostCategories from "../components/PostCategories";
-import SearchBar_main from "../components/common/SearchBar_main";
 
 const Explore = () => {
   return (
     // Main Container
-    <div className="  mx-[8%] mt-28 mb-[4%]">
-      {/* Sticky Search Bar */}
-      <SearchBar_main />
-      <div className="mb-48">
+    <div className="flex flex-col gap-10 mx-3  mt-10 mb-8">
+      <div>
         <PlacesCategory />
       </div>
-      <div className="mb-48">
+      <div>
         <StoriesCategories />
       </div>
       <div>

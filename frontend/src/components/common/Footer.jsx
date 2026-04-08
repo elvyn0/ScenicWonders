@@ -4,9 +4,9 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 function Footer() {
   const today = new Date();
   return (
-    <div className="  flex flex-col    mt-20">
+    <div className="flex flex-col text-sm ">
       {/* Footer logo */}
-      <div className="  flex flex-col  text-sm justify-between">
+      <div>
         <hr className="text-gray-500" />
         <div className="font-bold pl-5 flex flex-row gap-2 items-center mt-3">
           <img src={assets.sw_logo} className="size-8" />
@@ -14,19 +14,20 @@ function Footer() {
         </div>
 
         {/* Company deatiles */}
-        <div className="flex flex-row justify-between items-center p-10 ">
-          {/* lists */}
-          <div className="flex flex-col items-center">
-            <p className="font-bold  text-lg">Company</p>
-            <ul className="flex flex-col gap-2 ">
+        <div className="flex flex-col gap-6 md:gap-2 text-left md:flex-row justify-between items-start md:items-center p-6 md:p-10">
+          {/* Company */}
+          <div className="flex flex-col items-start w-full md:w-auto">
+            <p className="font-bold text-lg">Company</p>
+            <ul className="flex flex-col gap-2">
               <li>About</li>
               <li>Privacy policy</li>
               <li>Security</li>
             </ul>
           </div>
 
-          <div className="flex flex-col  justify-start ">
-            <p className="font-bold  text-lg">contact Us</p>
+          {/* Contact */}
+          <div className="flex flex-col items-start w-full md:w-auto">
+            <p className="font-bold text-lg">Contact Us</p>
             <ul className="flex flex-col gap-2">
               <li>Help/FAQ</li>
               <li>scenicwonders@gmail.com</li>
@@ -34,9 +35,10 @@ function Footer() {
             </ul>
           </div>
 
-          <div className="flex flex-col items-center  ">
+          {/* Social */}
+          <div className="hidden  md:flex flex-col items-start md:items-center w-full md:w-auto">
             <p className="font-bold text-lg">Follow Us</p>
-            <div className="flex flex-row  justify-center gap-4 ">
+            <div className="flex gap-4 mt-2">
               <FaFacebook size={30} />
               <FaTwitter size={30} />
               <FaInstagram size={30} />
@@ -45,7 +47,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-center">
+      <div className="hidden  md:flex flex-col justify-center">
         <hr className="text-gray-500" />
         <p className=" text-sm text-center">
           Copyright&copy; {today.getFullYear()}@scenicwonders.dev - All Right Reserved.

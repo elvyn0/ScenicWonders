@@ -5,7 +5,7 @@ import "swiper/css";
 
 function Hero() {
   return (
-    <section className="bg-gray-200 px-28 py-8 flex  justify-between lg:flex-row items-center  mx-5 rounded-[100px] mt-5 shadow-mg  ">
+    <section className="hidden md:flex bg-gray-200 px-10 lg:px-28 py-8 justify-between items-center mx-3 md:mx-5 rounded-[40px] md:rounded-[100px] shadow-md">
       <div>
         <Swiper
           className="w-[250px] hover:scale-110 transition ease-in-out"
@@ -15,17 +15,17 @@ function Hero() {
           loop={true}
         >
           <SwiperSlide>
-            <div className="hidden sm:flex flex-col   gap-5 mt-3 mb-3">
+            <div className=" flex-col   gap-5 mt-3 mb-3">
               <img className="rounded-[50px] object-cover h-[400px]  " src={assets.travel1B} />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className=" hidden sm:flex flex-col gap-5  mt-2 mb-2">
+            <div className="  flex-col gap-5  mt-2 mb-2">
               <img className="rounded-[50px] object-cover h-[400px]" src={assets.hampiB} />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className=" hidden sm:flex flex-col gap-5  mt-2 mb-2">
+            <div className=" flex-col gap-5  mt-2 mb-2">
               <img className="rounded-[50px] object-cover h-[400px]" src={assets.ootyB} />
             </div>
           </SwiperSlide>
