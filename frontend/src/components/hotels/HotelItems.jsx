@@ -7,12 +7,29 @@ function HotelItems({ id, name, image, pricePerNight, location, rating, searchDa
   const { currency } = useContext(AppContext);
   const { checkIn, checkOut, guests, rooms } = searchData;
 
+  //  Build query params
+  const buildQueryParams = () => {
+    const params = new URLSearchParams();
+
+    if (checkIn) {
+      params.append("checkIn", checkIn);
+    }
+    if (checkOut) {
+      params.append("checkOut", checkOut);
+    }
+    if (guests > 0) {
+      params.append("guests", guests);
+    }
+    if (rooms > 0) {
+      params.append("rooms", rooms);
+    }
+    return params.toString();
+  };
+  const queryString = buildQueryParams();
+
   return (
-    <Link
-      className=" w-full no-underline "
-      to={`/hotels/hotel/${id}?&checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}&rooms=${rooms}`}
-    >
-      <div className="flex flex-1 text-gray-700 shadow-md bg-white p-3 mb-5 rounded-lg">
+    <Link className=" w-full no-underline " to={`/hotels/hotel/${id}?${queryString}`}>
+      <div className="flex flex-col md:flex-row text-gray-700 shadow-md bg-white p-3 mb-5 rounded-lg">
         <div>
           <img className="max-w-[300px]  max-h-[300px] rounded-md" src={image} />
         </div>
@@ -30,7 +47,7 @@ function HotelItems({ id, name, image, pricePerNight, location, rating, searchDa
               ))}
             </div>
           </div>
-          <div className="flex flex-col  justify-end   ">
+          <div className="flex flex-col  justify-end">
             <div></div>
             <div className="flex flex-col  ">
               <p className="font-bold ">

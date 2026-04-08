@@ -13,10 +13,10 @@ function HotelsAndBookingbar() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [searchData, setSearchData] = useState({
     location: "",
-    checkIn: "",
-    checkOut: "",
-    rooms: 0,
-    guests: 0,
+    checkIn: null,
+    checkOut: null,
+    rooms: 1,
+    guests: 1,
   });
 
   // Fetching hotels //
@@ -42,6 +42,7 @@ function HotelsAndBookingbar() {
     }
   };
 
+  // Handling search suggestions
   const handleSearch = (value) => {
     if (!value) {
       setFilteredHotels([]);
@@ -58,6 +59,7 @@ function HotelsAndBookingbar() {
     setShowSuggestions(true);
   };
 
+  // Search availability for hotels based on searched data
   const handleSearchHotels = async () => {
     try {
       const response = await api.get("/api/hotels/search", {

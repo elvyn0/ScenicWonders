@@ -2,6 +2,7 @@ import { Star } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContext } from "../../context/appContext";
+import { formatDate } from "../../utils/formatDate";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 
@@ -98,36 +99,26 @@ function HotelSummery() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
               <div>
                 <p className="text-gray-500">Check-in</p>
-                <p className="font-medium text-gray-800">
-                  {checkIn && checkIn !== "undefined" ? checkIn : "Please select a Date"}
-                </p>
+                <p className="font-medium text-gray-800">{formatDate(checkIn)}</p>
               </div>
 
               <div>
                 <p className="text-gray-500">Check-out</p>
-                <p className="font-medium text-gray-800">
-                  {checkOut && checkOut !== "undefined" ? checkOut : "please select a Date"}
-                </p>
+                <p className="font-medium text-gray-800">{formatDate(checkOut)}</p>
               </div>
 
               <div>
                 <p className="text-gray-500">Guests</p>
-                <p className="font-medium text-gray-800">
-                  {guests && guests !== "undefined" && guests !== "null" ? guests : 0}
-                </p>
+                <p className="font-medium text-gray-800">{guests || 0}</p>
               </div>
 
               <div>
                 <p className="text-gray-500">Rooms</p>
-                <p className="font-medium text-gray-800">
-                  {rooms && rooms !== "null" && rooms !== "undefined" ? rooms : 0}
-                </p>
+                <p className="font-medium text-gray-800">{rooms || 0}</p>
               </div>
               <div>
                 <p className="text-gray-500">Nights</p>
-                <p className="font-medium text-gray-800">
-                  {nights && nights !== "null" && nights !== "undefined" && nights !== "NaN" ? nights : 0}
-                </p>
+                <p className="font-medium text-gray-800">{nights && nights !== "NaN" ? nights : 0}</p>
               </div>
             </div>
           </div>
@@ -138,11 +129,3 @@ function HotelSummery() {
 }
 
 export default HotelSummery;
-
-{
-  /**
-  
-  
-  
-  */
-}

@@ -7,6 +7,7 @@ import PriceBreakdown from "../components/hotels/PriceBreakdown";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/appContext";
+import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
 
 function Booknow() {
@@ -50,10 +51,11 @@ function Booknow() {
 
       const bookingData = {
         hotelId,
+        hotelName,
         numberOfRooms: rooms,
         numberOfGuests: guests,
-        checkInDate: checkIn,
-        checkOutDate: checkOut,
+        checkInDate: formatDate(checkIn),
+        checkOutDate: formatDate(checkOut),
         ...formData,
       };
 
