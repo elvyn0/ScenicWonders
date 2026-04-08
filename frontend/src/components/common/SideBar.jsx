@@ -72,11 +72,15 @@ function SideBar() {
 
           {/* Messages */}
           <NavLink to="/message" className="relative p-1 rounded bg-gray-200 text-black hover:bg-gray-300">
-            <span
-              className={`absolute left-5 -top-1   flex h-4 w-4 items-center justify-center rounded-full ${count !== 0 ? "bg-red-700 text-[10px] font-medium text-white " : ""} `}
-            >
-              {count && count !== "NUN" && count !== "null" ? count : ""}
-            </span>
+            {count !== 0 ? (
+              <span
+                className={`absolute left-5 -top-1   flex h-4 w-4 items-center justify-center rounded-full ${count !== 0 ? "bg-red-700 text-[10px] font-medium text-white " : ""} `}
+              >
+                {count && count !== "NUN" ? count : ""}
+              </span>
+            ) : (
+              ""
+            )}
             <LuMessageCircleMore className=" isActive size-6" />
           </NavLink>
         </div>
