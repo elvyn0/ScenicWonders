@@ -23,17 +23,20 @@ import MyBookings from "./Pages/MyBookings";
 import HotelsAndBookingbar from "./Pages/HotelsAndBooingbar";
 import BookingSuccess from "./Pages/BookingSuccess";
 import BookingCancel from "./Pages/BookingCancel";
+import StoryById from "./Pages/StoryById";
+import PostById from "./Pages/PostById";
+import NotFound from "./Pages/NotFound";
 
 // Layout with sibeBar
 const LayoutWithSidebar = () => {
   return (
     <div className=" flex">
       {/* sidebar */}
-      <div className="w-[74px] ">
+      <div className="md:w-16 ">
         <SideBar />
       </div>
       {/* main content */}
-      <div className="flex-1 ">
+      <div className="flex-1 pb-16 md:pb-0">
         {/* */}
         <Outlet />
       </div>
@@ -65,6 +68,9 @@ const App = () => {
           <Route path="/rajasthan" element={<Rajasthan />} />
           <Route path="/punjab" element={<Punjab />} />
           <Route path="/myBookings" element={<MyBookings />} />
+          <Route path="/story/:id" element={<StoryById />} />
+          <Route path="/post/:id" element={<PostById />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
 
         <Route path="/hotels/hotel/:hotelId" element={<Hotel />} />
