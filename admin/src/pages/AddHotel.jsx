@@ -6,9 +6,9 @@ import api from "../api/axios";
 function AddHotel({ token }) {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [hotelImage, setHotelImage] = useState(false);
-  const [roomImage1, setRoomImage1] = useState(false);
-  const [roomImage2, setRoomImage2] = useState(false);
+  const [hotelImage, setHotelImage] = useState(null);
+  const [roomImage1, setRoomImage1] = useState(null);
+  const [roomImage2, setRoomImage2] = useState(null);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -50,9 +50,9 @@ function AddHotel({ token }) {
         setLocation("");
         setPricePerNight("");
         setTotalRooms("");
-        setHotelImage(false);
-        setRoomImage1(false);
-        setRoomImage2(false);
+        setHotelImage(null);
+        setRoomImage1(null);
+        setRoomImage2(null);
         setUploading(false);
         setUploadProgress(0);
         setWeekendDeals(false);

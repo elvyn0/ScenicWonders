@@ -1,6 +1,7 @@
 const Hotel = require("../models/hotelModel");
 const Booking = require("../models/bookingModel");
 const cloudinary = require("cloudinary").v2;
+const fs = require("fs").promises;
 
 // Admin: Create / add hotel
 const createHotel = async (req, res) => {
@@ -24,6 +25,8 @@ const createHotel = async (req, res) => {
           quality: "auto",
           fetch_format: "auto",
         });
+        await fs.unlink(file.path);
+
         return {
           url: result.secure_url,
           publicId: result.public_id,
@@ -45,7 +48,6 @@ const createHotel = async (req, res) => {
       weekendDeals: weekendDeals === "true" ? true : false,
       hotelImage: uploadedImages[0],
       roomImages: uploadedImages.slice(1),
-      rating,
     };
 
     await Hotel.create(hotelData);

@@ -6,6 +6,7 @@ import { Trash } from "lucide-react";
 function HotelsList() {
   const [list, setList] = useState([]);
 
+  // Fetching Hotels
   const fetchList = async () => {
     try {
       const response = await api.get("/api/hotels/list");
@@ -20,6 +21,7 @@ function HotelsList() {
     }
   };
 
+  // handling delete hotels
   const removeHotels = async (hotelId) => {
     try {
       const response = await api.delete(`/api/hotels/delete/${hotelId}`);
@@ -41,6 +43,7 @@ function HotelsList() {
     };
     loadHotels();
   }, []);
+
   return (
     <div className="mx-4 md:mx-8 text-center">
       <p className="mb-4 text-lg font-semibold">Hotels List</p>
