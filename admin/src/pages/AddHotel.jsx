@@ -63,7 +63,6 @@ function AddHotel({ token }) {
       console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
-      // 🔐 ALWAYS runs
       setUploading(false);
       setUploadProgress(0);
     }
@@ -102,7 +101,7 @@ function AddHotel({ token }) {
           <input
             onChange={(e) => setName(e.target.value)}
             value={name}
-            className="w-full max-w-[500px] py-1 pl-2 pr-12 border rounded-sm  "
+            className="w-full max-w-125 py-1 pl-2 pr-12 border rounded-sm  "
             required
             type="text"
             placeholder="eg: Hotel Star"
@@ -114,7 +113,7 @@ function AddHotel({ token }) {
           <textarea
             onChange={(e) => setDescription(e.target.value)}
             value={description}
-            className="w-full max-w-[500px] px-3 py-2  border rounded-sm"
+            className="w-full max-w-125 px-3 py-2  border rounded-sm"
             required
             type="text"
             placeholder="Type here"
@@ -127,7 +126,7 @@ function AddHotel({ token }) {
           <input
             onChange={(e) => setLocation(e.target.value)}
             value={location}
-            className="w-full max-w-[500px] px-3 py-2 border rounded-sm"
+            className="w-full max-w-125 px-3 py-2 border rounded-sm"
             required
             type="text"
             placeholder="eg:Kerala / Delhi / ..."
@@ -139,7 +138,7 @@ function AddHotel({ token }) {
           <input
             onChange={(e) => setTotalRooms(e.target.value)}
             value={totalRooms}
-            className="w-full max-w-[500px] px-3 py-2  border rounded-sm"
+            className="w-full max-w-125 px-3 py-2  border rounded-sm"
             required
             type="number"
             placeholder="eg: 100 "
@@ -151,7 +150,7 @@ function AddHotel({ token }) {
           <input
             onChange={(e) => setPricePerNight(e.target.value)}
             value={pricePerNight}
-            className="w-full max-w-[500px] px-3 py-2 border rounded-sm"
+            className="w-full max-w-125 px-3 py-2 border rounded-sm"
             required
             type="number"
             placeholder="Type here"
@@ -171,7 +170,7 @@ function AddHotel({ token }) {
         </div>
       </div>
       {uploading && (
-        <div className="w-full max-w-[500px] bg-gray-200 rounded-full h-2 mt-2">
+        <div className="w-full max-w-125 bg-gray-200 rounded-full h-2 mt-2">
           <div
             className="bg-black h-2 rounded-full transition-all duration-300"
             style={{ width: `${uploadProgress}%` }}
