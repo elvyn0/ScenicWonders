@@ -17,8 +17,8 @@ function SearchBar({
   useEffect(() => {
     setSearchData((prev) => ({
       ...prev,
-      checkIn: selectedDate.checkIn?.toISOString().split("T")[0],
-      checkOut: selectedDate.checkOut?.toISOString().split("T")[0],
+      checkIn: selectedDate.checkIn?.toISOString(),
+      checkOut: selectedDate.checkOut?.toISOString(),
     }));
   }, [selectedDate]);
 
@@ -79,7 +79,7 @@ function SearchBar({
         <User className="w-5 h-5 text-gray-500 " />
         <input
           type="text"
-          placeholder=" Add Guests"
+          placeholder="Add Guests"
           value={searchData.guests}
           onChange={(e) => setSearchData({ ...searchData, guests: Number(e.target.value) })}
           className="w-full bg-transparent text-gray-800 
@@ -96,7 +96,7 @@ function SearchBar({
         <Bed className="w-5 h-5 text-gray-500 mr-1" />
         <input
           type="text"
-          placeholder="Number of rooms"
+          placeholder="Add Rooms"
           value={searchData.rooms}
           onChange={(e) => setSearchData({ ...searchData, rooms: Number(e.target.value) })}
           className="w-full bg-transparent text-gray-800 

@@ -102,7 +102,7 @@ function Calendar({ selectedDate, setSelectedDate, setShowCalendar }) {
   };
 
   return (
-    <div className="min-w-[300px] flex flex-col flex-1  gap-1 p-2 ">
+    <div className="min-w-[300px] flex flex-col  flex-1  gap-1 p-2 ">
       {/* Header */}
       <div className="flex  justify-between ">
         <button onClick={prevMonth}>
@@ -112,7 +112,8 @@ function Calendar({ selectedDate, setSelectedDate, setShowCalendar }) {
           <ChevronRight size="26" className="hover:bg-gray-200 rounded-full" />
         </button>
       </div>
-      <div className="flex gap-5 ">
+      {/* Month Grid */}
+      <div className="flex flex-col md:flex-row gap-5 ">
         {/* Current month */}
         <div className="w-full">
           <h3 className="text-lg font-semibold text-black text-center mb-4">
@@ -120,7 +121,7 @@ function Calendar({ selectedDate, setSelectedDate, setShowCalendar }) {
           </h3>
 
           {/* Days Grid */}
-          <div className="grid grid-cols-7 gap-4   ">
+          <div className="grid grid-cols-7 gap-4">
             {/* Week Headers */}
             {DAYS_OF_WEEK.map((day, index) => (
               <div

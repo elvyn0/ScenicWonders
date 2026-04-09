@@ -8,7 +8,7 @@ function MessageInput({ conversationId, onNewMessage }) {
   const { api, token, socket } = useContext(AppContext);
   const [newMessage, setNewMessage] = useState("");
 
-  // Send message //
+  // Send message
   const handleSend = async (e) => {
     e.preventDefault();
 
