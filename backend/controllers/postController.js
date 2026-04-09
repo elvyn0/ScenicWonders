@@ -46,7 +46,7 @@ const addPost = async (req, res) => {
 
 const listPost = async (req, res) => {
   try {
-    const posts = await Post.find().populate("user", " name").sort({ createdAt: -1 });
+    const posts = await Post.find().populate("user", " name profilePic").sort({ createdAt: -1 });
     res.status(200).json({ success: true, posts });
   } catch (error) {
     console.log(error);

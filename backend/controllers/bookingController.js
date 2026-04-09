@@ -155,10 +155,6 @@ const cancelBooking = async (req, res) => {
       return res.status(400).json({ success: false, message: "Booking not found" });
     }
 
-    if (booking.bookingStatus === "completed") {
-      return res.status(400).json({ success: false, messsage: "Completed bookings cannot be Cancel" });
-    }
-
     if (booking.bookingStatus === "cancelled") {
       return res.status(400).json({ success: false, message: "This booking already cancelled" });
     }

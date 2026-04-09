@@ -31,7 +31,7 @@ const listStories = async (req, res) => {
   try {
     const userId = req.user?._id; // safe
 
-    const stories = await Stories.find().populate("user", "name").sort({ createdAt: -1 });
+    const stories = await Stories.find().populate("user", "name profilePic").sort({ createdAt: -1 });
 
     const updatedStories = stories.map((s) => {
       let liked = false;
