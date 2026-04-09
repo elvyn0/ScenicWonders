@@ -50,7 +50,7 @@ function Login({ onClose }) {
   }, [token, onClose, navigate]);
 
   return (
-    // Modal Overlay (dimmed background)
+    //  Overlay (dimmed background)
     <div
       onClick={onClose} // Close modal when clicking the background
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"

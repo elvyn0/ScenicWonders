@@ -1,6 +1,10 @@
 import { MessageCircleMore } from "lucide-react";
+import { useContext } from "react";
+import { AppContext } from "../../context/appContext";
+import { toast } from "react-hot-toast";
 
 function EmptyMessageState() {
+  const { user } = useContext(AppContext);
   return (
     <div className="flex h-screen items-center justify-center text-sm">
       <div className="text-center max-w-sm px-6">
@@ -12,7 +16,12 @@ function EmptyMessageState() {
 
         <p className="text-gray-500 mt-2 mb-6">Select a conversation to start chatting.</p>
 
-        <button className=" bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition">
+        <button
+          onClick={() => {
+            !user ? toast.error("Please login first") : toast("Select a conversation to begin 🫰");
+          }}
+          className=" bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition"
+        >
           Start Chat
         </button>
       </div>
