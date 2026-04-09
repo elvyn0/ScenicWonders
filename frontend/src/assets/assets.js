@@ -4,6 +4,11 @@ import profile1 from "./images/Profilepic1.jpg";
 import sw_logo from "./images/sw_logo.jpg";
 import inFlag from "./images/inflag.webp";
 import stripe from "./images/stripe_logo.png";
+import profile_icon from "./images/profile_icon.png";
+import QR from "./images/QRcode.png";
+import payment_Success from "./images/payment-success.jpg";
+import payment_Cancel from "./images/payment-canceled.jpg";
+import Error_404 from "./images/404_Error.jpg";
 
 //Hero slide image
 
@@ -203,6 +208,11 @@ export const assets = {
   hotelBanner,
   inFlag,
   stripe,
+  profile_icon,
+  QR,
+  payment_Success,
+  payment_Cancel,
+  Error_404,
 
   //Hearo slide image
 
