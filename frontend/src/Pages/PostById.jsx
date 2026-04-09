@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/appContext";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
 import { Heart, Trash2 } from "lucide-react";
 
@@ -116,7 +115,7 @@ function PostById() {
             {/* mobile */}
             <Link to={`/profile/${post.user._id}`} className="md:hidden  no-underline text-black cursor-pointer ">
               <div className="flex items-center  gap-3 font-semibold p-3">
-                <img src={assets.profile1} className="w-10 h-10 rounded-full object-cover" />
+                <img src={post.user?.profilePic} className="w-10 h-10 rounded-full object-cover" />
                 <p>{post.user?.name || "Unknown"}</p>
               </div>
             </Link>
@@ -140,7 +139,7 @@ function PostById() {
             {/* Desktop */}
             <Link to={`/profile/${post.user._id}`} className="hidden md:block no-underline text-black cursor-pointer">
               <div className="flex items-center  gap-3 font-semibold p-3">
-                <img src={assets.profile1} className="w-10 h-10 rounded-full object-cover" />
+                <img src={post.user?.profilePic} className="w-10 h-10 rounded-full object-cover" />
                 <p>{post.user?.name || "Unknown"}</p>
               </div>
             </Link>

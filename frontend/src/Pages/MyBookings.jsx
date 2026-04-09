@@ -9,6 +9,7 @@ function MyBookings() {
   const [error, setError] = useState(null);
   const [bookings, setBookings] = useState([]);
 
+  // Fetching Booking deatiles //
   const fetchBookings = async () => {
     try {
       setLoading(true);
@@ -33,6 +34,27 @@ function MyBookings() {
       setError("Server not responding...");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Handling cancel bookings
+  const handlingCancelBooking = async (id) => {
+    try {
+      const response = await api.post(`/api/bookings/cancelBooking/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        toast.info("Your amount will be refunded within 3 working day.");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -122,6 +144,11 @@ function MyBookings() {
                 <div className="p-2 bg-gray-200 rounded-lg flex items-center justify-center">
                   <img className="size-28" src={assets.QR} />
                 </div>
+              </div>
+              <div onClick={() => handlingCancelBooking(item?._id)} className="flex items-center justify-center">
+                <p className="text-center text-sm bg-red-600 px-2 py-2 text-white font-semibold rounded-full hover:bg-red-800 hover:cursor-pointer">
+                  Cancel Booking
+                </p>
               </div>
             </div>
           ))}
