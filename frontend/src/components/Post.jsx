@@ -34,45 +34,45 @@ function Post() {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className=" pt-5 px-[5%]">
-      <h3 className="font-bold mb-5">Creat Post</h3>
-      <div className="flex flex-row gap-5 items-center  justify-center mt-5">
+    <form onSubmit={handleSubmit} className="pt-5 px-4 md:px-[5%]">
+      <h3 className="font-bold mb-5 text-lg md:text-xl">Create Post</h3>
+
+      <div className="flex flex-col md:flex-row gap-5 items-center justify-center mt-5">
+        {/* Image Upload */}
         <label
           htmlFor="image"
-          className="cursor-pointer bg-gray-300 w-[400px] h-[500px]  flex flex-col  justify-center items-center rounded-3xl"
+          className="cursor-pointer bg-gray-300 w-full max-w-[350px] aspect-[4/5] flex flex-col justify-center items-center rounded-3xl overflow-hidden"
         >
           {!image ? (
-            <GrUploadOption className="size-10 mb-3" />
+            <>
+              <GrUploadOption className="size-8 md:size-10 mb-3" />
+              <p className="text-sm text-gray-700">Upload here</p>
+            </>
           ) : (
-            <img className="w-[400px] h-[500px]  rounded-lg" required src={URL.createObjectURL(image)} />
+            <img className="w-full h-full object-cover" src={URL.createObjectURL(image)} />
           )}
 
-          <input
-            onChange={(e) => setImage(e.target.files[0])}
-            type="file"
-            id="image"
-            className="w-[400px] h-[500px]"
-            hidden
-            required
-          />
-          {!image ? <p className="text-sm text-gray-700">Upload here</p> : null}
+          <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden required />
         </label>
-        <div className="flex flex-col">
+
+        {/* Form Fields */}
+        <div className="flex flex-col w-full max-w-[500px]">
           <label htmlFor="description">
-            <p className="text-sm">Description</p>
-            <input
+            <p className="text-sm mb-1">Description</p>
+
+            <textarea
               onChange={(e) => setCaption(e.target.value)}
               value={caption}
               placeholder="Add a detailed description"
-              type="text"
               id="description"
-              className=" bg-gray-300 placeholder-gray-700 pt-2 pl-3 pb-20 pr-5 rounded w-[500px] "
+              className="bg-gray-300 placeholder-gray-700 p-3 rounded w-full min-h-[120px] resize-none"
               required
             />
           </label>
-          <div className="mt-3 flex justify-end ">
+
+          <div className="mt-4 flex justify-end">
             <button
-              className="text-lg border-2 border-gray-400 bg-gray-200 hover:bg-gray-500 hover:text-white py-3 px-6 rounded-full   transition-all font-bold "
+              className="text-sm md:text-lg border-2 border-gray-400 bg-gray-200 hover:bg-gray-500 hover:text-white py-2 md:py-3 px-5 md:px-6 rounded-full transition-all font-bold w-full md:w-auto"
               type="submit"
             >
               Create
