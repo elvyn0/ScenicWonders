@@ -5,6 +5,7 @@ import { Trash } from "lucide-react";
 
 function HotelsList() {
   const [list, setList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Fetching Hotels
   const fetchList = async () => {
@@ -24,6 +25,8 @@ function HotelsList() {
   // handling delete hotels
   const removeHotels = async (hotelId) => {
     try {
+      setIsLoading(true);
+
       const response = await api.delete(`/api/hotels/delete/${hotelId}`);
       if (response.data.success) {
         toast.success(response.data.message);
@@ -34,6 +37,8 @@ function HotelsList() {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,7 +64,7 @@ function HotelsList() {
       </div>
 
       {/* -------- List ------- */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 pb-5">
         {list.map((item) => (
           <div
             key={item._id}
@@ -90,11 +95,16 @@ function HotelsList() {
             </div>
 
             {/* Action */}
-            <div
-              onClick={() => removeHotels(item._id)}
-              className="flex justify-end md:justify-center mt-2 md:mt-0 cursor-pointer"
-            >
-              <Trash className="text-red-700" />
+
+            <div className="flex justify-end md:justify-center mt-2 md:mt-0 cursor-pointer ">
+              <button
+                onClick={() => removeHotels(item._id)}
+                disabled={isLoading}
+                className={`py-1 px-5  text-sm  rounded-sm   text-white
+    ${isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-red-700"}`}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}
