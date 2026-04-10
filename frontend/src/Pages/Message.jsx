@@ -9,7 +9,7 @@ function Message() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
-  const [count, setCount] = useState(null);
+  const [count, setCount] = useState({});
 
   // To get Users ///
   const fetchUsers = async () => {
@@ -77,7 +77,13 @@ function Message() {
       });
 
       if (response.data.success) {
-        setCount(response.data.unreadmsgCount);
+        const map = {};
+
+        response.data.unreadCounts.forEach((item) => {
+          map[item._id] = item.count;
+        });
+        console.log("MAP:", map);
+        setCount(map);
       } else {
         toast.error(response.data.message);
       }
@@ -92,6 +98,7 @@ function Message() {
     unreadMessageCount();
   }, [token]);
 
+  console.log(count);
   // Handling Loading state //
   if (loading)
     return (
@@ -119,30 +126,34 @@ function Message() {
         {/* Conversation List */}
         <div className="md:min-w-[250px] overflow-y-auto px-3 pt-3 pb-2 border-b-2 space-y-2 cursor-pointer ">
           <div>
-            {users.map((item) => (
-              <div key={item._id} onClick={() => fetchConversationId(item._id)}>
-                <div className="flex gap-3 items-center mb-3 hover:bg-gray-100 p-2 rounded-sm">
-                  <img
-                    src={
-                      typeof item.profilePic === "string"
-                        ? item.profilePic
-                        : item.profilePic?.url || assets.profile_icon
-                    }
-                    className="w-10 rounded-full"
-                  />
-                  <p className="text-gray-600 font-semibold">{item.name}</p>
+            {users.map((item) => {
+              const userConId = item.conversationId;
 
-                  <p className={`${count !== 0 ? "bg-red-600 text-sm  px-1 ml-10 text-white rounded-full" : ""}`}>
-                    {count === 0 ? "" : count}
-                  </p>
+              return (
+                <div key={item._id} onClick={() => fetchConversationId(item._id)}>
+                  <div className="flex gap-3 items-center mb-3 hover:bg-gray-100 p-2 rounded-sm">
+                    <img
+                      src={
+                        typeof item.profilePic === "string"
+                          ? item.profilePic
+                          : item.profilePic?.url || assets.profile_icon
+                      }
+                      className="w-10 rounded-full"
+                    />
+                    <p className="text-gray-600 font-semibold">{item.name}</p>
+
+                    {count?.[userConId] > 0 && (
+                      <span className="bg-red-600 text-sm px-1 ml-10 text-white rounded-full">{count[userConId]}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Right Chat Area */}
+      {/*  Chat Area */}
       <div className="flex-1 flex items-center justify-center">
         <MessageRoom />
       </div>

@@ -58,7 +58,7 @@ function EditProfileModel({ setShowEdit, profile, setProfile }) {
             <label htmlFor="updateProfilePic">
               <img
                 className="w-52 hover:cursor-pointer "
-                src={profilePic ? URL.createObjectURL(profilePic) : profile.profilePic || assets.upLoad}
+                src={profilePic ? URL.createObjectURL(profilePic) : profile.profilePic.url || assets.upLoad}
               />
               <p className="text-sm text-gray-500 mt-1">Click to change </p>
             </label>

@@ -2,6 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const fs = require("fs").promises;
 const validator = require("validator");
 const User = require("../models/userModel");
+const ConversationModel = require("../models/Conversation");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Post = require("../models/postModel");
@@ -116,9 +117,30 @@ const getMe = async (req, res) => {
 
 const getUsersList = async (req, res) => {
   try {
-    const users = await User.find({ role: "user", _id: { $ne: req.user.id } }).select(" profilePic name");
+    const users = await User.find({
+      role: "user",
+      _id: { $ne: req.user.id },
+    }).select("profilePic name");
 
-    res.status(200).json({ success: true, users });
+    const conversations = await ConversationModel.find({
+      members: req.user.id,
+    }).sort({ updatedAt: -1 });
+
+    const usersWithConv = users.map((user) => {
+      const conversation = conversations.find((conv) =>
+        conv.members.some((member) => member.toString() === user._id.toString()),
+      );
+
+      return {
+        ...user.toObject(),
+        conversationId: conversation?._id || null,
+      };
+    });
+
+    res.status(200).json({
+      success: true,
+      users: usersWithConv,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });

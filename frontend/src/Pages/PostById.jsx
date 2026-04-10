@@ -154,7 +154,7 @@ function PostById() {
             </div>
           </div>
           <div className="flex justify-end pr-1" onClick={handleDelte}>
-            {user ? <Trash2 className="w-6 text-red-500 cursor-pointer" /> : ""}
+            {post.user?._id === user?._id && <Trash2 className="w-6 text-red-500 cursor-pointer" />}
           </div>
         </div>
       )}

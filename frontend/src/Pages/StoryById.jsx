@@ -125,7 +125,9 @@ function StoryById() {
                   </div>
                 </div>
               </Link>
-              <div onClick={handleDelete}>{user && <Trash2 className="text-red-500 w-8 hover:cursor-pointer" />}</div>
+              {story.user?._id === user?._id && (
+                <div onClick={handleDelete}>{user && <Trash2 className="text-red-500 w-8 hover:cursor-pointer" />}</div>
+              )}
             </div>
 
             <div className="min-w-[350px] md:min-w-[600px]">

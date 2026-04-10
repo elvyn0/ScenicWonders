@@ -76,13 +76,23 @@ const getUnreadCount = async (req, res) => {
 
     const unreadmsgIdCount = unreadConversations.length;
 
-    const unreadmsgCount = await MessageModel.countDocuments({
-      conversationId: { $in: conversationIds },
-      senderId: { $ne: userId },
-      isRead: false,
-    });
+    const unreadCounts = await MessageModel.aggregate([
+      {
+        $match: {
+          conversationId: { $in: conversationIds },
+          senderId: { $ne: userId },
+          isRead: false,
+        },
+      },
+      {
+        $group: {
+          _id: "$conversationId",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
 
-    res.status(200).json({ success: true, unreadmsgCount, unreadmsgIdCount });
+    res.status(200).json({ success: true, unreadCounts, unreadmsgIdCount });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });

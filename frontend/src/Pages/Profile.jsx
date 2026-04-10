@@ -7,7 +7,7 @@ import EditProfileModel from "../components/EditProfileModel";
 import { assets } from "../assets/assets";
 
 function Profile() {
-  const { api, token, navigate, setUser, setToken } = useContext(AppContext);
+  const { api, token, navigate, setUser, setToken, user } = useContext(AppContext);
   const { userId } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -42,6 +42,33 @@ function Profile() {
       setError("Server not responding...");
     } finally {
       setLoading(false);
+    }
+  };
+
+  /// To get conversationId ///
+
+  const fetchConversationId = async (receiverId) => {
+    try {
+      const response = await api.post(
+        "/api/conversation",
+        { receiverId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.data.success) {
+        const conversationId = response.data.conversationId;
+
+        navigate(`/message/${conversationId}`);
+      } else {
+        toast.error("Failed to create conversation");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -99,58 +126,60 @@ function Profile() {
       {(active === "post" || active === "stories") && profile && (
         <div>
           {/* Profile edit button and navigation */}
-          <div className="absolute right-6 md:right-10  p-1 rounded-full hover:bg-gray-200 transition hover:cursor-pointer">
-            <EllipsisVertical onClick={() => setShowDropdown((prev) => !prev)} />
-            {showDropdown && (
-              <div className="absolute right-6 text-sm  ">
-                <div className="bg-gray-200 w-full  text-center rounded-sm  font-semibold">
-                  <p
-                    className="px-5 py-2 hover:bg-gray-300 mb-0"
-                    onClick={() => {
-                      setShowEdit(true);
-                    }}
-                  >
-                    Edit
-                  </p>
+          {profile?._id === user?._id && (
+            <div className="absolute right-6 md:right-10  p-1 rounded-full hover:bg-gray-200 transition hover:cursor-pointer">
+              <EllipsisVertical onClick={() => setShowDropdown((prev) => !prev)} />
+              {showDropdown && (
+                <div className="absolute right-6 text-sm  ">
+                  <div className="bg-gray-200 w-full  text-center rounded-sm  font-semibold">
+                    <p
+                      className="px-5 py-2 hover:bg-gray-300 mb-0"
+                      onClick={() => {
+                        setShowEdit(true);
+                      }}
+                    >
+                      Edit
+                    </p>
 
-                  <p
-                    onClick={() => setShowConfirm(true)}
-                    className="text-red-500  text-nowrap hover:bg-gray-300  border-t-2 border-t-white py-2"
-                  >
-                    Delete Acc
-                  </p>
-                </div>
-              </div>
-            )}
-            {/* show edit profile */}
-            <div>
-              {showEdit && <EditProfileModel setShowEdit={setShowEdit} profile={profile} setProfile={setProfile} />}
-            </div>
-            {/* Delete confirmation */}
-            <div>
-              {showConfirm && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                  <div className="bg-white py-2 px-2 rounded-lg w-[90%] max-w-md">
-                    <div className="flex justify-end">
-                      <p
-                        onClick={() => setShowConfirm(false)}
-                        className="bg-gray-100 rounded-full w-8 p-2 cursor-pointer"
-                      >
-                        X
-                      </p>
-                    </div>
-
-                    <div className="text-center mb-2">
-                      <p>This action will delete all your data.</p>
-                      <button onClick={handleDeleteUser} className="bg-red-600 px-5 py-3 rounded-lg">
-                        Delete
-                      </button>
-                    </div>
+                    <p
+                      onClick={() => setShowConfirm(true)}
+                      className="text-red-500  text-nowrap hover:bg-gray-300  border-t-2 border-t-white py-2"
+                    >
+                      Delete Acc
+                    </p>
                   </div>
                 </div>
               )}
+              {/* show edit profile */}
+              <div>
+                {showEdit && <EditProfileModel setShowEdit={setShowEdit} profile={profile} setProfile={setProfile} />}
+              </div>
+              {/* Delete confirmation */}
+              <div>
+                {showConfirm && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <div className="bg-white py-2 px-2 rounded-lg w-[90%] max-w-md">
+                      <div className="flex justify-end">
+                        <p
+                          onClick={() => setShowConfirm(false)}
+                          className="bg-gray-100 rounded-full w-8 p-2 cursor-pointer"
+                        >
+                          X
+                        </p>
+                      </div>
+
+                      <div className="text-center mb-2">
+                        <p>This action will delete all your data.</p>
+                        <button onClick={handleDeleteUser} className="bg-red-600 px-5 py-3 rounded-lg">
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           {/* Profile */}
           <div className="flex flex-col items-center text-center gap-3">
             {profile.profilePic ? (
@@ -190,6 +219,13 @@ function Profile() {
             }`}
           >
             Stories
+          </button>
+          <button
+            onClick={() => fetchConversationId(profile?._id)}
+            className={`pb-3 text-sm font-medium transition text-blue-600
+            }`}
+          >
+            Message
           </button>
         </div>
 

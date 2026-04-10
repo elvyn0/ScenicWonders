@@ -124,7 +124,7 @@ function MessageRoom() {
           {/* Header */}
           {receiver && (
             <Link to={`/profile/${receiver._id}`} className="no-underline">
-              <div className="flex gap-4 py-2 pl-4 border-b bg-blue-100">
+              <div className="flex gap-4 py-3 pl-4 border-b bg-blue-100">
                 <img
                   src={receiver.profilePic?.url || assets.profile_icon}
                   className="w-12 h-12 rounded-full object-cover"
