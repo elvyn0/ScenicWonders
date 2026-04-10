@@ -7,11 +7,14 @@ function Post() {
   const { api, token } = useContext(AppContext);
   const [image, setImage] = useState(false);
   const [caption, setCaption] = useState("");
+  const [Uploading, setUploading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      setUploading(true);
+
       const formData = new FormData();
       formData.append("caption", caption);
       image && formData.append("image", image);
@@ -31,6 +34,8 @@ function Post() {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setUploading(false);
     }
   };
   return (
@@ -72,10 +77,11 @@ function Post() {
 
           <div className="mt-4 flex justify-end">
             <button
-              className="text-sm md:text-lg border-2 border-gray-400 bg-gray-200 hover:bg-gray-500 hover:text-white py-2 md:py-3 px-5 md:px-6 rounded-full transition-all font-bold w-full md:w-auto"
+              className={`text-sm md:text-lg border-2 border-gray-200  hover:bg-gray-200  py-2 md:py-3 px-5 md:px-6 rounded-full transition duration-300 font-bold w-full md:w-auto `}
               type="submit"
+              disabled={Uploading}
             >
-              Create
+              {Uploading ? "Uploading..." : "Create"}
             </button>
           </div>
         </div>

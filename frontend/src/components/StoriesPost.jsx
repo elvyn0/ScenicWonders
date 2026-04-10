@@ -6,11 +6,14 @@ function StoriesPost() {
   const { api, token } = useContext(AppContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const handileSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      setUploading(true);
+
       const response = await api.post(
         "/api/story/add",
         { title, content },
@@ -30,6 +33,8 @@ function StoriesPost() {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setUploading(false);
     }
   };
   return (
@@ -66,10 +71,11 @@ function StoriesPost() {
           {/* Button */}
           <div className="flex justify-end">
             <button
-              className="border-2 border-white font-bold py-2 md:py-3 px-4 md:px-5 rounded-full hover:bg-gray-500 hover:text-white transition-all shadow-md w-full md:w-auto"
+              className="bg-white font-bold py-2 md:py-3 px-4 md:px-5 rounded-full  hover:bg-gray-300  transition duration-300 shadow-md w-full md:w-auto"
               type="submit"
+              disabled={uploading}
             >
-              Create
+              {uploading ? "Uploading..." : "Create"}
             </button>
           </div>
         </div>
