@@ -186,8 +186,10 @@ const updateUserprofile = async (req, res) => {
 
       await fs.unlink(profilePic.path);
 
-      updatedData.profilePic = profileUpload.secure_url;
-      updatedData.profilePic = upload.publicId;
+      updatedData.profilePic = {
+        url: profileUpload.secure_url,
+        publicId: profileUpload.public_id,
+      };
     }
 
     if (Object.keys(updatedData).length === 0) {
