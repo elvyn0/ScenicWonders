@@ -29,7 +29,7 @@ function EditProfileModel({ setShowEdit, profile, setProfile }) {
 
       if (response.data.success) {
         setProfile(response.data.updatedUser);
-        toast.success(response.data.message);
+        toast.success("Profile Updated");
         setName("");
         setProfilePic(null);
         setShowEdit(false);

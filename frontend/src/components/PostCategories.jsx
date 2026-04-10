@@ -67,7 +67,7 @@ function PostCategories() {
           >
             <Link to={`/profile/${item.user._id}`} className="no-underline text-black cursor-pointer">
               <div className="flex gap-2 font-semibold mb-2 ">
-                <img src={item.user?.profilePic || item.user.name} className="w-10 rounded-full" />
+                <img src={item.user?.profilePic.url || item.user.name} className="w-10 rounded-full" />
                 <p>{item.user?.name || "Unknown"}</p>
               </div>
             </Link>

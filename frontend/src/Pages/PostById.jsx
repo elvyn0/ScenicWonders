@@ -87,6 +87,8 @@ function PostById() {
     postById();
   }, [id]);
 
+  console.log(post);
+
   // Handling Loading state //
   if (loading)
     return (
@@ -115,7 +117,7 @@ function PostById() {
             {/* mobile */}
             <Link to={`/profile/${post.user._id}`} className="md:hidden  no-underline text-black cursor-pointer ">
               <div className="flex items-center  gap-3 font-semibold p-3">
-                <img src={post.user?.profilePic} className="w-10 h-10 rounded-full object-cover" />
+                <img src={post.user?.profilePic?.url} className="w-10 h-10 rounded-full" />
                 <p>{post.user?.name || "Unknown"}</p>
               </div>
             </Link>
@@ -139,7 +141,7 @@ function PostById() {
             {/* Desktop */}
             <Link to={`/profile/${post.user._id}`} className="hidden md:block no-underline text-black cursor-pointer">
               <div className="flex items-center  gap-3 font-semibold p-3">
-                <img src={post.user?.profilePic} className="w-10 h-10 rounded-full object-cover" />
+                <img src={post.user?.profilePic?.url} className="w-10 h-10 rounded-full object-cover" />
                 <p>{post.user?.name || "Unknown"}</p>
               </div>
             </Link>
@@ -150,7 +152,9 @@ function PostById() {
               <p className="text-sm text-gray-600 pl-4">{post.caption}</p>
             </div>
           </div>
-          <div onClick={handleDelte}>{user ? <Trash2 className="w-6 text-red-500 cursor-pointer" /> : ""}</div>
+          <div className="flex justify-end pr-1" onClick={handleDelte}>
+            {user ? <Trash2 className="w-6 text-red-500 cursor-pointer" /> : ""}
+          </div>
         </div>
       )}
     </div>

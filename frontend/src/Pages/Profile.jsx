@@ -153,7 +153,7 @@ function Profile() {
           {/* Profile */}
           <div className="flex flex-col items-center text-center gap-3">
             {profile.profilePic ? (
-              <img className="w-28 h-28 rounded-full object-cover" src={profile.profilePic} />
+              <img className="w-28 h-28 rounded-full object-cover" src={profile.profilePic.url} />
             ) : (
               <p className="h-32 w-32 rounded-full bg-gray-300 text-sm flex items-center justify-center font-bold text-gray-700">
                 Add Image

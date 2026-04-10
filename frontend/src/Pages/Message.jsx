@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/appContext";
-import { assets } from "../assets/assets";
 import MessageRoom from "../components/common/MessageRoom";
 import toast from "react-hot-toast";
 
@@ -92,6 +91,8 @@ function Message() {
     unreadMessageCount();
   }, [token]);
 
+  console.log(users);
+
   // Handling Loading state //
   if (loading)
     return (
@@ -121,8 +122,11 @@ function Message() {
           <div>
             {users.map((item) => (
               <div key={item._id} onClick={() => fetchConversationId(item._id)}>
-                <div className="flex gap-3 items-center ">
-                  <img src={assets.profile1} className="w-10 rounded-full" />
+                <div className="flex gap-3 items-center mb-3 hover:bg-gray-100 p-2 rounded-sm">
+                  <img
+                    src={typeof item.profilePic === "string" ? item.profilePic : item.profilePic?.url}
+                    className="w-10 rounded-full"
+                  />
                   <p className="text-gray-600 font-semibold">{item.name}</p>
 
                   <p className={`${count !== 0 ? "bg-red-600 text-sm  px-1 ml-10 text-white rounded-full" : ""}`}>

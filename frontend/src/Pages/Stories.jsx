@@ -98,7 +98,7 @@ function Stories() {
             <NavLink to={`/profile/${item.user?._id}`} className="no-underline text-black cursor-pointer">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
-                  <img src={item.user?.profilePic || item.user.name} />
+                  <img src={item.user?.profilePic.url || item.user.name} className="rounded-full" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">{item.user?.name || "Unknown"}</p>
