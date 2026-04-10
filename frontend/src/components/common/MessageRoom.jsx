@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import MessageInput from "./MessageInput";
 import { useRef } from "react";
 import EmptyMessageState from "./EmptyMessageState";
+import { assets } from "../../assets/assets";
 
 function MessageRoom() {
   const { conversationId } = useParams();
@@ -124,7 +125,10 @@ function MessageRoom() {
           {receiver && (
             <Link to={`/profile/${receiver._id}`} className="no-underline">
               <div className="flex gap-4 py-2 pl-4 border-b bg-blue-100">
-                <img src={receiver.profilePic?.url} className="w-12 h-12 rounded-full object-cover" />
+                <img
+                  src={receiver.profilePic?.url || assets.profile_icon}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
                 <p className="font-semibold text-gray-800">{receiver.name}</p>
               </div>
             </Link>

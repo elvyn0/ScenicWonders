@@ -18,7 +18,20 @@ function Login({ onClose }) {
 
     try {
       if (currentState === "singUp") {
-        const response = await api.post("/api/user/register", { name, email, password });
+        const trimmedName = name.trim();
+        const trimmedEmail = email.trim();
+        const trimmedPassword = password.trim();
+
+        if (!trimmedName || !trimmedEmail || !trimmedPassword) {
+          return toast.error("All fields are required");
+        }
+
+        const response = await api.post("/api/user/register", {
+          name: trimmedName,
+          email: trimmedEmail,
+          password: trimmedPassword,
+        });
+
         if (response.data.success) {
           toast.success("Welcome to Scenic Wonders");
           setToken(response.data.token);

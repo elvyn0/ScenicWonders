@@ -4,6 +4,7 @@ import { NavLink, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { EllipsisVertical } from "lucide-react";
 import EditProfileModel from "../components/EditProfileModel";
+import { assets } from "../assets/assets";
 
 function Profile() {
   const { api, token, navigate, setUser, setToken } = useContext(AppContext);
@@ -153,7 +154,10 @@ function Profile() {
           {/* Profile */}
           <div className="flex flex-col items-center text-center gap-3">
             {profile.profilePic ? (
-              <img className="w-28 h-28 rounded-full object-cover" src={profile.profilePic.url} />
+              <img
+                className="w-28 h-28 rounded-full object-cover"
+                src={profile.profilePic?.url || assets.profile_icon}
+              />
             ) : (
               <p className="h-32 w-32 rounded-full bg-gray-300 text-sm flex items-center justify-center font-bold text-gray-700">
                 Add Image

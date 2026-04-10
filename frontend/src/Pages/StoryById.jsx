@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Trash2 } from "lucide-react";
+import { assets } from "../assets/assets";
 
 function StoryById() {
   const { id } = useParams();
@@ -116,7 +117,7 @@ function StoryById() {
               <Link to={`/profile/${story.user._id}`} className="no-underline cursor-pointer">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
-                    <img src={story.user?.profilePic.url} className="rounded-full" />
+                    <img src={story.user?.profilePic?.url || assets.profile_icon} className="rounded-full" />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-800">{story.user?.name || "Unknown"}</p>

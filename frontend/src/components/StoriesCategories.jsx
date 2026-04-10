@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import toast from "react-hot-toast";
 import { Heart } from "lucide-react";
+import { assets } from "../assets/assets";
 
 function StoriesCategories() {
   const { api, token } = useContext(AppContext);
@@ -65,7 +66,7 @@ function StoriesCategories() {
 
       {/* Stories Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {list.map((item) => (
+        {list.slice(0, 6).map((item) => (
           <div
             key={item._id}
             className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition"
@@ -74,7 +75,7 @@ function StoriesCategories() {
             <Link to={`/profile/${item.user._id}`} className="no-underline text-black cursor-pointer">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-700">
-                  <img src={item.user?.profilePic.url || item.user.name} className="rounded-full" />
+                  <img src={item.user?.profilePic?.url || assets.profile_icon} className="rounded-full" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800">{item.user?.name || "Unknown"}</p>
