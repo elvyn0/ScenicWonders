@@ -20,6 +20,7 @@ function Login({ onClose }) {
       if (currentState === "singUp") {
         const response = await api.post("/api/user/register", { name, email, password });
         if (response.data.success) {
+          toast.success("Welcome to Scenic Wonders");
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
         } else {
