@@ -139,9 +139,15 @@ const deleteHotel = async (req, res) => {
       return res.status(404).json({ success: false, message: "Hotel not found" });
     }
 
-    if (hotel.image?.length) {
-      await Promise.all(hotel.image.map((img) => (img.publicId ? cloudinary.uploader.destroy(img.publicId) : null)));
+    // Deleting hotelImage form cloudinary
+    if (hotel.hotelImage?.publicId) {
+      await cloudinary.uploader.destroy(hotel.hotelImage.publicId);
     }
+    // Deleting roomsImage form cloudinary {Arry}
+    if (hotel.roomImages && hotel.roomImages.length > 0) {
+      await Promise.all(hotel.roomImages.map((img) => cloudinary.uploader.destroy(img.publicId)));
+    }
+
     await Hotel.findByIdAndDelete(hotelId);
 
     res.status(200).json({ success: true, message: "Hotel deleted successfully" });
