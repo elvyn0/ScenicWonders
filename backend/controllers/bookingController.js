@@ -228,8 +228,8 @@ const getAdminStatus = async (req, res) => {
       Booking.countDocuments(),
       Hotel.countDocuments(),
       Booking.aggregate([
-        { $match: { paymentStatus: "paid" } },
-        { $group: { _id: null, total: { $sum: "totalPrice" } } },
+        { $match: { bookingStatus: "Confirmed" } },
+        { $group: { _id: null, total: { $sum: "$totalPrice" } } },
       ]),
     ]);
 
