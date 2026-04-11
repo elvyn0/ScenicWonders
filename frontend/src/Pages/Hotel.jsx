@@ -5,7 +5,7 @@ import { Star } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
-import BookingCalender2 from "../components/BookingCalender2";
+import BookingCalender2 from "../components/hotels/BookingSearchBar/BookingCalender2";
 
 function Hotel() {
   const navigate = useNavigate();

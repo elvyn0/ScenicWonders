@@ -19,7 +19,16 @@ function AiBot({ message, input, setInput, sendMessage, loading, aiOpen, setAiOp
     <>
       {/* Chat Box */}
       {aiOpen && (
-        <div className="fixed bottom-20 right-5 w-[90%] sm:w-80 h-[70vh] bg-white shadow-xl rounded-2xl flex flex-col z-50">
+        <div
+          className="
+  fixed 
+  bottom-4 right-2 left-2   /* full width control on mobile */
+  sm:bottom-20 sm:right-5 sm:left-auto
+  w-auto sm:w-80 
+  h-[60vh] sm:h-[70vh] 
+  bg-white shadow-xl rounded-2xl flex flex-col z-50
+"
+        >
           {/* Header */}
           <div className="p-3 bg-blue-500 text-white rounded-t-2xl flex justify-between items-center">
             <div className="flex gap-2 ">

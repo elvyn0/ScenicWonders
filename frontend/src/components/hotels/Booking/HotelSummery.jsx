@@ -1,8 +1,8 @@
 import { Star } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AppContext } from "../../context/AppContext";
-import { formatDate } from "../../utils/formatDate";
+import { AppContext } from "../../../context/AppContext";
+import { formatDate } from "../../../utils/formatDate";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 

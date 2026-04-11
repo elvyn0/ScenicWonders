@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { GrUploadOption } from "react-icons/gr";
-import { AppContext } from "../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import { toast } from "react-hot-toast";
 
 function Post() {

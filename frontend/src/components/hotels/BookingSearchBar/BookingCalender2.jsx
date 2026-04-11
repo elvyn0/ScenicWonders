@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DAYS_OF_WEEK } from "../utils/hotelBookingUtils";
+import { DAYS_OF_WEEK } from "../../../utils/hotelBookingUtils";
 import toast from "react-hot-toast";
 
 function BookingCalender2({ selectedDate, setSelectedDate, handleGuestsChange, handleRoomsChange, bookingInfo }) {

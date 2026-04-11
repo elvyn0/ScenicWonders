@@ -1,6 +1,6 @@
 import { Telescope, Bot, NotebookPen, Hotel, BadgeInfo } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
-import AiBot from "./AiBot";
+import AiBot from "./Ai/AiBot";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useState } from "react";

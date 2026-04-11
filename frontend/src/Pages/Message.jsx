@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
-import MessageRoom from "../components/common/MessageRoom";
+import MessageRoom from "../components/common/Message/MessageRoom";
 import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
 

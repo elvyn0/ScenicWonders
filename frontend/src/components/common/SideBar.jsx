@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { GoHome } from "react-icons/go";
 import { MdOutlineExplore } from "react-icons/md";

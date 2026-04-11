@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import HotelItems from "./HotelItems";
 import { Bot } from "lucide-react";
-import AiBot from "../common/AiBot";
+import AiBot from "../common/Ai/AiBot";
 
 function Hotels({
   fetchHotelLists,
@@ -27,7 +27,7 @@ function Hotels({
         {!aiOpen && (
           <button
             onClick={() => setAiOpen(true)}
-            className="fixed bottom-10 right-8 bg-blue-500 text-white p-3 rounded-full z-[50] hover:bg-blue-600 transition-all"
+            className="fixed bottom-20 right-8 bg-blue-500 text-white p-3 rounded-full z-[50] hover:bg-blue-600 transition-all"
           >
             <Bot />
           </button>

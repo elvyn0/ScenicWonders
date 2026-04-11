@@ -1,6 +1,6 @@
 import PlacesCategory from "../components/PlacesCategory";
-import StoriesCategories from "../components/StoriesCategories";
-import PostCategories from "../components/PostCategories";
+import StoriesCategories from "../components/StoryFolder/StoriesCategories";
+import PostCategories from "../components/PostFolder/PostCategories";
 
 const Explore = () => {
   return (
