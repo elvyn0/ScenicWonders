@@ -26,10 +26,10 @@ const addStory = async (req, res) => {
   }
 };
 
-// Function for list stories //
+// Function for list stories
 const listStories = async (req, res) => {
   try {
-    const userId = req.user?._id; // safe
+    const userId = req.user?._id;
 
     const stories = await Stories.find().populate("user", "name profilePic").sort({ createdAt: -1 });
 
@@ -57,8 +57,7 @@ const listStories = async (req, res) => {
   }
 };
 
-// Function for get single story //
-
+// Function for get single story
 const singleStory = async (req, res) => {
   try {
     const userId = req.user?._id;
@@ -87,7 +86,7 @@ const singleStory = async (req, res) => {
   }
 };
 
-// Likes //
+// Likes
 const handleLikes = async (req, res) => {
   try {
     const userId = req.user?._id;
@@ -118,12 +117,11 @@ const handleLikes = async (req, res) => {
     res.status(200).json({ success: true, likes: story.likes, liked: !alreadyLiked });
   } catch (error) {
     console.log(error);
-    res.json(500).json({ success: false, messaage: error.messaage });
+    res.status(500).json({ success: false, message: error.messaage });
   }
 };
 
-// Function for remove stories //
-
+// Function for remove stories
 const removeStory = async (req, res) => {
   try {
     const { id } = req.params;

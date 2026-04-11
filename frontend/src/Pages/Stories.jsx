@@ -38,7 +38,6 @@ function Stories() {
   };
 
   // Handling Like //
-
   const handleLike = async (id) => {
     try {
       const response = await api.post(
@@ -123,9 +122,10 @@ function Stories() {
             >
               <span className="flex text-sm text-gray-500 gap-1 mt-1 ">
                 <Heart
-                  className={`text-black font-bold ${item?.liked ? "text-white bg-red-500  rounded-full p-1  " : ""}`}
+                  className={`font-bold ${item?.liked ? "text-white bg-red-500 rounded-full p-1" : "text-black"}`}
                 />
-                {item.likes.length || 0}
+
+                {item?.likes?.length || 0}
               </span>
             </div>
           </div>
