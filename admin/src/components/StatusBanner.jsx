@@ -1,4 +1,4 @@
-import { Users, Hotel, NotepadText, DollarSign } from "lucide-react";
+import { Users, Hotel, NotepadText, IndianRupee } from "lucide-react";
 import StatCart from "./StatCart";
 import { useState } from "react";
 import api from "../api/axios";
@@ -8,6 +8,7 @@ import { useEffect } from "react";
 function StatusBanner() {
   const [status, setStatus] = useState(null);
 
+  // Fetching whole status user,hotels,booking,revenue
   const fetchStatus = async () => {
     try {
       const response = await api.get("/api/bookings/admin/bookingStatus");
@@ -23,7 +24,7 @@ function StatusBanner() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -49,7 +50,7 @@ function StatusBanner() {
             <StatCart title="Total Hotels" value={status.totalHotels} Icon={Hotel} />
             <StatCart title="Total Bookings" value={status.totalBookings} Icon={NotepadText} />
             <div className="border-green-600 border-3 rounded-md">
-              <StatCart title="Revenue" value={status.totalRevenue} Icon={DollarSign} className={RevenueClass} />
+              <StatCart title="Revenue" value={status.totalRevenue} Icon={IndianRupee} className={RevenueClass} />
             </div>
           </div>
         )}

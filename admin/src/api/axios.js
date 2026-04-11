@@ -1,5 +1,4 @@
 import axios from "axios";
-import { WindIcon } from "lucide-react";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
