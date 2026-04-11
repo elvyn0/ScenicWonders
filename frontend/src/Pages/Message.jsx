@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import MessageRoom from "../components/common/MessageRoom";
 import toast from "react-hot-toast";
 import { assets } from "../assets/assets";
@@ -31,7 +31,7 @@ function Message() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.messages || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -61,13 +61,12 @@ function Message() {
         toast.error("Failed to create conversation");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
-  // message count //
-
+  // Message count
   const unreadMessageCount = async () => {
     try {
       const response = await api.get("/api/messages/count", {
@@ -82,13 +81,12 @@ function Message() {
         response.data.unreadCounts.forEach((item) => {
           map[item._id] = item.count;
         });
-        console.log("MAP:", map);
         setCount(map);
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -98,7 +96,6 @@ function Message() {
     unreadMessageCount();
   }, [token]);
 
-  console.log(count);
   // Handling Loading state //
   if (loading)
     return (

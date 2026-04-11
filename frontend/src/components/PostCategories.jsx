@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useContext } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
@@ -12,6 +12,7 @@ function PostCategories() {
   const [error, setError] = useState(null);
   const [postList, setPostList] = useState([]);
 
+  // Fetching Posts
   const fetchList = async () => {
     try {
       setLoading(true);
@@ -27,7 +28,7 @@ function PostCategories() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {

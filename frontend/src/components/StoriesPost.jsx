@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { AppContext } from "../context/appContext";
+import { useContext, useState } from "react";
+import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 function StoriesPost() {
@@ -8,7 +8,8 @@ function StoriesPost() {
   const [content, setContent] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  const handileSubmit = async (e) => {
+  // Handle Submit for  create story
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -31,14 +32,14 @@ function StoriesPost() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setUploading(false);
     }
   };
   return (
-    <form onSubmit={handileSubmit} className="pt-5 px-4 md:px-[5%]">
+    <form onSubmit={handleSubmit} className="pt-5 px-4 md:px-[5%]">
       <h3 className="font-bold text-lg md:text-xl">Stories</h3>
 
       <div className="flex justify-center items-center mt-5">

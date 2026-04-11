@@ -7,7 +7,7 @@ function AiBot({ message, input, setInput, sendMessage, loading, aiOpen, setAiOp
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
-  // Handling error state //
+  // Handling error state
   if (error)
     return (
       <div className="text-center text-lg text-red-600 font-bold">

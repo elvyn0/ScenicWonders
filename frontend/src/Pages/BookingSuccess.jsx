@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { useContext, useEffect } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
+// After strip booking success page
 function BookingSuccess() {
   const { api, token } = useContext(AppContext);
 
@@ -12,6 +13,7 @@ function BookingSuccess() {
 
     if (!bookingData) return;
 
+    // save booking
     const saveBooking = async () => {
       try {
         const response = await api.post("/api/bookings/create", bookingData, {
@@ -24,7 +26,7 @@ function BookingSuccess() {
           toast.error(response.data.message);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     };

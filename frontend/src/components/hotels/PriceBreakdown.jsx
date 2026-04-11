@@ -3,7 +3,7 @@ function PriceBreakdown({ pricePerNight, totalNights, rooms }) {
   const basePrice = pricePerNight * totalNights * rooms;
   // Tax 12% //
   const tax = Math.round(basePrice * 0.12);
-
+  // Totel price
   const totalPrice = basePrice + tax;
 
   return (

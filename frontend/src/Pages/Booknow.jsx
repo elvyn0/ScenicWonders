@@ -6,7 +6,7 @@ import BookingForm from "../components/hotels/BookingForm";
 import PriceBreakdown from "../components/hotels/PriceBreakdown";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useContext } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
 
@@ -25,6 +25,7 @@ function Booknow() {
   const checkIn = params.get("checkIn");
   const checkOut = params.get("checkOut");
 
+  // Booking Data
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -42,6 +43,7 @@ function Booknow() {
     }));
   };
 
+  // Submit handler for  booking data
   const onSubmitHandler = async (event) => {
     event.preventDefault();
 
@@ -86,7 +88,7 @@ function Booknow() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {

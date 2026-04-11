@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import MessageInput from "./MessageInput";
 import { useRef } from "react";
@@ -18,6 +18,7 @@ function MessageRoom() {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?._id;
 
+  // Fetching  Conversation
   const fetchConversation = async () => {
     try {
       setLoading(true);
@@ -36,7 +37,7 @@ function MessageRoom() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -46,6 +47,7 @@ function MessageRoom() {
 
   const receiver = conversation?.members.find((member) => member._id !== userId);
 
+  // Fetching Message
   const fetchMessage = async () => {
     try {
       setLoading(true);
@@ -64,7 +66,7 @@ function MessageRoom() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -73,6 +75,7 @@ function MessageRoom() {
   };
 
   const bottomRef = useRef(null);
+
   useEffect(() => {
     if (token && conversationId) {
       fetchMessage();

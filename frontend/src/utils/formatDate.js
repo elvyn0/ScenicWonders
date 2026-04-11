@@ -1,5 +1,4 @@
 //  Format date for UI display
-
 export const formatDate = (dateString) => {
   if (!dateString) return "Please select date";
 

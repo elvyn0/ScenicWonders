@@ -5,7 +5,7 @@ import Navbar from "../components/common/Navbar";
 import WeekendDeals from "../components/hotels/WeekendDeals";
 import Login from "../components/common/Login";
 import { useContext } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 
 function Home() {
   const { showLogin, setShowLogin, handleLogout } = useContext(AppContext);

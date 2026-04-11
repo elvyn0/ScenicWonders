@@ -2,9 +2,9 @@ import { Star } from "lucide-react";
 import { assets } from "../../assets/assets";
 import { User } from "lucide-react";
 import { useContext, useState } from "react";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "../../context/AppContext";
 
-// --- Header Component ---
+// --- Header Component --- //
 // This component displays the top navigation bar
 const Header = ({ onLoginClick, onLogout }) => {
   const { token, navigate, user } = useContext(AppContext);
@@ -23,12 +23,10 @@ const Header = ({ onLoginClick, onLogout }) => {
         {/* Favorite Icon */}
         <div type="button" onClick={() => navigate("/myBookings")} aria-label="bookings" className="icon-btn">
           <Star className="icon-bookings" />
-
           <span className="tooltip">Bookings</span>
         </div>
 
         {/* Sign In Button and profile drop down  */}
-
         {!token ? (
           <button
             onClick={onLoginClick}

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import { Star } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
@@ -43,7 +43,7 @@ function Hotel() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {

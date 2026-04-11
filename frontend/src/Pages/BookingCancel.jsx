@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 
 function BookingCancel() {
   return (
+    // Booking cancelled or failed page  after strip payment
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-2xl shadow-md text-center max-w-md">
         <h1 className="text-2xl font-bold text-red-600 mb-4">Payment Cancelled</h1>

@@ -7,7 +7,7 @@ import { LuMessageCircleMore } from "react-icons/lu";
 import { RiCameraAiLine } from "react-icons/ri";
 import { FaRegPenToSquare } from "react-icons/fa6";
 import { useContext } from "react";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 
@@ -17,6 +17,7 @@ function SideBar() {
   const navigate = useNavigate();
   const [count, setCount] = useState(null);
 
+  // for  story or post
   const handleSelect = (type) => {
     setShowPopup(false);
 
@@ -24,8 +25,7 @@ function SideBar() {
     if (type === "stories") navigate("/storiesPost");
   };
 
-  // Unread message count //
-
+  // Unread message count
   const messageCount = async () => {
     try {
       const response = await api.get("/api/messages/count", {
@@ -39,7 +39,7 @@ function SideBar() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -52,7 +52,6 @@ function SideBar() {
       <div className="fixed bottom-0 md:top-0 left-0 w-full md:w-16 h-16 md:h-full border-t md:border-t-0 md:border-r-2 flex md:flex-col justify-around md:justify-center items-center bg-white z-50">
         <div className="flex   md:flex-col gap-14 items-center">
           {/* Home */}
-
           <NavLink to="/" className=" p-1 rounded bg-gray-200 text-black hover:bg-gray-300">
             <GoHome className=" isActive size-6" />
           </NavLink>

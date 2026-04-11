@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 import { Heart } from "lucide-react";
@@ -11,6 +11,7 @@ function Stories() {
   const [error, setError] = useState(null);
   const [list, setList] = useState([]);
 
+  // Fetching Stories
   const fetchList = async () => {
     try {
       setLoading(true);
@@ -29,7 +30,7 @@ function Stories() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -37,7 +38,7 @@ function Stories() {
     }
   };
 
-  // Handling Like //
+  // Handling Like
   const handleLike = async (id) => {
     try {
       const response = await api.post(
@@ -59,7 +60,7 @@ function Stories() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Like failed");
     }
   };

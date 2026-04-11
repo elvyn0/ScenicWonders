@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import BookingBar from "../components/hotels/BookingSearchBar/BookingBar";
 import Hotels from "../components/hotels/Hotels";
 import toast from "react-hot-toast";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 
 function HotelsAndBookingbar() {
   const { api } = useContext(AppContext);
@@ -34,7 +34,7 @@ function HotelsAndBookingbar() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -72,7 +72,7 @@ function HotelsAndBookingbar() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };

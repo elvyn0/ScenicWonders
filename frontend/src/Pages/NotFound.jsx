@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import { assets } from "../assets/assets";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 
 function NotFound() {
+  // Error page
   const { navigate } = useContext(AppContext);
   return (
     <div className="flex flex-col items-center justify-center p-5">

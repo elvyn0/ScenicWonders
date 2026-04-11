@@ -1,21 +1,20 @@
 import { X, Eye, EyeOff } from "lucide-react";
 import { useContext, useState, useEffect } from "react";
 import { assets } from "../../assets/assets";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 
 function Login({ onClose }) {
   const { api, setToken, token, navigate } = useContext(AppContext);
   const [showPassword, setShowPassword] = useState(false);
   const [currentState, setCurrentState] = useState("singUp");
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Submit handler
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-
     try {
       if (currentState === "singUp") {
         const trimmedName = name.trim();
@@ -51,7 +50,7 @@ function Login({ onClose }) {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -98,7 +97,6 @@ function Login({ onClose }) {
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                 Name
               </label>
-
               <input
                 onChange={(e) => setName(e.target.value)}
                 value={name}

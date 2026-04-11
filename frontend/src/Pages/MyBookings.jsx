@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import { toast } from "react-hot-toast";
 import { assets } from "../assets/assets";
 import { Trash2 } from "lucide-react";
@@ -30,7 +30,7 @@ function MyBookings() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -58,7 +58,7 @@ function MyBookings() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -78,7 +78,7 @@ function MyBookings() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -101,7 +101,7 @@ function MyBookings() {
         <p>{error}</p>
       </div>
     );
-  console.log(bookings);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center sm:bg-black/50 sm:backdrop-blur-sm ml-[4%]">
       <div

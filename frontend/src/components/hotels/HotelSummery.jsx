@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "../../context/AppContext";
 import { formatDate } from "../../utils/formatDate";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
@@ -14,13 +14,13 @@ function HotelSummery() {
   const [error, setError] = useState(null);
 
   const [params] = useSearchParams();
-
   const checkIn = params.get("checkIn");
   const checkOut = params.get("checkOut");
   const guests = params.get("guests");
   const rooms = params.get("rooms");
   const nights = params.get("nights");
 
+  // Fetch Hotel by Id
   const fetchhotel = async () => {
     try {
       setLoading(true);
@@ -35,7 +35,7 @@ function HotelSummery() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { GrUploadOption } from "react-icons/gr";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import { toast } from "react-hot-toast";
 
 function Post() {
@@ -9,6 +9,7 @@ function Post() {
   const [caption, setCaption] = useState("");
   const [Uploading, setUploading] = useState(false);
 
+  //  Submit function for create post
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,7 +33,7 @@ function Post() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setUploading(false);

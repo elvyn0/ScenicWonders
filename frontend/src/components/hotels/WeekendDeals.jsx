@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "../../context/AppContext";
 import { Link } from "react-router-dom";
 import WeekendDealsItem from "./WeekenddealItem";
 import toast from "react-hot-toast";
@@ -10,6 +10,7 @@ function WeekendDeals() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetching hotels
   useEffect(() => {
     const fetchList = async () => {
       try {
@@ -45,6 +46,7 @@ function WeekendDeals() {
       </div>
     );
 
+  // Filtering hotels by weekned Deals
   const weekendDeals = hotels.filter((item) => item.weekendDeals === true).slice(0, 4);
 
   return (

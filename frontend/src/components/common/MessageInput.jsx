@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AppContext } from "../../context/appContext";
-
+import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { Send } from "lucide-react";
 
@@ -13,7 +12,6 @@ function MessageInput({ conversationId, onNewMessage }) {
     e.preventDefault();
 
     if (!newMessage.trim()) return;
-
     try {
       const response = await api.post(
         "/api/messages/",
@@ -31,7 +29,7 @@ function MessageInput({ conversationId, onNewMessage }) {
         setNewMessage("");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -45,7 +43,6 @@ function MessageInput({ conversationId, onNewMessage }) {
         placeholder="Type a message..."
         className="flex-1 border rounded-lg pl-4 py-3 "
       />
-
       <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg ">
         <Send />
       </button>

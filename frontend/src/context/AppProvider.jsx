@@ -1,10 +1,9 @@
-import { createContext, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
-
-export const AppContext = createContext();
+import { AppContext } from "./AppContext";
 
 const AppContextProvider = (props) => {
   const [showLogin, setShowLogin] = useState(false);
@@ -12,20 +11,21 @@ const AppContextProvider = (props) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  /// Backend  ///
+  //  for Payment
+  const currency = "₹";
+  const taxes = 600;
 
+  /// Backend  ///
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
   });
 
   /// Socket-io ///
-
   const socket = io("http://localhost:4000", {
     auth: { token },
   });
 
   /// To get the user ///
-
   const fetchUser = async () => {
     try {
       const response = await api.get("/api/user/me", { headers: { token } });
@@ -33,7 +33,7 @@ const AppContextProvider = (props) => {
         setUser(response.data.user);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -42,14 +42,11 @@ const AppContextProvider = (props) => {
   }, [token]);
 
   /// Logout ///
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setToken(null);
   };
-  const currency = "₹";
-  const taxes = 600;
 
   const value = {
     api,

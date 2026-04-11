@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { assets } from "../assets/assets";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 function EditProfileModel({ setShowEdit, profile, setProfile }) {
@@ -9,6 +9,7 @@ function EditProfileModel({ setShowEdit, profile, setProfile }) {
   const [name, setName] = useState("");
   const [updating, setUpdating] = useState(false);
 
+  // Handling submit for edit profile
   const handelSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,7 +38,7 @@ function EditProfileModel({ setShowEdit, profile, setProfile }) {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setUpdating(false);

@@ -1,6 +1,6 @@
 import { MessageCircleMore } from "lucide-react";
 import { useContext } from "react";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "../../context/AppContext";
 import { toast } from "react-hot-toast";
 
 function EmptyMessageState() {

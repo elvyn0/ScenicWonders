@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import { NavLink, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { EllipsisVertical } from "lucide-react";
@@ -37,7 +37,7 @@ function Profile() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -45,8 +45,7 @@ function Profile() {
     }
   };
 
-  /// To get conversationId ///
-
+  /// To get conversationId
   const fetchConversationId = async (receiverId) => {
     try {
       const response = await api.post(
@@ -67,12 +66,12 @@ function Profile() {
         toast.error("Failed to create conversation");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
-  // Handling Delete user //
+  // Handling Delete user
   const handleDeleteUser = async () => {
     try {
       setLoading(true);
@@ -94,7 +93,7 @@ function Profile() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);

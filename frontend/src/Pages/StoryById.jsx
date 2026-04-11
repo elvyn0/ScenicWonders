@@ -1,7 +1,6 @@
-import React from "react";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
@@ -16,7 +15,7 @@ function StoryById() {
   const [error, setError] = useState(null);
   const [story, setStory] = useState(null);
 
-  // Detail story //
+  // Detail story
   const fetchStoryById = async () => {
     try {
       setLoading(true);
@@ -35,7 +34,7 @@ function StoryById() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -43,7 +42,7 @@ function StoryById() {
     }
   };
 
-  // Handling Like //
+  // Handling Like
   const handleLike = async () => {
     try {
       const response = await api.post(
@@ -62,12 +61,12 @@ function StoryById() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Like failed");
     }
   };
 
-  // Handling  delete story //
+  // Handling  delete story
   const handleDelete = async () => {
     try {
       const response = await api.delete(`/api/story/remove/${id}`, {
@@ -83,7 +82,7 @@ function StoryById() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };

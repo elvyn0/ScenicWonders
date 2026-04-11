@@ -28,7 +28,6 @@ function Calendar({ selectedDate, setSelectedDate, setShowCalendar }) {
     const { daysInMonth, firstDayIndex } = getMonthInfo(year, month);
 
     // leading empty cells
-
     const cells = [];
     for (let i = 0; i < firstDayIndex; i++) {
       cells.push(null);

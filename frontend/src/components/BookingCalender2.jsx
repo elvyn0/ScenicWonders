@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DAYS_OF_WEEK } from "../utils/hotelBookingUtils";
 import toast from "react-hot-toast";
@@ -8,8 +8,7 @@ function BookingCalender2({ selectedDate, setSelectedDate, handleGuestsChange, h
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  // month
-
+  // Month
   const getMonthInfo = (year, month) => {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayIndex = new Date(year, month, 1).getDay();
@@ -17,7 +16,7 @@ function BookingCalender2({ selectedDate, setSelectedDate, handleGuestsChange, h
     return { daysInMonth, firstDayIndex };
   };
 
-  // move to previous and next month
+  // Move to previous and next month
   const nextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
@@ -50,7 +49,7 @@ function BookingCalender2({ selectedDate, setSelectedDate, handleGuestsChange, h
   // To display current month
   const currnetCells = generateCells(year, month);
 
-  //  handle check-in and check-out
+  //  Handle check-in and check-out
   const handleDateClick = (clickedDate) => {
     if (!clickedDate) return;
 
@@ -118,7 +117,6 @@ function BookingCalender2({ selectedDate, setSelectedDate, handleGuestsChange, h
               year: "numeric",
             })}
           </h3>
-
           <button onClick={nextMonth} className="p-1 rounded-full hover:bg-gray-200 transition">
             <ChevronRight size={22} />
           </button>

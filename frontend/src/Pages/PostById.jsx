@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/appContext";
+import { AppContext } from "../context/AppContext";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -13,6 +13,7 @@ function PostById() {
   const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
 
+  // Fetch post by id
   const postById = async () => {
     try {
       setLoading(true);
@@ -31,7 +32,7 @@ function PostById() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
       setError("Server not responding...");
     } finally {
@@ -39,8 +40,7 @@ function PostById() {
     }
   };
 
-  // Handling Like //
-
+  // Handling Like
   const handleLike = async () => {
     try {
       const response = await api.post(
@@ -58,13 +58,12 @@ function PostById() {
         toast.error(response.data.error);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Like failed");
     }
   };
 
-  // Handling  delete post //
-
+  // Handling  delete post
   const handleDelte = async () => {
     try {
       const response = await api.delete(`/api/post/remove/${id}`, {
@@ -79,7 +78,7 @@ function PostById() {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -87,8 +86,6 @@ function PostById() {
   useEffect(() => {
     postById();
   }, [id]);
-
-  console.log(post);
 
   // Handling Loading state //
   if (loading)

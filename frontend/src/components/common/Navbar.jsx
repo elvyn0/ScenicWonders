@@ -2,7 +2,7 @@ import { Telescope, Bot, NotebookPen, Hotel, BadgeInfo } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import AiBot from "./AiBot";
 import { useContext } from "react";
-import { AppContext } from "../../context/appContext";
+import { AppContext } from "../../context/AppContext";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -15,6 +15,7 @@ function NavBar() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Sending message function
   const sendMessage = async () => {
     if (!input.trim()) return;
 
@@ -38,7 +39,7 @@ function NavBar() {
         setError("Failed to load data");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setMessage((prev) => [...prev, { role: "bot", text: "Something went wrong" }]);
       toast.error(error.response?.data?.message);
       setError("Server not responding...");
