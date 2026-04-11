@@ -201,7 +201,7 @@ function Profile() {
       )}
 
       {/* Tabs */}
-      <div className="mt-10">
+      <div className="mt-10 flex-col">
         <div className="flex justify-center gap-10 border-b">
           <button
             onClick={() => setActive("post")}
@@ -220,23 +220,27 @@ function Profile() {
           >
             Stories
           </button>
-          <button
-            onClick={() => fetchConversationId(profile?._id)}
-            className={`pb-3 text-sm font-medium transition text-blue-600
+          {profile?._id !== user?._id && (
+            <button
+              onClick={() => fetchConversationId(profile?._id)}
+              className={`pb-3 text-sm font-medium transition text-blue-600
             }`}
-          >
-            Message
-          </button>
+            >
+              Message
+            </button>
+          )}
         </div>
 
         {/* Content */}
 
         {/* Post */}
-        <div className="mt-8 w-full">
+        <div className="mt-8">
           {active === "post" ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 max-w-6xl w-full">
               {posts.length === 0 ? (
-                <p className=" text-lg font-bold">No post!</p>
+                <div className="col-span-full flex justify-center">
+                  <p className="text-lg font-bold">No post!</p>
+                </div>
               ) : (
                 posts.map((item) => (
                   <div
