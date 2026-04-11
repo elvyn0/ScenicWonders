@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import api from "../api/axios";
 
 function BookingsList() {
-  const [active, setActive] = useState("confirmed");
+  const [active, setActive] = useState("Confirmed");
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
@@ -37,24 +37,22 @@ function BookingsList() {
   }, []);
 
   const filteredList = list.filter((item) => item.bookingStatus === active);
+  const tabs = [
+    { label: "Confirmed", color: "bg-blue-600" },
+    { label: "Cancelled", color: "bg-red-600" },
+  ];
   return (
     <div className="py-6 flex flex-col gap-10 items-center bg-gray-100">
       {/* Tabs */}
       <div className="flex gap-3 sm:gap-5 text-base sm:text-xl font-semibold">
-        {["confirmed", "pending"].map((status) => (
+        {tabs.map((tab) => (
           <div
-            key={status}
-            onClick={() => setActive(status)}
+            key={tab.label}
+            onClick={() => setActive(tab.label)}
             className={`px-4 py-2 sm:px-6 sm:py-3 rounded-xl cursor-pointer transition shadow capitalize
-          ${
-            active === status
-              ? status === "confirmed"
-                ? "bg-blue-600 text-white"
-                : "bg-red-600 text-white"
-              : "bg-white text-black"
-          }`}
+          ${active === tab.label ? `${tab.color} text-white` : "bg-white text-black"}`}
           >
-            {status}
+            {tab.label}
           </div>
         ))}
       </div>
