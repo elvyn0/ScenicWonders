@@ -3,14 +3,13 @@ const User = require("../models/userModel");
 const Hotel = require("../models/hotelModel");
 
 /// User ///
-//  create booking
 
+//  create booking
 const createBooking = async (req, res) => {
   try {
     const userId = req.user._id;
 
     const { hotelId, numberOfRooms, numberOfGuests, checkInDate, checkOutDate, firstName, lastName, email } = req.body;
-    console.log(hotelId, numberOfRooms, numberOfGuests, checkInDate, checkOutDate, firstName, lastName, email);
 
     if (
       !hotelId ||
@@ -34,7 +33,6 @@ const createBooking = async (req, res) => {
     }
 
     // fetch hotel
-
     const hotel = await Hotel.findById(hotelId).select(" name location pricePerNight  hotelImage ");
 
     if (!hotel) {
@@ -106,7 +104,6 @@ const createBooking = async (req, res) => {
 };
 
 // To list all  user bookings
-
 const getMyBookings = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -122,28 +119,7 @@ const getMyBookings = async (req, res) => {
   }
 };
 
-// To get a perticular booking deatiles
-
-const getBookingById = async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const bookingId = req.params.id;
-
-    const booking = await Booking.findOne({ _id: bookingId, user: userId }).populate("hotel");
-
-    if (!booking) {
-      return res.status(404).json({ success: false, message: "Booking not found" });
-    }
-
-    res.status(200).json({ success: true, booking });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
 // Cancel booking
-
 const cancelBooking = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -155,11 +131,11 @@ const cancelBooking = async (req, res) => {
       return res.status(400).json({ success: false, message: "Booking not found" });
     }
 
-    if (booking.bookingStatus === "cancelled") {
+    if (booking.bookingStatus === "Cancelled") {
       return res.status(400).json({ success: false, message: "This booking already cancelled" });
     }
 
-    booking.bookingStatus === "cancelled";
+    booking.bookingStatus = "Cancelled";
     await booking.save();
 
     res.status(200).json({ success: true, message: "Booking cancelled" });
@@ -168,8 +144,8 @@ const cancelBooking = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// To check availabilty
 
+// To check availabilty
 const checkHotelAvailability = async (req, res) => {
   const hotelId = req.params.id;
   const hotel = await Hotel.findById(hotelId);
@@ -206,10 +182,34 @@ const checkHotelAvailability = async (req, res) => {
   }
 };
 
+// Delete Booking
+const deleteBooking = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const bookingId = req.params.id;
+
+    const booking = await Booking.findOne({ _id: bookingId, user: userId });
+
+    if (!booking) {
+      return res.status(404).json({ success: false, message: "No booking  found" });
+    }
+
+    if (booking.bookingStatus === "Confirmed") {
+      return res.status(400).json({ success: false, message: "Confirmed booking cannot be delete before cancelling" });
+    }
+
+    await booking.deleteOne();
+
+    res.status(200).json({ success: true, message: "Booking Deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 /// Admin ///
 
 // Get bookings deatiles
-
 const getAllBookings = async (req, res) => {
   try {
     const bookings = await Booking.find().populate("user", "name email").sort({ createdAt: -1 });
@@ -221,7 +221,6 @@ const getAllBookings = async (req, res) => {
 };
 
 // To get ful view for admin
-
 const getAdminStatus = async (req, res) => {
   try {
     const [totalUsers, totalBookings, totalHotels, revenue] = await Promise.all([
@@ -246,9 +245,9 @@ const getAdminStatus = async (req, res) => {
 module.exports = {
   createBooking,
   getMyBookings,
-  getBookingById,
   cancelBooking,
   getAllBookings,
+  deleteBooking,
   getAdminStatus,
   checkHotelAvailability,
 };

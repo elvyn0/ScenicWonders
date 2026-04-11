@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/appContext";
 import { toast } from "react-hot-toast";
 import { assets } from "../assets/assets";
+import { Trash2 } from "lucide-react";
 
 function MyBookings() {
   const { api, token } = useContext(AppContext);
@@ -40,7 +41,32 @@ function MyBookings() {
   // Handling cancel bookings
   const handlingCancelBooking = async (id) => {
     try {
-      const response = await api.post(`/api/bookings/cancelBooking/${id}`, {
+      const response = await api.patch(
+        `/api/bookings/cancelBooking/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        toast("Your amount will be refunded within 3 working day.");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  // Handling Delete booking
+  const handleDeleteBooking = async (id) => {
+    try {
+      const response = await api.delete(`/api/bookings/delete-booking/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,7 +74,6 @@ function MyBookings() {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        toast.info("Your amount will be refunded within 3 working day.");
       } else {
         toast.error(response.data.message);
       }
@@ -76,7 +101,7 @@ function MyBookings() {
         <p>{error}</p>
       </div>
     );
-
+  console.log(bookings);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center sm:bg-black/50 sm:backdrop-blur-sm ml-[4%]">
       <div
@@ -139,16 +164,32 @@ function MyBookings() {
 
               {/* Bottom Section */}
               <div className="border-t pt-3 text-center space-y-2">
-                <h3 className="font-semibold text-green-600">Booking Confirmed 🎉</h3>
+                <h3
+                  className={`${item.bookingStatus === "Confirmed" ? "text-green-500" : "text-red-500"} font-semibold`}
+                >
+                  Booking {item.bookingStatus}
+                </h3>
                 <p className="text-sm text-gray-500">Show QR at hotel reception</p>
                 <div className="p-2 bg-gray-200 rounded-lg flex items-center justify-center">
                   <img className="size-28" src={assets.QR} />
                 </div>
               </div>
-              <div onClick={() => handlingCancelBooking(item?._id)} className="flex items-center justify-center">
-                <p className="text-center text-sm bg-red-600 px-2 py-2 text-white font-semibold rounded-full hover:bg-red-800 hover:cursor-pointer">
-                  Cancel Booking
-                </p>
+              {/* Cancel booking */}
+              {item.bookingStatus === "Confirmed" ? (
+                <div onClick={() => handlingCancelBooking(item?._id)} className="flex items-center justify-center">
+                  <p className="text-center text-sm bg-red-600 px-2 py-2 text-white font-semibold rounded-full hover:bg-red-800 hover:cursor-pointer">
+                    Cancel Booking
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
+              {/* Delete booking */}
+              <div
+                onClick={() => handleDeleteBooking(item._id)}
+                className="flex justify-center items-center text-red-600 cursor-pointer"
+              >
+                {item.bookingStatus === "Cancelled" && <Trash2 />}
               </div>
             </div>
           ))}
