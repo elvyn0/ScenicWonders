@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
 
 const adminAuth = async (req, res, next) => {
   try {
@@ -27,7 +26,7 @@ const adminAuth = async (req, res, next) => {
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({ message: "Token expired" });
     }
-    console.log(error);
+    console.error("Admin authentication Error:", error);
     res.status(401).json({ success: false, message: error.message });
   }
 };

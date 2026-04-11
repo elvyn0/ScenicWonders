@@ -4,7 +4,7 @@ const Hotel = require("../models/hotelModel");
 
 /// User ///
 
-//  create booking
+// Create booking
 const createBooking = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -24,7 +24,7 @@ const createBooking = async (req, res) => {
       return res.status(400).json({ success: false, message: "Misssing required booking deatiles" });
     }
 
-    //Date validation
+    // Date validation
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
 
@@ -32,7 +32,7 @@ const createBooking = async (req, res) => {
       return res.status(400).json({ success: false, message: "check-Out date must be after check-In date" });
     }
 
-    // fetch hotel
+    // Fetch hotel
     const hotel = await Hotel.findById(hotelId).select(" name location pricePerNight  hotelImage ");
 
     if (!hotel) {
@@ -114,7 +114,7 @@ const getMyBookings = async (req, res) => {
 
     res.status(200).json({ success: true, myBookings });
   } catch (error) {
-    console.error(error);
+    console.error("User booking listing Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -140,7 +140,7 @@ const cancelBooking = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Booking cancelled" });
   } catch (error) {
-    console.error(error);
+    console.error("Cancel Booking Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -202,7 +202,7 @@ const deleteBooking = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Booking Deleted" });
   } catch (error) {
-    console.log(error);
+    console.error("Delete Booking Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -215,7 +215,7 @@ const getAllBookings = async (req, res) => {
     const bookings = await Booking.find().populate("user", "name email").sort({ createdAt: -1 });
     res.status(200).json({ success: true, count: bookings.length, bookings });
   } catch (error) {
-    console.log(error);
+    console.error("Bookings Listing Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -237,7 +237,7 @@ const getAdminStatus = async (req, res) => {
       .status(200)
       .json({ success: true, totalBookings, totalUsers, totalHotels, totalRevenue: revenue[0]?.total || 0 });
   } catch (error) {
-    console.log(error);
+    console.error("Admin Status Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

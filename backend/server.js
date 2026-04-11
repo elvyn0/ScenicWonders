@@ -33,7 +33,6 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("uploads", express.static(path.join(__dirname, "uploads")));
 
 // api endpoints
-
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/story", storiesRouter);
@@ -48,7 +47,7 @@ app.get("/", (req, res) => {
   res.send("API working");
 });
 
-// socket.io
+// Socket.io
 const socketHandler = require("./sockets/socketHandler");
 
 const io = new Server(server, {
@@ -60,4 +59,4 @@ const io = new Server(server, {
 socketHandler(io);
 
 // Server listen
-server.listen(port, () => console.log("Server running on port :" + port));
+server.listen(port, () => console.log(`Server running on port: ${port}`));

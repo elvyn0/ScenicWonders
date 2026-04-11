@@ -6,7 +6,7 @@ const optionalAuth = require("../middlewares/optionalAuth");
 
 const postRouter = express.Router();
 
-// PUBLIC ROUTES (Anyone can view)
+// PUBLIC ROUTES
 postRouter.get("/list", listPost);
 postRouter.get("/:id", optionalAuth, singlePost);
 

@@ -32,6 +32,7 @@ const optionalAuth = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    console.error("OptionalAuth Error:", error);
     ret.user = null;
     next();
   }

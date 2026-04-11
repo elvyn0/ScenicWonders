@@ -1,9 +1,9 @@
 const Stripe = require("stripe");
 
-// stripe config //
+// stripe config
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Create checkout session  //
+// Create checkout session
 const createCheckoutSession = async (req, res) => {
   try {
     const { hotelId, hotelName, nights, rooms, firstName, lastName, pricePerNight } = req.body;
@@ -36,7 +36,7 @@ const createCheckoutSession = async (req, res) => {
     });
     res.status(200).json({ success: true, url: session.url });
   } catch (error) {
-    console.log(error);
+    console.error("Create checkOut session Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

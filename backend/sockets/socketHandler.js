@@ -1,10 +1,11 @@
 const MessageModel = require("../models/MessageModel");
-const auth = require("../middlewares/auth");
 const jwt = require("jsonwebtoken");
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
-    console.log("User connected:", socket.id);
+    if (process.env.NODE_ENV === "development") {
+      console.log("User connected:", socket.id);
+    }
 
     socket.on("joinConversation", (conversationId) => {
       socket.join(conversationId);
@@ -43,7 +44,9 @@ module.exports = (io) => {
     });
 
     socket.on("disconnect", () => {
-      console.log("User disconnected:", socket.id);
+      if (process.env.NODE_ENV === "development") {
+        console.log("User disconnected:", socket.id);
+      }
     });
   });
 };

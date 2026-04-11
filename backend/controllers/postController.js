@@ -2,8 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const Post = require("../models/postModel");
 const fs = require("fs").promises;
 
-// Add post //
-
+// Add post
 const addPost = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -37,25 +36,23 @@ const addPost = async (req, res) => {
       post,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Add post Error:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// Function for list post //
-
+// Function for list post
 const listPost = async (req, res) => {
   try {
     const posts = await Post.find().populate("user", " name profilePic").sort({ createdAt: -1 });
     res.status(200).json({ success: true, posts });
   } catch (error) {
-    console.log(error);
+    console.error("List post Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Deatile post  view  //
-
+// Deatile post view
 const singlePost = async (req, res) => {
   try {
     const userId = req.user?._id;
@@ -79,13 +76,12 @@ const singlePost = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error("Deatile post Error:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// Handling likes //
-
+// Handling likes
 const handleLike = async (req, res) => {
   try {
     const userId = req.user?._id;
@@ -118,13 +114,12 @@ const handleLike = async (req, res) => {
 
     res.status(200).json({ success: true, likes: post.likes, liked: !alreadyLiked });
   } catch (error) {
-    console.log(error);
+    console.error("Handling Like Error:".error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Function for remove post //
-
+// Function for remove post
 const removePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -149,7 +144,7 @@ const removePost = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Post deleted successfully" });
   } catch (error) {
-    console.log(error);
+    console.error("Delete Post Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

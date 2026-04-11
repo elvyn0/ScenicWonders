@@ -5,6 +5,7 @@ const authUser = async (req, res, next) => {
   try {
     // Support both `Authorization: Bearer <token>` and `Authorization: <token>`
     const authHeader = req.headers.authorization || req.headers.token;
+
     let token;
 
     if (!authHeader) {
@@ -38,7 +39,7 @@ const authUser = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.error(error);
+    console.error("User  Authentication Error:", error);
     res.status(500).json({ success: false, message: error?.message || "Authentication error" });
   }
 };

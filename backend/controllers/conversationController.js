@@ -1,8 +1,6 @@
 const ConversationModel = require("../models/Conversation");
-const User = require("../models/userModel");
 
-// To create conversation //
-
+// To create conversation
 const createConverstaion = async (req, res) => {
   try {
     const { receiverId } = req.body;
@@ -28,7 +26,7 @@ const createConverstaion = async (req, res) => {
       conversationId: newConversation._id,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Create Conversation Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -44,7 +42,7 @@ const getConversationById = async (req, res) => {
     }
     res.status(200).json({ success: true, conversation });
   } catch (error) {
-    console.log(error);
+    console.error("Getconversation Id Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

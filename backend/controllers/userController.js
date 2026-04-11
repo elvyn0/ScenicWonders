@@ -12,8 +12,7 @@ const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
-// User registration //
-
+// User registration
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -26,24 +25,22 @@ const registerUser = async (req, res) => {
     }
 
     // Validating email
-
     if (!validator.isEmail(email)) {
       return res
         .status(406)
         .json({ success: false, message: "Please enter a valid Email", error_code: "INVALID_EMAIL" });
     }
 
-    // checking password is strong or not
+    // Checking password is strong or not
     if (password.length < 8) {
       return res.status(412).json({ success: false, message: "Please enter a strong password" });
     }
 
-    //encripting and hasing the password
+    // Encripting and hasing the password
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
     // Creating a new user
-
     const newUser = new User({
       name,
       email,
@@ -55,12 +52,12 @@ const registerUser = async (req, res) => {
 
     res.status(201).json({ success: true, token });
   } catch (error) {
-    console.log(error);
+    console.error("Register User Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// user Login //
+// user Login
 const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -95,7 +92,7 @@ const userLogin = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Login Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -113,8 +110,8 @@ const getMe = async (req, res) => {
     });
   }
 };
-// To get all Users //
 
+// To get all Users
 const getUsersList = async (req, res) => {
   try {
     const users = await User.find({
@@ -142,12 +139,12 @@ const getUsersList = async (req, res) => {
       users: usersWithConv,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Listing User Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-//  To get user ///
+//  To get user
 const getUser = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -157,11 +154,12 @@ const getUser = async (req, res) => {
     }
     res.status(200).json({ success: true, user });
   } catch (error) {
+    console.error("Get User Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// user Profile //
+// user Profile
 const getUserProfile = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -183,11 +181,12 @@ const getUserProfile = async (req, res) => {
       stories,
     });
   } catch (error) {
+    console.error("User Profile Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Update profile //
+// Update profile
 const updateUserprofile = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -227,24 +226,24 @@ const updateUserprofile = async (req, res) => {
 
     res.status(200).json({ success: true, updatedUser });
   } catch (error) {
-    console.log(error);
+    console.error("User profile Update Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Delete user //
+// Delete user
 const handleDeleteUser = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    // Find user //
+    // Find user
     const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    // Getting user post and delete  //
+    // Getting user post and delete
     const posts = await Post.find({ user: userId });
 
     for (const post of posts) {
@@ -254,14 +253,13 @@ const handleDeleteUser = async (req, res) => {
     }
     await Post.deleteMany({ user: userId });
 
-    // Delete stories //
-
+    // Delete stories
     await Stories.deleteMany({ user: userId });
 
-    // Delete Bookings //
+    // Delete Bookings
     await Booking.deleteMany({ user: userId });
 
-    // Delete profilePic //
+    // Delete profilePic
     if (user.profilePic?.publicId) {
       await cloudinary.uploader.destroy(user.profilePic.publicId);
     }
@@ -270,7 +268,7 @@ const handleDeleteUser = async (req, res) => {
 
     res.status(200).json({ success: true, message: "User deleted" });
   } catch (error) {
-    console.log(error);
+    console.error("Delete User Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -291,7 +289,7 @@ const adminLogin = async (req, res) => {
 
     res.status(200).json({ success: true, token });
   } catch (error) {
-    console.log(error);
+    console.error("Admin Login Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

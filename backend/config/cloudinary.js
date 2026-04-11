@@ -10,7 +10,7 @@ const connectCloudinary = async () => {
       api_secret: process.env.CLOUDINARY_SECRET_KEY,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Cloudinary", error);
   }
 };
 module.exports = connectCloudinary;

@@ -1,9 +1,7 @@
-const { request } = require("express");
 const MessageModel = require("../models/MessageModel");
 const ConversationModel = require("../models/Conversation.js");
 
-// To create a message //
-
+// To create a message
 const createMessage = async (req, res) => {
   try {
     const senderId = req.user.id;
@@ -24,13 +22,12 @@ const createMessage = async (req, res) => {
     });
     res.status(200).json({ success: true, createNewMessage });
   } catch (error) {
-    console.log(error);
+    console.error("Create Message Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// To get messages //
-
+// To get messages
 const getMessage = async (req, res) => {
   try {
     const { conversationId } = req.params;
@@ -53,11 +50,12 @@ const getMessage = async (req, res) => {
 
     res.status(200).json({ success: true, messages });
   } catch (error) {
-    console.log(error);
+    console.error("Get Message Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
+// Get unread count
 const getUnreadCount = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -94,7 +92,7 @@ const getUnreadCount = async (req, res) => {
 
     res.status(200).json({ success: true, unreadCounts, unreadmsgIdCount });
   } catch (error) {
-    console.log(error);
+    console.error("unread Count Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

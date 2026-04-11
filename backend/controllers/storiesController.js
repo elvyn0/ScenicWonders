@@ -1,8 +1,6 @@
-const cloudinary = require("cloudinary").v2;
 const Stories = require("../models/storiesModel");
-const User = require("../models/userModel");
 
-// Finction to add //
+// Finction to add
 const addStory = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -21,7 +19,7 @@ const addStory = async (req, res) => {
 
     res.json({ success: true, message: "Your story posted successfully", stories });
   } catch (error) {
-    console.log(error);
+    console.error("Create Story Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -52,7 +50,7 @@ const listStories = async (req, res) => {
       stories: updatedStories,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Story listing Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -81,7 +79,7 @@ const singleStory = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error("Deatil Story Error:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -116,7 +114,7 @@ const handleLikes = async (req, res) => {
 
     res.status(200).json({ success: true, likes: story.likes, liked: !alreadyLiked });
   } catch (error) {
-    console.log(error);
+    console.error("Handling Likes Error:", error);
     res.status(500).json({ success: false, message: error.messaage });
   }
 };
@@ -140,7 +138,7 @@ const removeStory = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Story  deleted sucessfully" });
   } catch (error) {
-    console.log(error);
+    console.error("Delete Story Error:", error);
     res.status(500).json({ message: error.message });
   }
 };

@@ -5,7 +5,7 @@ const optionalAuth = require("../middlewares/optionalAuth");
 
 const storiesRouter = express.Router();
 
-// PUBLIC ROUTES (Anyone can view)
+// PUBLIC ROUTES
 storiesRouter.get("/list", listStories);
 storiesRouter.get("/:id", optionalAuth, singleStory);
 

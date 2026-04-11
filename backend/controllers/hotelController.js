@@ -54,12 +54,12 @@ const createHotel = async (req, res) => {
 
     res.status(201).json({ success: true, message: "Hotel added successfully" });
   } catch (error) {
-    console.log(error);
+    console.error("Create Hotel Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// list all hotels
+// List all hotels
 const listAllHotels = async (req, res) => {
   try {
     const hotels = await Hotel.find({});
@@ -70,8 +70,7 @@ const listAllHotels = async (req, res) => {
   }
 };
 
-// get hotel deatiles
-
+// Get hotel deatiles
 const getHotelDetails = async (req, res) => {
   const { id } = req.params;
   try {
@@ -87,7 +86,6 @@ const getHotelDetails = async (req, res) => {
 };
 
 // Hotel search
-
 const searchHotel = async (req, res) => {
   try {
     const { location, checkIn, checkOut, rooms } = req.query;
@@ -123,13 +121,12 @@ const searchHotel = async (req, res) => {
     }
     res.status(200).json({ success: true, hotels: availableHotels });
   } catch (error) {
-    console.log(error);
+    console.error("Hotel Search Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
 // Admin: delete hotel
-
 const deleteHotel = async (req, res) => {
   try {
     const hotelId = req.params.id;
@@ -152,7 +149,7 @@ const deleteHotel = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Hotel deleted successfully" });
   } catch (error) {
-    console.log(error);
+    console.error("Hotel Delete Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
