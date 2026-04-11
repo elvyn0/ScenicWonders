@@ -32,7 +32,7 @@ function Hero() {
         </Swiper>
       </div>
 
-      <div>
+      <div className="hidden lg:block">
         <Swiper
           className="w-[350px] hover:scale-110 transition ease-in-out "
           modules={[Autoplay, Pagination]}
