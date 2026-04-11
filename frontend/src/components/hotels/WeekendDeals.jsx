@@ -68,7 +68,7 @@ function WeekendDeals() {
         ) : weekendDeals.length === 0 ? (
           <p className="text-center text-gray-500">No weekend deals available right now.</p>
         ) : (
-          <div className="grid grid-cols-1  md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {weekendDeals.map((item) => (
               <WeekendDealsItem
                 key={item._id}
