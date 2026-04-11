@@ -34,7 +34,7 @@ function Login({ setToken }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center w-full bg-gradient-to-tr from-gray-950 via-gray-500 to-white from-5%">
+    <div className="min-h-screen flex items-center justify-center w-full bg-linear-to-tr from-gray-950 via-gray-500 to-white from-5%">
       <div>
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Admin Panel</h1>
