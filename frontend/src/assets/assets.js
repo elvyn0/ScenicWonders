@@ -1,5 +1,5 @@
 // Common
-import upLoad from "./images/upload_area.png";
+import upload from "./images/upload.png";
 import profile1 from "./images/Profilepic1.jpg";
 import sw_logo from "./images/sw_logo.jpg";
 import inFlag from "./images/inflag.webp";
@@ -203,7 +203,7 @@ import room26 from "./images/hotels/room26.jpg";
 export const assets = {
   // Common
   sw_logo,
-  upLoad,
+  upload,
   profile1,
   hotelBanner,
   inFlag,
