@@ -43,9 +43,20 @@ app.use("/api/messages", messageRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/ai", aiRouter);
 
-app.get("/", (req, res) => {
-  res.send("API working");
-});
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      const allowed = ["http://localhost:5174", process.env.FRONTEND_URL, process.env.ADMIN_URL];
+
+      if (!origin || allowed.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS blocked"));
+      }
+    },
+    credentials: true,
+  }),
+);
 
 // Socket.io
 const socketHandler = require("./sockets/socketHandler");
@@ -57,6 +68,10 @@ const io = new Server(server, {
   },
 });
 socketHandler(io);
+
+app.get("/", (req, res) => {
+  res.send("API working");
+});
 
 // Server listen
 server.listen(port, () => console.log(`Server running on port: ${port}`));
