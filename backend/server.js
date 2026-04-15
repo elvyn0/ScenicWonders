@@ -21,16 +21,35 @@ const aiRouter = require("./routes/aiBotRoute");
 
 // App config
 const app = express();
+const cors = require("cors");
 const server = http.createServer(app);
 const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 
+// cors
+const allowedOrigins = ["http://localhost:5174", "https://scenic-wonders.vercel.app"];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      console.log("Origin:", origin); // DEBUG
+
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS blocked: " + origin));
+      }
+    },
+    credentials: true,
+  }),
+);
+
 // middlerwares
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-app.use("uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // api endpoints
 app.use("/api/user", userRouter);
@@ -42,21 +61,6 @@ app.use("/api/conversation", conversationRouter);
 app.use("/api/messages", messageRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/ai", aiRouter);
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      const allowed = ["http://localhost:5174", process.env.FRONTEND_URL, process.env.ADMIN_URL];
-
-      if (!origin || allowed.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS blocked"));
-      }
-    },
-    credentials: true,
-  }),
-);
 
 // Socket.io
 const socketHandler = require("./sockets/socketHandler");
