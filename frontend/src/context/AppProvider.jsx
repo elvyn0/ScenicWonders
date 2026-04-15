@@ -22,6 +22,7 @@ const AppContextProvider = (props) => {
 
   /// Socket-io ///
   const socket = io(import.meta.env.VITE_BACKEND_URL, {
+    transports: ["websocket"],
     withCredentials: true,
     auth: { token },
   });
