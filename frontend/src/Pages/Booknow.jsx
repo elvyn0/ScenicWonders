@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { assets } from "../assets/assets";
+import assets from "../assets/assets";
 import HotelSummery from "../components/hotels/Booking/HotelSummery";
 import PaymentMethod from "../components/hotels/Booking/PaymentMethod";
 import BookingForm from "../components/hotels/Booking/BookingForm";

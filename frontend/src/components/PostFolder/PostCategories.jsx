@@ -4,7 +4,7 @@ import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { assets } from "../../assets/assets";
+import assets from "../../assets/assets";
 
 function PostCategories() {
   const { api } = useContext(AppContext);

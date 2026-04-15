@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import MessageRoom from "../components/common/Message/MessageRoom";
 import toast from "react-hot-toast";
-import { assets } from "../assets/assets";
+import assets from "../assets/assets";
 
 function Message() {
   const { api, token, navigate } = useContext(AppContext);

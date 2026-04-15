@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { assets } from "../../assets/assets";
+import assets from "../../assets/assets";
 import { User } from "lucide-react";
 import { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";

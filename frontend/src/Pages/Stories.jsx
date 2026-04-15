@@ -3,7 +3,7 @@ import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 import { Heart } from "lucide-react";
-import { assets } from "../assets/assets";
+import assets from "../assets/assets";
 
 function Stories() {
   const { api, token } = useContext(AppContext);

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Heart, Trash2 } from "lucide-react";
-import { assets } from "../assets/assets";
+import assets from "../assets/assets";
 
 function StoryById() {
   const { id } = useParams();

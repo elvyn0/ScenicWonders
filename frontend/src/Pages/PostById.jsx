@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { Heart, Trash2 } from "lucide-react";
-import { assets } from "../assets/assets";
+import assets from "../assets/assets";
 
 function PostById() {
   const { id } = useParams();

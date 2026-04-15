@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { assets } from "../assets/assets";
+import assets from "../assets/assets";
 import { useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";

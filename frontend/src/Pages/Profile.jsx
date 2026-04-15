@@ -4,7 +4,7 @@ import { NavLink, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { EllipsisVertical } from "lucide-react";
 import EditProfileModel from "../components/EditProfileModel";
-import { assets } from "../assets/assets";
+import assets from "../assets/assets";
 
 function Profile() {
   const { api, token, navigate, setUser, setToken, user } = useContext(AppContext);

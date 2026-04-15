@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import MessageInput from "./MessageInput";
 import { useRef } from "react";
 import EmptyMessageState from "../EmptyMessageState";
-import { assets } from "../../../assets/assets";
+import assets from "../../../assets/assets";
 
 function MessageRoom() {
   const { conversationId } = useParams();

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { assets } from "../assets/assets";
+import assets from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 
 function NotFound() {
