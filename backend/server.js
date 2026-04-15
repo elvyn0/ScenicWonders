@@ -68,7 +68,8 @@ const socketHandler = require("./sockets/socketHandler");
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5174", process.env.FRONTEND_URL, process.env.ADMIN_URL],
+    origin: ["http://localhost:5174", "https://scenic-wonders.vercel.app", process.env.ADMIN_URL],
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
