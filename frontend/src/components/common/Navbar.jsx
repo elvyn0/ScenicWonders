@@ -83,7 +83,7 @@ function NavBar() {
             </div>
 
             {/* Hotels */}
-            <Link to="/hotels&bookings" target="_blank" className="no-underline">
+            <Link to="/hotels-bookings" target="_blank" className="no-underline">
               <div className="flex flex-col items-center gap-1 text-center">
                 <li className="bg-red-600 p-2 md:px-3 md:py-2 rounded-lg shadow hover:scale-105 transition">
                   <Hotel className="size-5 md:size-6 text-white" />
