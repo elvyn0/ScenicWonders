@@ -44,7 +44,6 @@ app.use(
     credentials: true,
   }),
 );
-app.options("/*", cors());
 
 // middlerwares
 app.use(express.json({ limit: "50mb" }));
