@@ -34,6 +34,8 @@ const createCheckoutSession = async (req, res) => {
       success_url: `${process.env.FRONTEND_URL}/booking-success`,
       cancel_url: `${process.env.FRONTEND_URL}/booking-cancel`,
     });
+
+    console.log("frontendURl", FRONTEND_URL);
     res.status(200).json({ success: true, url: session.url });
   } catch (error) {
     console.error("Create checkOut session Error:", error);
