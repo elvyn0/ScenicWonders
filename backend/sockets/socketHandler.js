@@ -23,24 +23,8 @@ module.exports = (io) => {
       }
     });
 
-    socket.on("sendMessage", async (data) => {
-      try {
-        const { conversationId, senderId, text } = data;
-
-        const newMessage = await MessageModel.create({
-          conversationId,
-          senderId: socket.userId,
-          text,
-        });
-
-        io.to(conversationId).emit("receiveMessage", newMessage);
-      } catch (error) {
-        console.error("Socket sendMessage error:", error.message);
-
-        socket.emit("errorMessage", {
-          message: "Failed to send message",
-        });
-      }
+    socket.on("sendMessage", (message) => {
+      io.to(message.conversationId).emit("receiveMessage", message);
     });
 
     socket.on("disconnect", () => {
