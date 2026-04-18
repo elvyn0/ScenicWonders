@@ -31,7 +31,7 @@ const createCheckoutSession = async (req, res) => {
         },
       ],
 
-      success_url: `${process.env.FRONTEND_URL}/booking-success`,
+      success_url: `${"https://scenic-wonders.vercel.app"}/booking-success`,
       cancel_url: `${process.env.FRONTEND_URL}/booking-cancel`,
     });
     console.log("RUNNING VERSION CHECK");
