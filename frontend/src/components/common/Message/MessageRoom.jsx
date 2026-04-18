@@ -94,14 +94,16 @@ function MessageRoom() {
   }, [conversationId]);
 
   useEffect(() => {
-    socket.on("receiveMessage", (newMessage) => {
+    const handler = (newMessage) => {
       setMessage((prev) => [...prev, newMessage]);
-    });
+    };
+
+    socket.on("receiveMessage", handler);
 
     return () => {
-      socket.off("receiverMessage");
+      socket.off("receiveMessage", handler);
     };
-  }, []);
+  }, [socket]);
 
   // Handling Loading state //
   if (loading)
@@ -155,10 +157,7 @@ function MessageRoom() {
 
           {/* Input (sticks bottom now) */}
           <div className="border-t bg-white">
-            <MessageInput
-              conversationId={conversationId}
-              onNewMessage={(item) => setMessage((prev) => [...prev, item])}
-            />
+            <MessageInput conversationId={conversationId} onNewMessage={() => {}} />
           </div>
         </>
       )}
