@@ -28,7 +28,7 @@ connectDB();
 connectCloudinary();
 
 // cors
-const allowedOrigins = ["http://localhost:5174", process.env.FRONTEND_URL];
+const allowedOrigins = ["http://localhost:5174", process.env.FRONTEND_URL, process.env.ADMIN_URL];
 
 app.use(
   cors({
