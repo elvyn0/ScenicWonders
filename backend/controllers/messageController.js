@@ -16,7 +16,7 @@ const createMessage = async (req, res) => {
 
     const createNewMessage = await MessageModel.create({
       conversationId,
-      senderId,
+      senderId: senderId.toString(),
       text,
       isRead: false,
     });
