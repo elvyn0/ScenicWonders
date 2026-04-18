@@ -89,7 +89,6 @@ const createBooking = async (req, res) => {
     });
 
     // Respond to frontend
-
     res.status(201).json({
       success: true,
       message: "Booking created successfully ",
