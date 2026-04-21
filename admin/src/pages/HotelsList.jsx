@@ -100,7 +100,7 @@ function HotelsList() {
               <button
                 onClick={() => removeHotels(item._id)}
                 disabled={isLoading}
-                className={`py-1 px-5  text-sm  rounded-sm   text-white
+                className={`py-1 px-5  text-sm  rounded-sm   text-white hover:cursor-pointer
     ${isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-red-700"}`}
               >
                 Delete

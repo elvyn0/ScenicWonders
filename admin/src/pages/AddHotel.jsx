@@ -180,7 +180,7 @@ function AddHotel({ token }) {
       <button
         type="submit"
         disabled={uploading}
-        className={`py-2 px-10 rounded-sm mt-4 mb-16 text-white
+        className={`py-2 px-10 rounded-sm mt-4 mb-16 text-white hover:cursor-pointer
     ${uploading ? "bg-gray-400 cursor-not-allowed" : "bg-black"}
   `}
       >
