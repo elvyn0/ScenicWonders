@@ -3,7 +3,7 @@ import { AppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
 import { Send } from "lucide-react";
 
-function MessageInput({ conversationId, onNewMessage }) {
+function MessageInput({ conversationId, onNewMessage, userId }) {
   const { api, token, socket } = useContext(AppContext);
   const [newMessage, setNewMessage] = useState("");
 
@@ -24,6 +24,7 @@ function MessageInput({ conversationId, onNewMessage }) {
         socket.emit("sendMessage", {
           conversationId,
           text: newMessage,
+          senderId: userId,
         });
 
         setNewMessage("");

@@ -6,6 +6,7 @@ import assets from "../assets/assets";
 
 function Message() {
   const { api, token, navigate } = useContext(AppContext);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
@@ -79,6 +80,7 @@ function Message() {
         const map = {};
 
         response.data.unreadCounts.forEach((item) => {
+          console.log(item);
           map[item._id] = item.count;
         });
         setCount(map);
@@ -92,15 +94,17 @@ function Message() {
   };
 
   useEffect(() => {
-    if (token) fetchUsers();
-    unreadMessageCount();
+    if (token) {
+      fetchUsers();
+      unreadMessageCount();
+    }
   }, [token]);
 
   // Handling Loading state //
   if (loading)
     return (
       <div className="text-center">
-        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+        <p className="text-blue-600 font-bold text-sm">Loading Data...</p>
       </div>
     );
   // Handling error state //

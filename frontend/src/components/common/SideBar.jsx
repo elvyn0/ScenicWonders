@@ -15,7 +15,7 @@ function SideBar() {
   const { api, token } = useContext(AppContext);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const [count, setCount] = useState(null);
+  const [count, setCount] = useState(0);
 
   // for  story or post
   const handleSelect = (type) => {
@@ -35,7 +35,6 @@ function SideBar() {
       });
       if (response.data.success) {
         setCount(response.data.unreadmsgIdCount);
-        await messageCount();
       } else {
         toast.error(response.data.message);
       }
@@ -44,6 +43,7 @@ function SideBar() {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
+
   useEffect(() => {
     if (token) {
       messageCount();

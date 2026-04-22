@@ -149,7 +149,7 @@ function Hotel() {
   if (loading)
     return (
       <div className="text-center">
-        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+        <p className="text-blue-600 font-bold text-sm">Loading Hotel details...</p>
       </div>
     );
   // Handling error state //

@@ -24,7 +24,12 @@ module.exports = (io) => {
     });
 
     socket.on("sendMessage", (message) => {
-      io.to(message.conversationId).emit("receiveMessage", message);
+      const cleanMessage = {
+        ...message,
+        senderId: socket.userId,
+      };
+
+      io.to(message.conversationId).emit("receiveMessage", cleanMessage);
     });
 
     socket.on("disconnect", () => {

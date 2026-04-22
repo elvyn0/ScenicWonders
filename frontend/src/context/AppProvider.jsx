@@ -48,6 +48,7 @@ const AppContextProvider = (props) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setToken(null);
+    window.location.href = "/";
   };
 
   const value = {

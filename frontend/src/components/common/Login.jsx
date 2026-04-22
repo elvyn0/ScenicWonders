@@ -15,6 +15,7 @@ function Login({ onClose }) {
   // Submit handler
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+    // User register
     try {
       if (currentState === "singUp") {
         const trimmedName = name.trim();
@@ -33,18 +34,21 @@ function Login({ onClose }) {
 
         if (response.data.success) {
           toast.success("Welcome to Scenic Wonders");
+          navigate("/");
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
         } else {
           toast.error(response.data.message);
         }
       } else {
+        // User login
         const response = await api.post("/api/user/login", { email, password });
         if (response.data.success) {
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.user));
           toast.success("Logged in successfully");
+          navigate("/");
         } else {
           toast.error(response.data.message);
         }

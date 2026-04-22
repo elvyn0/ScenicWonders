@@ -41,7 +41,7 @@ function WeekendDeals() {
   // Handling error state //
   if (error)
     return (
-      <div className="text-center text-lg text-red-600 font-bold">
+      <div className="text-center text-sm text-red-600 font-bold">
         <p>{error}</p>
       </div>
     );
@@ -66,7 +66,7 @@ function WeekendDeals() {
 
         {/* Content */}
         {loading ? (
-          <p className="text-center text-lg text-blue-400">Loading deals...</p>
+          <p className="text-center text-sm text-blue-400">Loading Hotels...</p>
         ) : weekendDeals.length === 0 ? (
           <p className="text-center text-gray-500">No weekend deals available right now.</p>
         ) : (

@@ -109,7 +109,7 @@ function MessageRoom() {
   if (loading)
     return (
       <div className="text-center">
-        <p className="text-blue-600 font-bold text-lg">Loading Messages...</p>
+        <p className="text-blue-600 font-bold text-sm">Loading Messages...</p>
       </div>
     );
   // Handling error state //
@@ -141,23 +141,23 @@ function MessageRoom() {
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
-            {message.map((item) => (
-              <div key={item._id} className={`flex ${item.senderId === userId ? "justify-end" : "justify-start"}`}>
-                <p
-                  className={`px-4 py-2 rounded-lg max-w-xs break-words ${
-                    item.senderId === userId ? "bg-green-200" : "bg-blue-200"
-                  }`}
-                >
-                  {item.text}
-                </p>
-              </div>
-            ))}
+            {message.map((item) => {
+              const isMe = item.senderId?.toString() === userId?.toString();
+
+              return (
+                <div key={item._id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+                  <p className={`px-4 py-2 rounded-lg max-w-xs break-words ${isMe ? "bg-green-200" : "bg-blue-200"}`}>
+                    {item.text}
+                  </p>
+                </div>
+              );
+            })}
             <div ref={bottomRef} />
           </div>
 
           {/* Input (sticks bottom now) */}
           <div className="border-t bg-white">
-            <MessageInput conversationId={conversationId} onNewMessage={() => {}} />
+            <MessageInput conversationId={conversationId} onNewMessage={() => {}} userId={userId} />
           </div>
         </>
       )}
