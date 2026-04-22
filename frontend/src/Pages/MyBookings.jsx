@@ -54,6 +54,7 @@ function MyBookings() {
       if (response.data.success) {
         toast.success(response.data.message);
         toast("Your amount will be refunded within 3 working day.");
+        await fetchBookings();
       } else {
         toast.error(response.data.message);
       }
@@ -74,6 +75,7 @@ function MyBookings() {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        await fetchBookings();
       } else {
         toast.error(response.data.message);
       }
@@ -91,7 +93,7 @@ function MyBookings() {
   if (loading)
     return (
       <div className="text-center">
-        <p className="text-blue-600 font-bold text-lg">Loading Data...</p>
+        <p className="text-blue-600 font-bold text-lg">Loading Bookings...</p>
       </div>
     );
   // Handling error state //
