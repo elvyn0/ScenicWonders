@@ -67,7 +67,7 @@ function PostCategories() {
             key={item._id}
             className="group rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-lg transition-all duration-300"
           >
-            <Link to={`/profile/${item.user._id}`} className="no-underline text-black cursor-pointer">
+            <Link to={`/profile/${item.user?._id}`} className="no-underline text-black cursor-pointer">
               <div className="flex gap-2 font-semibold mb-2 ">
                 <img src={item.user?.profilePic?.url || assets.profile_icon} className="w-10 rounded-full" />
                 <p>{item.user?.name || "Unknown"}</p>

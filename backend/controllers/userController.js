@@ -234,7 +234,7 @@ const updateUserprofile = async (req, res) => {
 // Delete user
 const handleDeleteUser = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
 
     // Find user
     const user = await User.findById(userId);
@@ -264,7 +264,7 @@ const handleDeleteUser = async (req, res) => {
       await cloudinary.uploader.destroy(user.profilePic.publicId);
     }
 
-    await User.deleteOne();
+    await User.findByIdAndDelete(userId);
 
     res.status(200).json({ success: true, message: "User deleted" });
   } catch (error) {
