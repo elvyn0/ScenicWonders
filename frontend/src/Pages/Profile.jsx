@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { NavLink, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Heart } from "lucide-react";
 import EditProfileModel from "../components/EditProfileModel";
 import assets from "../assets/assets";
 
@@ -288,7 +288,12 @@ function Profile() {
                       <p className="text-gray-600 text-sm line-clamp-4">{item.content}</p>
 
                       <div className="flex justify-between items-center mt-5 pt-4 border-t">
-                        <span className="text-sm text-gray-400">❤️ {item.like || 0}</span>
+                        <span className="flex text-sm text-gray-500 gap-1 mt-1 ">
+                          <Heart
+                            className={`text-black font-bold ${item?.liked ? "text-white bg-red-500  rounded-full p-1  " : ""}`}
+                          />
+                          {item.likes.length || 0}
+                        </span>
                       </div>
                     </NavLink>
                   </div>
