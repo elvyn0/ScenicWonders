@@ -3,9 +3,9 @@ import assets from "../assets/assets";
 
 function PlacesCategory() {
   return (
-    <div className="px-4 md:px-8">
+    <div>
       {/* Title */}
-      <h1 className="font-bold text-lg md:text-2xl mb-6">Places</h1>
+      <h1 className="font-extrabold text-red-600 text-lg md:text-5xl mb-6">Places :</h1>
 
       {/* Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6">

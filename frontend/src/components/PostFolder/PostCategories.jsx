@@ -58,14 +58,14 @@ function PostCategories() {
   return (
     <div>
       <div>
-        <h1 className="font-bold text-3xl flex justify-start mb-9">Posts</h1>
+        <h1 className="font-extrabold text-lg md:text-5xl text-red-600 mb-5">Posts :</h1>
       </div>
       {/*User Posts */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
         {postList.map((item) => (
           <div
             key={item._id}
-            className="group rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-lg transition-all duration-300"
+            className="group rounded-xl overflow-hidden bg-white shadow-sm  transition-all duration-300"
           >
             <Link to={`/profile/${item.user?._id}`} className="no-underline text-black cursor-pointer">
               <div className="flex gap-2 font-semibold mb-2 ">

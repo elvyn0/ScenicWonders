@@ -55,28 +55,34 @@ function SideBar() {
       <div className="fixed bottom-0 md:top-0 left-0 w-full md:w-16 h-16 md:h-full border-t md:border-t-0 md:border-r-2 flex md:flex-col justify-around md:justify-center items-center bg-white z-50">
         <div className="flex   md:flex-col gap-14 items-center">
           {/* Home */}
-          <NavLink to="/" className=" p-1 rounded bg-gray-200 text-black hover:bg-gray-300">
+          <NavLink to="/" className=" p-1 rounded bg-gray-200 text-black hover:bg-gray-300 transition-all duration-300">
             <GoHome className=" isActive size-6" />
           </NavLink>
 
           {/* Explore */}
-          <NavLink to="/explore" className="p-1 rounded  text-black bg-gray-200 hover:bg-gray-300">
+          <NavLink
+            to="/explore"
+            className="p-1 rounded  text-black bg-gray-200 hover:bg-gray-300 transition-all duration-300"
+          >
             <MdOutlineExplore className="isActive size-6" />
           </NavLink>
 
           {/* Post && story */}
           <button>
             <IoAddOutline
-              className="isActive size-8 p-1 rounded bg-gray-200 text-black hover:bg-gray-300 border border-solid"
+              className="isActive size-8 p-1 rounded bg-gray-200 text-black hover:bg-gray-300 border border-solid transition-all duration-300"
               onClick={() => setShowPopup(true)}
             />
           </button>
 
           {/* Messages */}
-          <NavLink to="/message" className="relative p-1 rounded bg-gray-200 text-black hover:bg-gray-300">
+          <NavLink
+            to="/message"
+            className="relative p-1 rounded bg-gray-200 text-black hover:bg-gray-300 transition-all duration-300"
+          >
             {Number(count) > 0 ? (
               <span
-                className={`absolute left-5 -top-1   flex h-4 w-4 items-center justify-center rounded-full ${count !== 0 ? "bg-red-700 text-[10px] font-medium text-white " : ""} `}
+                className={`absolute left-5 -top-1   flex h-4 w-4 items-center justify-center rounded-full transition-all duration-300 ${count !== 0 ? "bg-red-700 text-[10px] font-medium text-white " : ""} `}
               >
                 {count}
               </span>
@@ -109,7 +115,7 @@ function SideBar() {
                 onClick={() => handleSelect("post")}
                 className="flex items-center gap-3 cursor-pointer hover:bg-gray-100  p-2 rounded"
               >
-                <RiCameraAiLine className="size-14 bg-gray-300 p-2 rounded" />
+                <RiCameraAiLine className="size-14 bg-red-600 p-2 rounded" />
                 <p className="font-bold text-lg">Post</p>
                 <p className="text-sm text-gray-500 ">Turn your travels into timeless snaps</p>
               </div>
@@ -119,7 +125,7 @@ function SideBar() {
                 onClick={() => handleSelect("stories")}
                 className="flex items-center gap-3 cursor-pointer  hover:bg-gray-100  p-2 rounded"
               >
-                <FaRegPenToSquare className="size-16  bg-gray-300  px-3 py-2 rounded" />
+                <FaRegPenToSquare className="size-16  bg-red-600 px-3 py-2 rounded" />
                 <p className="font-bold text-lg">Stories</p>
                 <p className="text-sm text-gray-500">Write it down — the world wants to feel your journey</p>
               </div>

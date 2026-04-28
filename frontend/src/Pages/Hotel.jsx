@@ -189,7 +189,7 @@ function Hotel() {
 
               <p className="text-gray-600 leading-relaxed">{hotel.description}</p>
 
-              <p className="text-sm text-gray-600">📍 {hotel.location}</p>
+              <p className="text-sm  font-semibold text-gray-600">📍 {hotel.location}</p>
             </div>
           </div>
         )}
@@ -235,9 +235,7 @@ function Hotel() {
 
           {hotel && (
             <Link to={`/booknow/${hotel?._id}?${queryString}`}>
-              <button className="w-full bg-black hover:bg-gray-900 text-white py-3 rounded-xl font-semibold transition">
-                Book now
-              </button>
+              <button className="w-full bg-black text-white py-3 rounded-xl font-bold transition">Book now</button>
             </Link>
           )}
 

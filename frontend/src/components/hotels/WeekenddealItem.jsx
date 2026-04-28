@@ -7,7 +7,7 @@ function WeekendDealsItem({ id, name, image, pricePerNight, destination }) {
 
   return (
     <Link to={`/hotels/hotel/${id}`} className="no-underline">
-      <div className="bg-white rounded-2xl shadow-md min-w-[260px] hover:shadow-lg transition-all duration-300 p-3 hover:scale-110 ease-in-out ">
+      <div className="bg-white rounded-2xl shadow-lg min-w-[260px] hover:shadow-lg transition-all duration-300 p-3  hover:scale-110 ease-in-out ">
         <div className="overflow-hidden rounded-t-2xl">
           <img src={image} className="h-40 w-full object-cover hover:scale-105 transition-transform duration-300" />
         </div>

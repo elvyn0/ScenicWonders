@@ -86,7 +86,7 @@ function HotelsAndBookingbar() {
     );
 
   return (
-    <div className="flex flex-col gap-5 p-5 items-center justify-center">
+    <div className="flex flex-col gap-5 p-3 items-center justify-center">
       <div>
         <BookingBar
           setShowSuggestions={setShowSuggestions}

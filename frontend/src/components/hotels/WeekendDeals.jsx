@@ -50,8 +50,8 @@ function WeekendDeals() {
   const weekendDeals = hotels.filter((item) => item.weekendDeals === true).slice(0, 4);
 
   return (
-    <div className="bg-gray-100 py-4 px-6 ">
-      <div className="max-w-6xl mx-auto">
+    <div className="bg-gray-200 py-10 px-6 mb-5">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex  items-center justify-between mb-8">
           <h2 className="text-3xl font-semibold text-gray-900">Weekend Deals</h2>
@@ -70,7 +70,7 @@ function WeekendDeals() {
         ) : weekendDeals.length === 0 ? (
           <p className="text-center text-gray-500">No weekend deals available right now.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {weekendDeals.map((item) => (
               <WeekendDealsItem
                 key={item._id}

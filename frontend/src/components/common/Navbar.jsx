@@ -49,18 +49,10 @@ function NavBar() {
   };
 
   return (
-    <div className="bg-gray-200 py-4 px-4 md:px-8 rounded-lg mx-3 md:mx-5">
+    <div className="bg-gray-200 pt-4 mb-5">
       <div className="flex flex-col gap-5">
-        {/* Heading */}
-        <div className="text-center w-full mx-auto p-3 bg-white rounded-xl shadow-md">
-          <h1 className="text-sm md:text-lg font-semibold">
-            Scenic Wonders is a social platform for travelers to share real travel experiences, explore destinations,
-            and discover places to stay.
-          </h1>
-        </div>
-
         {/* Tabs */}
-        <nav className="px-2 md:px-5">
+        <nav className="px-2">
           <ul className="grid grid-cols-3 sm:grid-cols-5 gap-4 place-items-center">
             {/* Explore */}
             <div className="flex flex-col items-center gap-1">

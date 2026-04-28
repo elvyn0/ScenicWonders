@@ -85,7 +85,7 @@ function Stories() {
     );
 
   return (
-    <div className="p-5 ml-[4%]">
+    <div className="p-3">
       {/* Introduction/Heading */}
 
       {/* Stories Grid */}
@@ -93,7 +93,7 @@ function Stories() {
         {list.map((item) => (
           <div
             key={item._id}
-            className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition"
+            className="bg-white rounded-2xl border border-gray-200 p-6 shadow-md hover:shadow-md transition"
           >
             {/* User */}
             <NavLink to={`/profile/${item.user?._id}`} className="no-underline text-black cursor-pointer">

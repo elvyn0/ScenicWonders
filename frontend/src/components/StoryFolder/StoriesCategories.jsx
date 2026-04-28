@@ -57,11 +57,11 @@ function StoriesCategories() {
     );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="mt-5">
       {/* Header */}
-      <div className="mb-10">
-        <h1 className="font-extrabold text-3xl tracking-tight text-gray-900">Stories</h1>
-        <p className="text-gray-500 mt-2">Real thoughts. Real people.</p>
+      <div className="mb-5">
+        <h1 className="font-extrabold text-lg md:text-5xl tracking-tight text-red-600">Stories :</h1>
+        <p className="text-gray-500">Real thoughts. Real people.</p>
       </div>
 
       {/* Stories Grid */}
@@ -99,7 +99,7 @@ function StoriesCategories() {
       <div className="text-center mt-16">
         <Link
           to="/stories"
-          className="inline-block font-semibold bg-gray-300 text-black rounded-xl px-8 py-3 hover:bg-gray-400 transition no-underline "
+          className="inline-block font-semibold bg-gray-300 text-black rounded-xl px-8 py-3 hover:bg-gray-400 transition-all duration-300  no-underline "
         >
           See more
         </Link>

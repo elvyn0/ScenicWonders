@@ -109,7 +109,7 @@ function PostById() {
         <div
           key={post._id}
           className="w-full   max-w-md md:max-w-4xl  
-      flex flex-col md:flex-row rounded-xl overflow-hidden bg-gray-50 shadow-md p-2"
+      flex flex-col md:flex-row rounded-xl overflow-hidden bg-gray-50 shadow-md p-1"
         >
           <div>
             {/* mobile */}

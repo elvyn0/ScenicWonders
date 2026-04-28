@@ -11,7 +11,7 @@ function Home() {
   const { showLogin, setShowLogin, handleLogout } = useContext(AppContext);
 
   return (
-    <div className="flex flex-col gap-5 ">
+    <div className="flex flex-col">
       <Headers onLoginClick={() => setShowLogin(true)} onLogout={handleLogout} />
       {showLogin && <Login onClose={() => setShowLogin(false)} />}
       <Hero />
