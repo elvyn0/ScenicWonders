@@ -3,13 +3,13 @@ import Footer from "../components/common/Footer";
 
 function About() {
   return (
-    <div className="flex flex-col pt-5 gap-20 max-w-7xl  mx-auto px-4 ">
+    <div className="flex flex-col pt-5 gap-20">
       <div className="flex  gap-2 items-center justify-center ">
         <img src={assets.sw_logo} className="size-20" />
         <h3 className="font-bold">Scenic Wonders</h3>
       </div>
-      <section className="mt-10 flex flex-col gap-3 ">
-        <h3 className="font-bold mb-5">About Scenic wonders:</h3>
+      <section className="mt-10 flex flex-col gap-3 px-4">
+        <h3 className="font-extrabold text-red-600 text-5xl mb-5">About Scenic wonders:</h3>
 
         <div>
           <h4 className="font-bold">Travel isn’tjust about places — it’s about stories.</h4>
