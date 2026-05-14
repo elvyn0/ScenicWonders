@@ -1,16 +1,27 @@
-# React + Vite
+📁 admin
+Scenic Wonders - Management Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A dedicated administrative interface built with React to manage the Scenic Wonders platform's internal data and operations.
+🛡 Admin Capabilities
 
-Currently, two official plugins are available:
+    Inventory Management: Full CRUD (Create, Read, Update, Delete) operations for travel destinations and hotel listings.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    User Oversight: Ability to monitor registered users and manage account statuses.
 
-## React Compiler
+    Booking Control: Review and update the status of global reservations.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+    Business Insights: Data visualization of platform metrics and revenue tracking.
 
-## Expanding the ESLint configuration
+💻 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+    Frontend: React
+
+    Styling: Tailwind CSS
+
+    Data Fetching: Axios with Interceptors for Admin JWT handling.
+
+🛠 Installation
+
+    npm install
+
+    npm run dev

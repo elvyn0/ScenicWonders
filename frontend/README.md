@@ -8,7 +8,7 @@ This is the frontend application for Scenic Wonders, built with React and Tailwi
 
     Styling: Tailwind CSS
 
-    State Management: Context API 
+    State Management: Context API
 
     Routing: React Router
 
