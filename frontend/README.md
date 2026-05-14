@@ -1,12 +1,36 @@
-# React + Vite
+📁 frontend
+Scenic Wonders - Client Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend application for Scenic Wonders, built with React and Tailwind CSS. It serves as the primary interface for travelers to explore, book, and communicate.
+💻 Tech Stack
 
-Currently, two official plugins are available:
+    UI Library: React
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    Styling: Tailwind CSS
 
-## Expanding the ESLint configuration
+    State Management: Context API 
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+    Routing: React Router
+
+    Real-Time: Socket.io-client
+
+    API Client: Axios
+
+🚀 Key Features
+
+    Dynamic Content: Fetches travel listings and destination data from the Node.js API.
+
+    Real-Time Chat: Peer-to-peer messaging interface powered by Socket.io.
+
+    Secure Checkout: Integrated Stripe payment flow for booking reservations.
+
+    Protected Routes: User dashboard and profile management accessible only via JWT authorization.
+
+🛠 Installation
+
+    npm install
+
+    Create a .env file and add:
+    VITE_BACKEND_URL=https://scenicwonders-backend.onrender.com
+
+    npm run dev
