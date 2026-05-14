@@ -1,87 +1,61 @@
-Scenic Wonders
-Overview
+# Scenic Wonders
 
-Scenic Wonders is a full-stack travel and booking platform built with the MERN stack.
-The application allows users to explore destinations, create bookings, communicate through real-time messaging, and securely manage their travel experience.
+### [Live Demo](https://scenic-wonders.vercel.app) | [Admin Panel](https://scenic-wonders-adminpanel.vercel.app) | [Portfolio](https://anoop-portfolio-nine.vercel.app)
 
-The project includes authentication, booking management, real-time chat functionality, admin controls, and responsive UI design.
+## 📌 Overview
+**Scenic Wonders** is a production-ready, full-stack travel social and booking ecosystem built with the **MERN stack**. It features a decoupled architecture consisting of a client-facing platform, a data-driven admin dashboard, and a centralized backend server.
 
-Features
-User Features
-Secure user authentication and authorization using JWT
-Browse destinations and travel listings
-Book trips and manage reservations
-Real-time messaging system using Socket.io
-Profile management
-Responsive design for desktop and mobile devices
+The platform enables users to discover destinations, manage real-time bookings, and engage via instant peer-to-peer messaging, all while maintaining high standards of security and responsiveness.
 
-Admin Features
-Admin dashboard
-Manage users
-Manage bookings
-Manage destinations and content
+## 🚀 Key Features
 
-Tech Stack
-Frontend
-React
-React Router
-Axios
-Tailwind CSS
-Socket.io Client
+### User Experience
+*   **Real-Time Communication:** Instant messaging layer powered by **Socket.io** for seamless user interaction.
+*   **Secure Transactions:** End-to-end payment processing integrated with **Stripe API**.
+*   **AI-Powered Assistance:** Context-aware travel recommendations utilizing **Groq/Llama**.
+*   **Booking Engine:** Advanced date-based availability logic and reservation management.
+*   **Authentication:** Granular authorization and session handling using **JWT** and protected routing.
 
-Backend
-Node.js
-Express.js
-MongoDB
-Mongoose
-JWT Authentication
-Socket.io
+### Admin Management
+*   **Data-Driven Dashboard:** Comprehensive monitoring of business metrics including revenue and user growth.
+*   **Inventory Control:** Full **CRUD** functionality over global hotel listings and travel content.
+*   **Moderation:** Centralized management of user accounts and booking statuses.
 
+## 🛠 Tech Stack
 
-Services & Deployment
-Cloudinary
-Stripe
-Vercel
-Render
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React, Next.js, Tailwind CSS, Redux/Context API, Axios |
+| **Backend** | Node.js, Express.js (MVC Architecture) |
+| **Database** | MongoDB, Mongoose |
+| **Real-Time** | Socket.io |
+| **Security** | JWT, Stripe API, Web Security |
+| **Cloud/DevOps** | Cloudinary (Images), Vercel (Frontend), Render (Backend), Git |
 
-Installation
-Clone the repository
-git clone <your-repository-url>
-cd scenicWonders
+## ⚙️ Installation & Setup
 
-Install dependencies
-Frontend
-cd frontend
-npm install
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/elvyn0/ScenicWonders.git
+    cd ScenicWonders
+    ```
 
+2.  **Environment Configuration**
+    Create a `.env` file in the backend directory with the following:
+    * `MONGO_URI`
+    * `JWT_SECRET`
+    * `STRIPE_SECRET_KEY`
+    * `CLOUDINARY_URL`
 
-Backend
- cd backend
-npm install
+3.  **Install Dependencies & Launch**
+    ```bash
+    # For Frontend, Backend, and Admin
+    npm install
+    npm run dev  # or npm run server for backend
+    ```
 
-Admin Panel
-cd admin
-npm install
-
-Running the Project
-npm run dev
-
-Backend
-npm run server
-
-Admin Panel
-npm run dev
-
-Deployment
-Frontend deployed on Vercel
-Backend deployed on Render
-
-Live Demo 
-https://scenic-wonders.vercel.app
-adminPanel: https://scenic-wonders-adminpanel.vercel.app
-
-Author
-Anoop — Self-taught Full-Stack Developer
-
-GitHub: https://github.com/elvyn0
-Portfolio: https://anoop-portfolio-nine.vercel.app
+## 👤 Author
+**Anoop S**
+*   **GitHub:** [@elvyn0](https://github.com/elvyn0)
+*   **LinkedIn:** [linkedin.com/in/anoop0](https://www.linkedin.com/in/anoop0)
+*   **Role:** Full-Stack Software Engineer
