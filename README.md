@@ -73,11 +73,15 @@ Admin Panel
 npm run dev
 
 Deployment
-Frontend deployed on Vercel:
-Backend deployed on Render:
+Frontend deployed on Vercel
+Backend deployed on Render
+
+Live Demo 
+https://scenic-wonders.vercel.app
+adminPanel: https://scenic-wonders-adminpanel.vercel.app
 
 Author
 Anoop — Self-taught Full-Stack Developer
 
-GitHub: add-your-github-link
-Portfolio: add-your-portfolio-link
+GitHub: https://github.com/elvyn0
+Portfolio: https://anoop-portfolio-nine.vercel.app
