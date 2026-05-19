@@ -9,6 +9,12 @@ function Login({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Demo email and password autofill
+  const fillAdminDemo = () => {
+    setEmail("admin@gmail.com");
+    setPassword("admin@123");
+  };
+
   // Handle submit
   const submitHandler = async (e) => {
     try {
@@ -45,7 +51,7 @@ function Login({ setToken }) {
             <input
               className="rounded-sm w-full px-3 py-3 border border-gray-300  text-gray-300 outline-none "
               type="email"
-              placeholder="your@gmail.com"
+              placeholder="admin@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -56,13 +62,17 @@ function Login({ setToken }) {
             <input
               className="rounded-sm w-full px-3 py-3 border border-gray-300  text-gray-300 outline-none"
               type="password"
-              placeholder="password"
+              placeholder="********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <button type="submit" className="mt-2 w-full py-2 px-4 rounded-sm text-white bg-black">
+          <button
+            onClick={fillAdminDemo}
+            type="submit"
+            className="mt-2 w-full py-2 px-4 rounded-sm text-white bg-black"
+          >
             Login
           </button>
         </form>
