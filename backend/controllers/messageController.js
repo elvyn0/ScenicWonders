@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const MessageModel = require("../models/MessageModel");
 const ConversationModel = require("../models/Conversation.js");
 
@@ -66,19 +67,17 @@ const getUnreadCount = async (req, res) => {
 
     const conversationIds = conversations.map((c) => c._id);
 
-    const unreadConversations = await MessageModel.distinct("conversationId", {
-      conversationId: { $in: conversationIds },
-      senderId: { $ne: userId },
-      isRead: false,
-    });
-
-    const unreadmsgIdCount = unreadConversations.length;
+    if (conversationIds.length === 0) {
+      return res
+        .status(200)
+        .json({ success: true, unreadCounts: [], totalUnreadMessages: 0, unreadConversationsCount: 0 });
+    }
 
     const unreadCounts = await MessageModel.aggregate([
       {
         $match: {
           conversationId: { $in: conversationIds },
-          senderId: { $ne: userId },
+          senderId: { $ne: new mongoose.Types.ObjectId(userId) },
           isRead: false,
         },
       },
@@ -90,7 +89,10 @@ const getUnreadCount = async (req, res) => {
       },
     ]);
 
-    res.status(200).json({ success: true, unreadCounts, unreadmsgIdCount });
+    const unreadConversationsCount = unreadCounts.length;
+    const totalUnreadMessages = unreadCounts.reduce((sum, item) => sum + item.count, 0);
+
+    res.status(200).json({ success: true, unreadCounts, unreadConversationsCount, totalUnreadMessages });
   } catch (error) {
     console.error("unread Count Error:", error);
     res.status(500).json({ success: false, message: error.message });

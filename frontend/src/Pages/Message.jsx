@@ -80,7 +80,6 @@ function Message() {
         const map = {};
 
         response.data.unreadCounts.forEach((item) => {
-          console.log(item);
           map[item._id] = item.count;
         });
         setCount(map);
@@ -114,6 +113,8 @@ function Message() {
         <p>{error}</p>
       </div>
     );
+
+  console.log(count);
 
   return (
     <div className=" flex flex-row w-full min-h-screen bg-gray-100">

@@ -34,7 +34,7 @@ function SideBar() {
         },
       });
       if (response.data.success) {
-        setCount(response.data.unreadmsgIdCount);
+        setCount(response.data.unreadConversationsCount);
       } else {
         toast.error(response.data.message);
       }
