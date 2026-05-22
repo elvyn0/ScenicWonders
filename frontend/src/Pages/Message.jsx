@@ -114,8 +114,6 @@ function Message() {
       </div>
     );
 
-  console.log(count);
-
   return (
     <div className=" flex flex-row w-full min-h-screen bg-gray-100">
       {/* Left Sidebar */}
