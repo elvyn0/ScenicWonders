@@ -3,11 +3,12 @@ import assets from "../../assets/assets";
 import { User } from "lucide-react";
 import { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
+import { toast } from "react-hot-toast";
 
 // --- Header Component --- //
 // This component displays the top navigation bar
 const Header = ({ onLoginClick, onLogout }) => {
-  const { token, navigate, user } = useContext(AppContext);
+  const { navigate, user } = useContext(AppContext);
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
@@ -21,13 +22,30 @@ const Header = ({ onLoginClick, onLogout }) => {
       {/* Icons & Login Button */}
       <div className="flex items-center gap-4 ">
         {/* Favorite Icon */}
-        <div type="button" onClick={() => navigate("/myBookings")} aria-label="bookings" className="icon-btn">
+        <div
+          type="button"
+          onClick={() =>
+            !user
+              ? toast("Please login to view your Bookinks", {
+                  icon: "⚠️",
+                  style: {
+                    background: "#FEF3C7",
+                    color: "#92400E",
+                    fontSize: "15px",
+                    fontWeight: "600",
+                  },
+                })
+              : navigate("/myBookings")
+          }
+          aria-label="bookings"
+          className="icon-btn"
+        >
           <Star className="icon-bookings" />
           <span className="tooltip">Bookings</span>
         </div>
 
         {/* Sign In Button and profile drop down  */}
-        {!token ? (
+        {!user ? (
           <button
             onClick={onLoginClick}
             className="flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs md:text-sm hover:bg-gray-100"
