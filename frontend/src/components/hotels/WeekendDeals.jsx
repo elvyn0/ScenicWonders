@@ -36,7 +36,7 @@ function WeekendDeals() {
     };
 
     fetchList();
-  }, [api]);
+  }, []);
 
   // Handling error state //
   if (error)
@@ -57,7 +57,7 @@ function WeekendDeals() {
           <h2 className="text-3xl font-semibold text-gray-900">Weekend Deals</h2>
 
           <Link
-            to="/hotels&bookings"
+            to="/hotels-bookings"
             className="text-lg font-medium text-gray-600 hover:text-black transition no-underline"
           >
             Explore more →
