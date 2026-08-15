@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { Send } from "lucide-react";
 
 function MessageInput({ conversationId, onNewMessage, userId }) {
-  const { api, token, socket } = useContext(AppContext);
+  const { api, socket } = useContext(AppContext);
   const [newMessage, setNewMessage] = useState("");
 
   // Send message
@@ -13,11 +13,7 @@ function MessageInput({ conversationId, onNewMessage, userId }) {
 
     if (!newMessage.trim()) return;
     try {
-      const response = await api.post(
-        "/api/messages/",
-        { conversationId, text: newMessage },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const response = await api.post("/api/messages/", { conversationId, text: newMessage });
 
       if (response.data.success) {
         onNewMessage(response.data.createNewMessage);

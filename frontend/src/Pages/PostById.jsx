@@ -8,7 +8,7 @@ import assets from "../assets/assets";
 
 function PostById() {
   const { id } = useParams();
-  const { api, token, user, navigate } = useContext(AppContext);
+  const { api, user, navigate } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
@@ -19,11 +19,7 @@ function PostById() {
       setLoading(true);
       setError(null);
 
-      const response = await api.get(`/api/post/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/api/post/${id}`);
       if (response.data.success) {
         setPost(response.data.post);
         setError(null);
@@ -43,15 +39,7 @@ function PostById() {
   // Handling Like
   const handleLike = async () => {
     try {
-      const response = await api.post(
-        `/api/post/like/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response = await api.post(`/api/post/like/${id}`, {});
       if (response.data.success) {
         setPost((prev) => ({ ...prev, likes: response.data.likes, liked: response.data.liked }));
       } else {
@@ -66,11 +54,7 @@ function PostById() {
   // Handling  delete post
   const handleDelte = async () => {
     try {
-      const response = await api.delete(`/api/post/remove/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.delete(`/api/post/remove/${id}`);
       if (response.data.success) {
         toast.success(response.data.message);
         navigate(-1);

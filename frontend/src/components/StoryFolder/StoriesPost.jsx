@@ -3,7 +3,7 @@ import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 
 function StoriesPost() {
-  const { api, token } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -15,15 +15,7 @@ function StoriesPost() {
     try {
       setUploading(true);
 
-      const response = await api.post(
-        "/api/story/add",
-        { title, content },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response = await api.post("/api/story/add", { title, content });
       if (response.data.success) {
         toast.success(response.data.message);
         setTitle("");

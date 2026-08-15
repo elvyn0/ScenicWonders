@@ -1,11 +1,11 @@
 import { X, Eye, EyeOff } from "lucide-react";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import assets from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 
 function Login({ onClose }) {
-  const { api, setToken, token, navigate } = useContext(AppContext);
+  const { api, navigate, setUser } = useContext(AppContext);
   const [showPassword, setShowPassword] = useState(false);
   const [currentState, setCurrentState] = useState("singUp");
   const [name, setName] = useState("");
@@ -33,10 +33,12 @@ function Login({ onClose }) {
         });
 
         if (response.data.success) {
+          setUser(response.data.userData);
+          localStorage.setItem("user", JSON.stringify(response.data.userData));
           toast.success("Welcome to Scenic Wonders");
+
+          onClose();
           navigate("/");
-          setToken(response.data.token);
-          localStorage.setItem("token", response.data.token);
         } else {
           toast.error(response.data.message);
         }
@@ -44,10 +46,11 @@ function Login({ onClose }) {
         // User login
         const response = await api.post("/api/user/login", { email, password });
         if (response.data.success) {
-          setToken(response.data.token);
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("user", JSON.stringify(response.data.user));
+          setUser(response.data.userData);
+          localStorage.setItem("user", JSON.stringify(response.data.userData));
           toast.success("Logged in successfully");
+
+          onClose();
           navigate("/");
         } else {
           toast.error(response.data.message);
@@ -58,13 +61,6 @@ function Login({ onClose }) {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
-
-  useEffect(() => {
-    if (token) {
-      onClose();
-      navigate("/");
-    }
-  }, [token, onClose, navigate]);
 
   return (
     //  Overlay (dimmed background)

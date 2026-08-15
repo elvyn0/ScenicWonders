@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import assets from "../assets/assets";
 
 function Message() {
-  const { api, token, navigate } = useContext(AppContext);
+  const { api, navigate, user, authLoading } = useContext(AppContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -18,11 +18,7 @@ function Message() {
       setLoading(true);
       setError(null);
 
-      const response = await api.get("/api/user/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/api/user/users");
 
       if (response.data.success) {
         setUsers(response.data.users);
@@ -44,15 +40,7 @@ function Message() {
 
   const fetchConversationId = async (receiverId) => {
     try {
-      const response = await api.post(
-        "/api/conversation",
-        { receiverId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response = await api.post("/api/conversation", { receiverId });
 
       if (response.data.success) {
         const conversationId = response.data.conversationId;
@@ -70,11 +58,7 @@ function Message() {
   // Message count
   const unreadMessageCount = async () => {
     try {
-      const response = await api.get("/api/messages/count", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/api/messages/count");
 
       if (response.data.success) {
         const map = {};
@@ -93,11 +77,11 @@ function Message() {
   };
 
   useEffect(() => {
-    if (token) {
+    if (!authLoading && user) {
       fetchUsers();
       unreadMessageCount();
     }
-  }, [token]);
+  }, [authLoading, user]);
 
   // Handling Loading state //
   if (loading)
@@ -117,6 +101,7 @@ function Message() {
   return (
     <div className=" flex flex-row w-full min-h-screen bg-gray-100">
       {/* Left Sidebar */}
+
       <div className=" border-r border-gray-200 bg-white flex flex-col">
         {/* Header */}
         <div className="px-1 pt-3 pb-1 border-b border-gray-200">

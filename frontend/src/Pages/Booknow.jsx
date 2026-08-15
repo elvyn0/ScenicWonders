@@ -11,7 +11,7 @@ import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
 
 function Booknow() {
-  const { api, token, user } = useContext(AppContext);
+  const { api, user } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { hotelId } = useParams();
@@ -64,22 +64,14 @@ function Booknow() {
       /// Saving locally
       localStorage.setItem("bookingData", JSON.stringify(bookingData));
 
-      const response = await api.post(
-        "/api/payment/create-checkout-session",
-        {
-          hotelId,
-          hotelName,
-          nights,
-          rooms,
-          pricePerNight,
-          ...formData,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response = await api.post("/api/payment/create-checkout-session", {
+        hotelId,
+        hotelName,
+        nights,
+        rooms,
+        pricePerNight,
+        ...formData,
+      });
       if (response.data.success) {
         window.location.href = response.data.url;
         setError(null);

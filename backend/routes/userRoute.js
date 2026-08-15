@@ -8,6 +8,7 @@ const {
   getMe,
   getUsersList,
   updateUserprofile,
+  userLogout,
   handleDeleteUser,
 } = require("../controllers/userController");
 const auth = require("../middlewares/auth");
@@ -23,6 +24,7 @@ userRouter.get("/users", auth, getUsersList);
 userRouter.get("/me", auth, getMe);
 userRouter.get("/:userId", getUser);
 userRouter.get("/profile/:userId", getUserProfile);
+userRouter.post("/logout", userLogout);
 userRouter.delete("/delete-account", auth, handleDeleteUser);
 
 module.exports = userRouter;

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import assets from "../../assets/assets";
 
 function StoriesCategories() {
-  const { api, token } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [list, setList] = useState([]);
@@ -16,11 +16,7 @@ function StoriesCategories() {
       setLoading(true);
       setError(null);
 
-      const response = await api.get("/api/story/list", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/api/story/list");
       if (response.data.success) {
         setList(response.data.stories);
         setError(null);

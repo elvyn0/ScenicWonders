@@ -3,23 +3,10 @@ const User = require("../models/userModel");
 
 const authUser = async (req, res, next) => {
   try {
-    // Support both `Authorization: Bearer <token>` and `Authorization: <token>`
-    const authHeader = req.headers.authorization || req.headers.token;
-
-    let token;
-
-    if (!authHeader) {
-      return res.status(401).json({ success: false, message: "Not Authorized, Login Again" });
-    }
-
-    if (typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
-      token = authHeader.split(" ")[1];
-    } else {
-      token = authHeader;
-    }
+    const token = req.cookies.token;
 
     if (!token) {
-      return res.status(401).json({ success: false, message: "Not Authorized, Login Again" });
+      return res.status(401).json({ success: false, message: "Not Authorized" });
     }
 
     let decoded;

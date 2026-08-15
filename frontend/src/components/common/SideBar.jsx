@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 
 function SideBar() {
-  const { api, token } = useContext(AppContext);
+  const { api, user } = useContext(AppContext);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
@@ -28,11 +28,7 @@ function SideBar() {
   // Unread message count
   const messageCount = async () => {
     try {
-      const response = await api.get("/api/messages/count", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/api/messages/count");
       if (response.data.success) {
         setCount(response.data.unreadConversationsCount);
       } else {
@@ -45,10 +41,10 @@ function SideBar() {
   };
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       messageCount();
     }
-  }, [token]);
+  }, [user]);
 
   return (
     <div>

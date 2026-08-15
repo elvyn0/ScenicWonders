@@ -6,7 +6,7 @@ import { Heart } from "lucide-react";
 import assets from "../assets/assets";
 
 function Stories() {
-  const { api, token } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [list, setList] = useState([]);
@@ -17,11 +17,7 @@ function Stories() {
       setLoading(true);
       setError(null);
 
-      const response = await api.get("/api/story/list", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/api/story/list");
       if (response.data.success) {
         setList(response.data.stories);
         setError(null);
@@ -41,15 +37,7 @@ function Stories() {
   // Handling Like
   const handleLike = async (id) => {
     try {
-      const response = await api.post(
-        `/api/story/like/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response = await api.post(`/api/story/like/${id}`, {});
       if (response.data.success) {
         setList((prev) =>
           prev.map((item) =>

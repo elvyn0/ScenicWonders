@@ -5,7 +5,7 @@ import assets from "../assets/assets";
 import { Trash2 } from "lucide-react";
 
 function MyBookings() {
-  const { api, token } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [bookings, setBookings] = useState([]);
@@ -16,11 +16,7 @@ function MyBookings() {
       setLoading(true);
       setError(null);
 
-      const response = await api.get("/api/bookings/myBookings", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/api/bookings/myBookings");
 
       if (response.data.success) {
         setBookings(response.data.myBookings);
@@ -41,15 +37,7 @@ function MyBookings() {
   // Handling cancel bookings
   const handlingCancelBooking = async (id) => {
     try {
-      const response = await api.patch(
-        `/api/bookings/cancelBooking/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response = await api.patch(`/api/bookings/cancelBooking/${id}`, {});
 
       if (response.data.success) {
         toast.success(response.data.message);
@@ -67,11 +55,7 @@ function MyBookings() {
   // Handling Delete booking
   const handleDeleteBooking = async (id) => {
     try {
-      const response = await api.delete(`/api/bookings/delete-booking/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.delete(`/api/bookings/delete-booking/${id}`);
 
       if (response.data.success) {
         toast.success(response.data.message);

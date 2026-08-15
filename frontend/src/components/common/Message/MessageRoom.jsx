@@ -9,13 +9,12 @@ import assets from "../../../assets/assets";
 
 function MessageRoom() {
   const { conversationId } = useParams();
-  const { api, token, socket } = useContext(AppContext);
+  const { api, socket, user } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState([]);
   const [conversation, setConversation] = useState(null);
 
-  const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?._id;
 
   // Fetching  Conversation
@@ -24,11 +23,7 @@ function MessageRoom() {
       setLoading(true);
       setError(null);
 
-      const response = await api.get(`/api/conversation/${conversationId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/api/conversation/${conversationId}`);
       if (response.data.success) {
         setConversation(response.data.conversation);
         setError(null);
@@ -53,11 +48,7 @@ function MessageRoom() {
       setLoading(true);
       setError(null);
 
-      const response = await api.get(`/api/messages/${conversationId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/api/messages/${conversationId}`);
       if (response.data.success) {
         setMessage(response.data.messages);
         setError(null);
@@ -77,11 +68,11 @@ function MessageRoom() {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    if (token && conversationId) {
+    if (user && conversationId) {
       fetchMessage();
       fetchConversation();
     }
-  }, [token, conversationId]);
+  }, [user, conversationId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });

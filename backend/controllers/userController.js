@@ -8,6 +8,8 @@ const jwt = require("jsonwebtoken");
 const Post = require("../models/postModel");
 const Stories = require("../models/storiesModel");
 const Booking = require("../models/bookingModel");
+
+// Create Token
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
 };
@@ -19,21 +21,19 @@ const registerUser = async (req, res) => {
     // checking user already exist or not
     const exists = await User.findOne({ email });
     if (exists) {
-      return res
-        .status(409)
-        .json({ success: false, message: "This email is already exist", error_code: "EMAIL_CONFLICT" });
+      return res.status(409).json({ success: false, message: "Email already exists", error_code: "EMAIL_CONFLICT" });
     }
 
     // Validating email
     if (!validator.isEmail(email)) {
       return res
-        .status(406)
+        .status(400)
         .json({ success: false, message: "Please enter a valid Email", error_code: "INVALID_EMAIL" });
     }
 
     // Checking password is strong or not
     if (password.length < 8) {
-      return res.status(412).json({ success: false, message: "Please enter a strong password" });
+      return res.status(400).json({ success: false, message: "Please enter a strong password" });
     }
 
     // Encripting and hasing the password
@@ -48,9 +48,24 @@ const registerUser = async (req, res) => {
     });
 
     const user = await newUser.save();
+
+    const userData = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    };
+
+    // Creating token
     const token = createToken(user._id);
 
-    res.status(201).json({ success: true, token });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(201).json({ success: true, userData, message: "Registration successful" });
   } catch (error) {
     console.error("Register User Error:", error);
     res.status(500).json({ success: false, message: error.message });
@@ -74,29 +89,34 @@ const userLogin = async (req, res) => {
       return res.status(401).json({ success: false, message: "user name or password are incorrect" });
     }
 
-    const token = jwt.sign(
-      {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" },
-    );
+    const userData = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    };
 
-    user.password = undefined;
+    // Token generating
+    const token = createToken(user._id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, //process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.status(200).json({
       success: true,
-      token,
-      user,
+      userData,
+      message: "Login successful",
     });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
-// Get logged user
+
+// Get loged user
 const getMe = async (req, res) => {
   try {
     res.status(200).json({
@@ -231,6 +251,21 @@ const updateUserprofile = async (req, res) => {
   }
 };
 
+// Logout user
+const userLogout = async (req, res) => {
+  try {
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
+
+    res.status(200).json({ success: true, message: "Logging  out" });
+  } catch (error) {
+    console.error("User log out Error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Delete user
 const handleDeleteUser = async (req, res) => {
   try {
@@ -265,6 +300,11 @@ const handleDeleteUser = async (req, res) => {
     }
 
     await User.findByIdAndDelete(userId);
+
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
 
     res.status(200).json({ success: true, message: "User deleted" });
   } catch (error) {
@@ -303,5 +343,6 @@ module.exports = {
   getMe,
   getUsersList,
   updateUserprofile,
+  userLogout,
   handleDeleteUser,
 };

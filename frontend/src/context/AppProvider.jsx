@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 import { AppContext } from "./AppContext";
+import toast from "react-hot-toast";
 
 const AppContextProvider = (props) => {
   const [showLogin, setShowLogin] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const navigate = useNavigate();
 
   //  for Payment
@@ -18,46 +19,55 @@ const AppContextProvider = (props) => {
   /// Backend  ///
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
+    withCredentials: true,
   });
 
   /// Socket-io ///
   const socket = io(import.meta.env.VITE_BACKEND_URL, {
     transports: ["websocket"],
     withCredentials: true,
-    auth: { token },
   });
 
   /// To get the user ///
   const fetchUser = async () => {
     try {
-      const response = await api.get("/api/user/me", { headers: { token } });
+      const response = await api.get("/api/user/me");
       if (response.data.success) {
         setUser(response.data.user);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
   useEffect(() => {
-    if (token) fetchUser();
-  }, [token]);
+    fetchUser();
+  }, []);
 
   /// Logout ///
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setToken(null);
-    window.location.href = "/";
+  const handleLogout = async () => {
+    try {
+      const response = await api.post("/api/user/logout");
+      if (response.data.success) {
+        localStorage.removeItem("user");
+        setUser(null);
+        window.location.href = "/";
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   const value = {
     api,
-    token,
     socket,
-    setToken,
     setUser,
     user,
+    authLoading,
     navigate,
     showLogin,
     setShowLogin,

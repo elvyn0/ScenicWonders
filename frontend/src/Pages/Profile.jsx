@@ -7,7 +7,7 @@ import EditProfileModel from "../components/EditProfileModel";
 import assets from "../assets/assets";
 
 function Profile() {
-  const { api, token, navigate, setUser, setToken, user } = useContext(AppContext);
+  const { api, navigate, setUser, user } = useContext(AppContext);
   const { userId } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -48,15 +48,7 @@ function Profile() {
   /// To get conversationId
   const fetchConversationId = async (receiverId) => {
     try {
-      const response = await api.post(
-        "/api/conversation",
-        { receiverId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const response = await api.post("/api/conversation", { receiverId });
 
       if (response.data.success) {
         const conversationId = response.data.conversationId;
@@ -76,18 +68,12 @@ function Profile() {
     try {
       setLoading(true);
 
-      const response = await api.delete("/api/user/delete-account", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.delete("/api/user/delete-account");
 
       if (response.data.success) {
         toast.success(response.data.message);
-        localStorage.removeItem("token");
         localStorage.removeItem("user");
         setUser(null);
-        setToken(null);
         navigate("/");
       } else {
         toast.error(response.data.message);

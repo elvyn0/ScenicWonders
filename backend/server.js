@@ -27,6 +27,10 @@ const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 
+// Cookie-parser
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // cors
 const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_PANEL_URL];
 

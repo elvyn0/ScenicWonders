@@ -4,7 +4,7 @@ import { AppContext } from "../../context/AppContext";
 import { toast } from "react-hot-toast";
 
 function Post() {
-  const { api, token } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const [image, setImage] = useState(false);
   const [caption, setCaption] = useState("");
   const [Uploading, setUploading] = useState(false);
@@ -20,11 +20,7 @@ function Post() {
       formData.append("caption", caption);
       image && formData.append("image", image);
 
-      const response = await api.post("/api/post/add", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.post("/api/post/add", formData);
       if (response.data.success) {
         toast.success(response.data.message);
         setCaption("");

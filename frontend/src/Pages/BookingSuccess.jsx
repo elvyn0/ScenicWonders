@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 // After strip booking success page
 function BookingSuccess() {
-  const { api, token } = useContext(AppContext);
+  const { api } = useContext(AppContext);
 
   useEffect(() => {
     const bookingData = JSON.parse(localStorage.getItem("bookingData"));
@@ -16,9 +16,7 @@ function BookingSuccess() {
     // save booking
     const saveBooking = async () => {
       try {
-        const response = await api.post("/api/bookings/create", bookingData, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.post("/api/bookings/create", bookingData);
         if (response.data.success) {
           toast.success(response.data.message);
           localStorage.removeItem("bookingData");

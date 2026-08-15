@@ -4,7 +4,7 @@ import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 function EditProfileModel({ setShowEdit, profile, setProfile }) {
-  const { api, token } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const [profilePic, setProfilePic] = useState(null);
   const [name, setName] = useState("");
   const [updating, setUpdating] = useState(false);
@@ -22,11 +22,7 @@ function EditProfileModel({ setShowEdit, profile, setProfile }) {
       }
       profilePic && formData.append("profilePic", profilePic);
 
-      const response = await api.put("/api/user/update-profile", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.put("/api/user/update-profile", formData);
 
       if (response.data.success) {
         setProfile(response.data.updatedUser);
