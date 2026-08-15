@@ -67,9 +67,11 @@ function MessageRoom() {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    fetchMessage();
-    fetchConversation();
-  }, []);
+    if (user && conversationId) {
+      fetchMessage();
+      fetchConversation();
+    }
+  }, [user, conversationId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
