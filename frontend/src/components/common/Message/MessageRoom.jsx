@@ -6,7 +6,6 @@ import MessageInput from "./MessageInput";
 import { useRef } from "react";
 import EmptyMessageState from "../EmptyMessageState";
 import assets from "../../../assets/assets";
-
 function MessageRoom() {
   const { conversationId } = useParams();
   const { api, socket, user } = useContext(AppContext);
@@ -68,11 +67,9 @@ function MessageRoom() {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    if (user && conversationId) {
-      fetchMessage();
-      fetchConversation();
-    }
-  }, [user, conversationId]);
+    fetchMessage();
+    fetchConversation();
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -84,9 +81,20 @@ function MessageRoom() {
     socket.emit("joinConversation", conversationId);
   }, [conversationId]);
 
+  // Socket.io listener
   useEffect(() => {
+    if (!socket) return;
+
     const handler = (newMessage) => {
-      setMessage((prev) => [...prev, newMessage]);
+      setMessage((prev) => {
+        const alreadyExists = prev.some((item) => item._id === newMessage._id);
+
+        if (alreadyExists) {
+          return prev;
+        }
+
+        return [...prev, newMessage];
+      });
     };
 
     socket.on("receiveMessage", handler);
@@ -148,7 +156,7 @@ function MessageRoom() {
 
           {/* Input (sticks bottom now) */}
           <div className="border-t bg-white">
-            <MessageInput conversationId={conversationId} onNewMessage={() => {}} userId={userId} />
+            <MessageInput conversationId={conversationId} />
           </div>
         </>
       )}

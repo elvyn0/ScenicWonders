@@ -1,26 +1,36 @@
-const MessageModel = require("../models/MessageModel");
+const cookie = require("cookie");
 const jwt = require("jsonwebtoken");
 
 module.exports = (io) => {
-  io.on("connection", (socket) => {
-    if (process.env.NODE_ENV === "development") {
-      console.log("User connected:", socket.id);
-    }
+  io.use((socket, next) => {
+    try {
+      const cookieHeader = socket.handshake.headers.cookie;
 
+      if (!cookieHeader) {
+        return next(new Error("No authentication cookie"));
+      }
+
+      const cookies = cookie.parse(cookieHeader);
+      const token = cookies.token;
+
+      if (!token) {
+        return next(new Error("Authentication token not found"));
+      }
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      socket.userId = decoded.id;
+
+      next();
+    } catch (error) {
+      console.error("Authentication error");
+      next(new Error("Authentication error"));
+    }
+  });
+
+  io.on("connection", (socket) => {
     socket.on("joinConversation", (conversationId) => {
       socket.join(conversationId);
-    });
-
-    io.use((socket, next) => {
-      try {
-        const token = socket.handshake.auth.token;
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        socket.userId = decoded.id;
-        next();
-      } catch (error) {
-        next(new Error("Authentication error"));
-      }
     });
 
     socket.on("sendMessage", (message) => {
@@ -32,10 +42,8 @@ module.exports = (io) => {
       io.to(message.conversationId).emit("receiveMessage", cleanMessage);
     });
 
-    socket.on("disconnect", () => {
-      if (process.env.NODE_ENV === "development") {
-        console.log("User disconnected:", socket.id);
-      }
+    socket.on("disconnect", (reason) => {
+      console.log("DISCONNECTED:", reason);
     });
   });
 };

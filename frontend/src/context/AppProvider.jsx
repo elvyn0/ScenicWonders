@@ -6,6 +6,11 @@ import { io } from "socket.io-client";
 import { AppContext } from "./AppContext";
 import toast from "react-hot-toast";
 
+/// Socket-io ///
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
+  withCredentials: true,
+});
+
 const AppContextProvider = (props) => {
   const [showLogin, setShowLogin] = useState(false);
   const [user, setUser] = useState(null);
@@ -19,12 +24,6 @@ const AppContextProvider = (props) => {
   /// Backend  ///
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true,
-  });
-
-  /// Socket-io ///
-  const socket = io(import.meta.env.VITE_BACKEND_URL, {
-    transports: ["websocket"],
     withCredentials: true,
   });
 
