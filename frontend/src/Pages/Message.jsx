@@ -110,7 +110,7 @@ function Message() {
         </div>
 
         {/* Conversation List */}
-        <div className="md:min-w-[250px] overflow-y-auto px-3 pt-3 pb-2 border-b-2 space-y-2 cursor-pointer ">
+        <div className="md:min-w-[250px] overflow-y-auto px-3 pt-3 pb-2 border-b-2 space-y-2 cursor-pointer overscroll-contain">
           <div>
             {users.map((item) => {
               const userConId = item.conversationId;

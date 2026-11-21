@@ -143,7 +143,7 @@ function MessageRoom() {
           )}
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 overscroll-contain">
             {message.map((item) => {
               const isMe = item.senderId?.toString() === userId?.toString();
 

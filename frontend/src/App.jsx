@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route, Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Home from "./Pages/Home";
 import Explore from "./Pages/Explore";
 import Nepal from "./Pages/Nepal";
@@ -44,10 +45,22 @@ const LayoutWithSidebar = () => {
   );
 };
 
+// Auto scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
+
+  return null;
+};
+
 const App = () => {
   return (
     <div>
       <Toaster />
+      <ScrollToTop />
 
       <Routes>
         <Route element={<LayoutWithSidebar />}>
