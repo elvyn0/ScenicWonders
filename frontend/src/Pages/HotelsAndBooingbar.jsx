@@ -5,9 +5,8 @@ import toast from "react-hot-toast";
 import { AppContext } from "../context/AppContext";
 
 function HotelsAndBookingbar() {
-  const { api } = useContext(AppContext);
-  const [hotelsList, setHotelsList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { api, hotelsList, setHotelsList } = useContext(AppContext);
+  const [loading, setLoading] = useState(hotelsList.length === 0);
   const [error, setError] = useState(null);
   const [filteredHotels, setFilteredHotels] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -19,10 +18,10 @@ function HotelsAndBookingbar() {
     guests: 1,
   });
 
-  // Fetching hotels //
-  const fetchHotelLists = async () => {
+  // Fetching hotels (Stale-While-Revalidate)
+  const fetchHotelLists = async (isBackground = false) => {
     try {
-      setLoading(true);
+      if (!isBackground) setLoading(true);
       setError(null);
 
       const response = await api.get("/api/hotels/list");
@@ -30,13 +29,15 @@ function HotelsAndBookingbar() {
         setHotelsList(response.data.hotels);
         setError(null);
       } else {
-        toast.error(response.data.message);
-        setError("Failed to load data");
+        if (!isBackground) toast.error(response.data.message);
+        if (hotelsList.length === 0) setError("Failed to load data");
       }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Something went wrong");
-      setError("Server not responding...");
+    } catch (err) {
+      console.error(err);
+      if (!isBackground && hotelsList.length === 0) {
+        toast.error(err.response?.data?.message || "Something went wrong");
+        setError("Server not responding...");
+      }
     } finally {
       setLoading(false);
     }

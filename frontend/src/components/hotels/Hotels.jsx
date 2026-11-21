@@ -17,7 +17,7 @@ function Hotels({
   const hotelsToDisplay = showSuggestions && filteredHotels.length > 0 ? filteredHotels : hotelsList;
 
   useEffect(() => {
-    fetchHotelLists();
+    fetchHotelLists(hotelsList.length > 0);
   }, []);
 
   return (
@@ -35,8 +35,19 @@ function Hotels({
         <AiBot aiOpen={aiOpen} setAiOpen={setAiOpen} />
       </div>
 
-      {loading ? (
-        <p className="text-blue-700 font-semibold text-lg">Hotels are Loading....</p>
+      {loading && hotelsToDisplay.length === 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 animate-pulse">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="flex flex-col md:flex-row bg-white rounded-lg shadow-md p-4 gap-4">
+              <div className="w-full md:w-[300px] h-[200px] bg-gray-200 rounded-md" />
+              <div className="flex-1 space-y-3 pt-2">
+                <div className="h-4 bg-gray-200 rounded w-3/4" />
+                <div className="h-3 bg-gray-200 rounded w-1/2" />
+                <div className="h-3 bg-gray-200 rounded w-1/3" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {hotelsToDisplay.map((item) => (

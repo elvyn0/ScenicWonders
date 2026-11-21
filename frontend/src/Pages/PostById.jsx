@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { Heart, Trash2 } from "lucide-react";
@@ -9,29 +9,38 @@ import { getOptimizedImageUrl } from "../utils/imageOptimizer";
 
 function PostById() {
   const { id } = useParams();
-  const { api, user, navigate } = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [post, setPost] = useState(null);
+  const location = useLocation();
+  const { api, user, navigate, postCache, setPostCache } = useContext(AppContext);
 
-  // Fetch post by id
+  // Instantly use passed route state or memory cache
+  const initialPost = location.state?.post || postCache?.[id] || null;
+  const [loading, setLoading] = useState(!initialPost);
+  const [error, setError] = useState(null);
+  const [post, setPost] = useState(initialPost);
+
+  // Fetch post by id (silent background update if post already in memory)
   const postById = async () => {
     try {
-      setLoading(true);
+      if (!initialPost) setLoading(true);
       setError(null);
 
       const response = await api.get(`/api/post/${id}`);
       if (response.data.success) {
         setPost(response.data.post);
+        setPostCache((prev) => ({ ...prev, [id]: response.data.post }));
         setError(null);
       } else {
-        toast.error(response.data.message);
-        setError("Failed to load data");
+        if (!initialPost) {
+          toast.error(response.data.message);
+          setError("Failed to load data");
+        }
       }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Something went wrong");
-      setError("Server not responding...");
+    } catch (err) {
+      console.error(err);
+      if (!initialPost) {
+        toast.error(err.response?.data?.message || "Something went wrong");
+        setError("Server not responding...");
+      }
     } finally {
       setLoading(false);
     }
@@ -42,17 +51,19 @@ function PostById() {
     try {
       const response = await api.post(`/api/post/like/${id}`, {});
       if (response.data.success) {
-        setPost((prev) => ({ ...prev, likes: response.data.likes, liked: response.data.liked }));
+        const updated = { ...post, likes: response.data.likes, liked: response.data.liked };
+        setPost(updated);
+        setPostCache((prev) => ({ ...prev, [id]: updated }));
       } else {
         toast.error(response.data.error);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Like failed");
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || "Like failed");
     }
   };
 
-  // Handling  delete post
+  // Handling delete post
   const handleDelte = async () => {
     try {
       const response = await api.delete(`/api/post/remove/${id}`);
@@ -62,9 +73,9 @@ function PostById() {
       } else {
         toast.error(response.data.message);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Something went wrong");
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -72,17 +83,31 @@ function PostById() {
     postById();
   }, [id]);
 
-  // Handling Loading state //
-  if (loading)
+  // Handling Loading state when no cache exists
+  if (loading && !post)
     return (
-      <div className="text-center">
-        <p className="text-blue-600 font-bold text-sm">Loading Post...</p>
+      <div className="min-h-screen flex items-center justify-center py-4">
+        <div className="w-full max-w-md md:max-w-4xl flex flex-col md:flex-row rounded-xl overflow-hidden bg-white shadow-md p-4 animate-pulse gap-4">
+          <div className="w-full md:w-1/2 aspect-[4/5] bg-gray-200 rounded-lg" />
+          <div className="w-full md:w-1/2 space-y-4 pt-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gray-200" />
+              <div className="h-4 w-24 bg-gray-200 rounded" />
+            </div>
+            <div className="h-4 bg-gray-200 rounded w-full" />
+            <div className="h-4 bg-gray-200 rounded w-2/3" />
+          </div>
+        </div>
       </div>
     );
-  // Handling error state //
-  if (error)
+
+  // Handling error state
+  if (error && !post)
     return (
-      <div className="text-center text-lg text-red-600 font-bold">
+      <div className="text-center text-lg text-red-600 font-bold py-16">
+        <p>{error}</p>
+      </div>
+    );
         <p>{error}</p>
       </div>
     );

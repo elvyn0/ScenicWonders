@@ -234,7 +234,7 @@ function Profile() {
                     key={item._id}
                     className="group rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition"
                   >
-                    <NavLink to={`/post/${item._id}`} className="no-underline text-black">
+                    <NavLink to={`/post/${item._id}`} state={{ post: { ...item, user: profile } }} className="no-underline text-black">
                       <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 rounded-lg">
                         <img
                           src={getOptimizedImageUrl(item.image?.url, { width: 500 })}

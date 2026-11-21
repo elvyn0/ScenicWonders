@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { Star } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
@@ -10,11 +10,15 @@ import { getOptimizedImageUrl } from "../utils/imageOptimizer";
 
 function Hotel() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { hotelId } = useParams();
-  const { api } = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
+  const { api, hotelCache, setHotelCache } = useContext(AppContext);
+
+  // Instantly use passed route state or memory cache
+  const initialHotel = location.state?.hotel || hotelCache?.[hotelId] || null;
+  const [loading, setLoading] = useState(!initialHotel);
   const [error, setError] = useState(null);
-  const [hotel, setHotel] = useState(null);
+  const [hotel, setHotel] = useState(initialHotel);
 
   // handling params data
   const [params] = useSearchParams();
@@ -29,24 +33,29 @@ function Hotel() {
     rooms: rooms || 1,
   });
 
-  // Fetch hotel details
+  // Fetch hotel details (silent background update if hotel already in memory)
   const fetchHotelDetails = async () => {
     try {
-      setLoading(true);
+      if (!initialHotel) setLoading(true);
       setError(null);
 
       const response = await api.get(`/api/hotels/${hotelId}`);
       if (response.data.success) {
         setHotel(response.data.hotel);
+        setHotelCache((prev) => ({ ...prev, [hotelId]: response.data.hotel }));
         setError(null);
       } else {
-        toast.error(response.data.message);
-        setError("Failed to load data");
+        if (!initialHotel) {
+          toast.error(response.data.message);
+          setError("Failed to load data");
+        }
       }
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Something went wrong");
-      setError("Server not responding...");
+    } catch (err) {
+      console.error(err);
+      if (!initialHotel) {
+        toast.error(err.response?.data?.message || "Something went wrong");
+        setError("Server not responding...");
+      }
     } finally {
       setLoading(false);
     }
@@ -146,17 +155,27 @@ function Hotel() {
     fetchHotelDetails();
   }, []);
 
-  // Handling Loading state //
-  if (loading)
+  // Handling Loading state when no cache exists
+  if (loading && !hotel)
     return (
-      <div className="text-center">
-        <p className="text-blue-600 font-bold text-sm">Loading Hotel details...</p>
+      <div className="mx-auto max-w-6xl px-4 pt-12 mb-5 animate-pulse">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-white rounded-2xl shadow-lg p-6 mt-5">
+          <div className="lg:col-span-2 flex flex-col gap-4">
+            <div className="w-full h-[350px] bg-gray-200 rounded-xl" />
+            <div className="flex gap-3">
+              <div className="w-1/2 h-40 bg-gray-200 rounded-lg" />
+              <div className="w-1/2 h-40 bg-gray-200 rounded-lg" />
+            </div>
+          </div>
+          <div className="h-64 bg-gray-100 rounded-xl p-5" />
+        </div>
       </div>
     );
-  // Handling error state //
-  if (error)
+
+  // Handling error state when no cache exists
+  if (error && !hotel)
     return (
-      <div className="text-center text-lg text-red-600 font-bold">
+      <div className="text-center text-lg text-red-600 font-bold py-16">
         <p>{error}</p>
       </div>
     );

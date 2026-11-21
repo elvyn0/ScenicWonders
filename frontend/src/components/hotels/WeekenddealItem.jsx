@@ -7,7 +7,11 @@ function WeekendDealsItem({ id, name, image, pricePerNight, destination }) {
   const { currency } = useContext(AppContext);
 
   return (
-    <Link to={`/hotels/hotel/${id}`} className="no-underline">
+    <Link
+      to={`/hotels/hotel/${id}`}
+      state={{ hotel: { _id: id, name, hotelImage: { url: image }, pricePerNight, location: destination } }}
+      className="no-underline"
+    >
       <div className="bg-white rounded-2xl shadow-lg min-w-[260px] hover:shadow-lg transition-all duration-300 p-3  hover:scale-110 ease-in-out ">
         <div className="overflow-hidden rounded-t-2xl bg-gray-200">
           <img

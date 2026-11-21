@@ -5,49 +5,50 @@ import WeekendDealsItem from "./WeekenddealItem";
 import toast from "react-hot-toast";
 
 function WeekendDeals() {
-  const { api } = useContext(AppContext);
-  const [hotels, setHotels] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { api, hotelsList, setHotelsList } = useContext(AppContext);
+  const [loading, setLoading] = useState(hotelsList.length === 0);
   const [error, setError] = useState(null);
 
-  // Fetching hotels
+  // Fetching hotels (Stale-While-Revalidate)
   useEffect(() => {
-    const fetchList = async () => {
+    const fetchList = async (isBackground = false) => {
       try {
-        setLoading(true);
+        if (!isBackground) setLoading(true);
         setError(null);
 
         const response = await api.get("/api/hotels/list");
 
         if (response.data.success) {
-          setHotels(response.data.hotels);
+          setHotelsList(response.data.hotels);
           setError(null);
         } else {
-          toast.error(response.data.message);
-          setError("Failed to load data");
+          if (!isBackground) toast.error(response.data.message);
+          if (hotelsList.length === 0) setError("Failed to load data");
         }
-      } catch (error) {
-        console.error(error);
-        toast.error(error.response?.data?.message || "Something went wrong");
-        setError("Server not responding...");
+      } catch (err) {
+        console.error(err);
+        if (!isBackground && hotelsList.length === 0) {
+          toast.error(err.response?.data?.message || "Something went wrong");
+          setError("Server not responding...");
+        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchList();
+    fetchList(hotelsList.length > 0);
   }, []);
 
-  // Handling error state //
-  if (error)
+  // Handling error state when no data exists //
+  if (error && hotelsList.length === 0)
     return (
       <div className="text-center text-sm text-red-600 font-bold">
         <p>{error}</p>
       </div>
     );
 
-  // Filtering hotels by weekned Deals
-  const weekendDeals = hotels.filter((item) => item.weekendDeals === true).slice(0, 4);
+  // Filtering hotels by weekend Deals
+  const weekendDeals = hotelsList.filter((item) => item.weekendDeals === true).slice(0, 4);
 
   return (
     <div className="bg-gray-200 py-10 px-6 mb-5">
@@ -65,8 +66,19 @@ function WeekendDeals() {
         </div>
 
         {/* Content */}
-        {loading ? (
-          <p className="text-center text-sm text-blue-400">Loading Hotels...</p>
+        {loading && weekendDeals.length === 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 animate-pulse">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl p-3 shadow-lg min-w-[260px]">
+                <div className="h-40 w-full bg-gray-200 rounded-t-2xl" />
+                <div className="p-4 space-y-2">
+                  <div className="h-4 bg-gray-200 rounded w-3/4" />
+                  <div className="h-3 bg-gray-200 rounded w-1/2" />
+                  <div className="h-3 bg-gray-200 rounded w-1/3" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : weekendDeals.length === 0 ? (
           <p className="text-center text-gray-500">No weekend deals available right now.</p>
         ) : (

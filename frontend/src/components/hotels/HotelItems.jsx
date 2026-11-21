@@ -29,7 +29,11 @@ function HotelItems({ id, name, image, pricePerNight, location, rating, searchDa
   const queryString = buildQueryParams();
 
   return (
-    <Link className="block w-full no-underline" to={`/hotels/hotel/${id}?${queryString}`}>
+    <Link
+      className="block w-full no-underline"
+      to={`/hotels/hotel/${id}?${queryString}`}
+      state={{ hotel: { _id: id, name, hotelImage: { url: image }, pricePerNight, location, rating } }}
+    >
       <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
         {/* Image */}
         <img

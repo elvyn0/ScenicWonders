@@ -17,6 +17,12 @@ const AppContextProvider = (props) => {
   const [authLoading, setAuthLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Navigation memory cache (Stale-While-Revalidate)
+  const [postList, setPostList] = useState([]);
+  const [hotelsList, setHotelsList] = useState([]);
+  const [postCache, setPostCache] = useState({});
+  const [hotelCache, setHotelCache] = useState({});
+
   //  for Payment
   const currency = "₹";
   const taxes = 600;
@@ -73,6 +79,14 @@ const AppContextProvider = (props) => {
     handleLogout,
     currency,
     taxes,
+    postList,
+    setPostList,
+    hotelsList,
+    setHotelsList,
+    postCache,
+    setPostCache,
+    hotelCache,
+    setHotelCache,
   };
   return <AppContext.Provider value={value}>{props.children}</AppContext.Provider>;
 };
