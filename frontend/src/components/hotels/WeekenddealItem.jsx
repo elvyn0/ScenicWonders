@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { Link } from "react-router-dom";
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
 
 function WeekendDealsItem({ id, name, image, pricePerNight, destination }) {
   const { currency } = useContext(AppContext);
@@ -8,8 +9,14 @@ function WeekendDealsItem({ id, name, image, pricePerNight, destination }) {
   return (
     <Link to={`/hotels/hotel/${id}`} className="no-underline">
       <div className="bg-white rounded-2xl shadow-lg min-w-[260px] hover:shadow-lg transition-all duration-300 p-3  hover:scale-110 ease-in-out ">
-        <div className="overflow-hidden rounded-t-2xl">
-          <img src={image} className="h-40 w-full object-cover hover:scale-105 transition-transform duration-300" />
+        <div className="overflow-hidden rounded-t-2xl bg-gray-200">
+          <img
+            src={getOptimizedImageUrl(image, { width: 500 })}
+            alt={name}
+            loading="lazy"
+            decoding="async"
+            className="h-40 w-full object-cover hover:scale-105 transition-transform duration-300"
+          />
         </div>
 
         <div className="p-4 space-y-2">

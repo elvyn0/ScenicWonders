@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary").v2;
+const { uploadToCloudinary } = require("../utils/cloudinary");
 const fs = require("fs").promises;
 const validator = require("validator");
 const User = require("../models/userModel");
@@ -223,13 +224,15 @@ const updateUserprofile = async (req, res) => {
       if (user.profilePic?.publicId) {
         await cloudinary.uploader.destroy(user.profilePic.publicId);
       }
-      const profileUpload = await cloudinary.uploader.upload(profilePic.path, { folder: "profileImage" });
+      const profileUpload = await uploadToCloudinary(profilePic.path, "profileImage", [
+        { width: 400, height: 400, crop: "fill", gravity: "face" },
+      ]);
 
       await fs.unlink(profilePic.path);
 
       updatedData.profilePic = {
-        url: profileUpload.secure_url,
-        publicId: profileUpload.public_id,
+        url: profileUpload.url,
+        publicId: profileUpload.publicId,
       };
     }
 

@@ -3,6 +3,7 @@ import { AppContext } from "../context/AppContext";
 import MessageRoom from "../components/common/Message/MessageRoom";
 import toast from "react-hot-toast";
 import assets from "../assets/assets";
+import { getOptimizedImageUrl } from "../utils/imageOptimizer";
 
 function Message() {
   const { api, navigate, user, authLoading } = useContext(AppContext);
@@ -119,11 +120,15 @@ function Message() {
                   <div className="flex gap-3 items-center mb-3 hover:bg-gray-100 p-2 rounded-sm">
                     <img
                       src={
-                        typeof item.profilePic === "string"
-                          ? item.profilePic
-                          : item.profilePic?.url || assets.profile_icon
+                        getOptimizedImageUrl(
+                          typeof item.profilePic === "string" ? item.profilePic : item.profilePic?.url,
+                          { width: 80, height: 80, crop: "fill" }
+                        ) || assets.profile_icon
                       }
-                      className="w-10 rounded-full"
+                      alt={item.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-10 h-10 rounded-full object-cover bg-gray-200"
                     />
                     <p className="text-gray-600 font-semibold">{item.name}</p>
 

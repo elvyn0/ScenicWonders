@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { Heart, Trash2 } from "lucide-react";
 import assets from "../assets/assets";
+import { getOptimizedImageUrl } from "../utils/imageOptimizer";
 
 function PostById() {
   const { id } = useParams();
@@ -99,13 +100,21 @@ function PostById() {
             {/* mobile */}
             <Link to={`/profile/${post.user._id}`} className="md:hidden  no-underline text-black cursor-pointer ">
               <div className="flex items-center  gap-3 font-semibold p-3">
-                <img src={post.user?.profilePic?.url || assets.profile_icon} className="w-10 h-10 rounded-full" />
+                <img
+                  src={getOptimizedImageUrl(post.user?.profilePic?.url, { width: 100, height: 100, crop: "fill" }) || assets.profile_icon}
+                  alt={post.user?.name || "User"}
+                  className="w-10 h-10 rounded-full object-cover bg-gray-200"
+                />
                 <p>{post.user?.name || "Unknown"}</p>
               </div>
             </Link>
             {/* Image */}
-            <div className="w-full md:max-w-[600px] md:h-auto">
-              <img src={post.image?.url} alt={post.caption} className="h-full w-full object-cover rounded-md" />
+            <div className="w-full md:max-w-[600px] md:h-auto bg-gray-100 rounded-md">
+              <img
+                src={getOptimizedImageUrl(post.image?.url, { width: 1200 })}
+                alt={post.caption || "Post image"}
+                className="h-full w-full object-cover rounded-md"
+              />
             </div>
             {/* Like */}
             <div onClick={handleLike} className="flex justify-between items-centers pt-2 pl-2 hover:cursor-pointer">
@@ -123,7 +132,11 @@ function PostById() {
             {/* Desktop */}
             <Link to={`/profile/${post.user._id}`} className="hidden md:block no-underline text-black cursor-pointer">
               <div className="flex items-center  gap-3 font-semibold p-3">
-                <img src={post.user?.profilePic?.url} className="w-10 h-10 rounded-full object-cover" />
+                <img
+                  src={getOptimizedImageUrl(post.user?.profilePic?.url, { width: 100, height: 100, crop: "fill" }) || assets.profile_icon}
+                  alt={post.user?.name || "User"}
+                  className="w-10 h-10 rounded-full object-cover bg-gray-200"
+                />
                 <p>{post.user?.name || "Unknown"}</p>
               </div>
             </Link>

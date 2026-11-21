@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import assets from "../../assets/assets";
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
 
 function PostCategories() {
   const { api } = useContext(AppContext);
@@ -68,17 +69,25 @@ function PostCategories() {
             className="group rounded-xl overflow-hidden bg-white shadow-sm  transition-all duration-300"
           >
             <Link to={`/profile/${item.user?._id}`} className="no-underline text-black cursor-pointer">
-              <div className="flex gap-2 font-semibold mb-2 ">
-                <img src={item.user?.profilePic?.url || assets.profile_icon} className="w-10 rounded-full" />
+              <div className="flex gap-2 font-semibold mb-2 items-center">
+                <img
+                  src={getOptimizedImageUrl(item.user?.profilePic?.url, { width: 80, height: 80, crop: "fill" }) || assets.profile_icon}
+                  alt={item.user?.name || "User"}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-10 h-10 rounded-full object-cover bg-gray-200"
+                />
                 <p>{item.user?.name || "Unknown"}</p>
               </div>
             </Link>
             {/* Image */}
             <NavLink to={`/post/${item._id}`} className={"no-underline"}>
-              <div className="relative aspect-[3/4] overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 rounded-lg">
                 <img
-                  src={item.image?.url}
-                  alt={item.caption}
+                  src={getOptimizedImageUrl(item.image?.url, { width: 500 })}
+                  alt={item.caption || "Post image"}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
 

@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
 
 function HotelItems({ id, name, image, pricePerNight, location, rating, searchData }) {
   const { currency } = useContext(AppContext);
@@ -31,7 +32,13 @@ function HotelItems({ id, name, image, pricePerNight, location, rating, searchDa
     <Link className="block w-full no-underline" to={`/hotels/hotel/${id}?${queryString}`}>
       <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
         {/* Image */}
-        <img className="w-full md:w-[300px] h-[200px] object-cover" src={image} alt={name} />
+        <img
+          className="w-full md:w-[300px] h-[200px] object-cover bg-gray-200"
+          src={getOptimizedImageUrl(image, { width: 600 })}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+        />
 
         {/* Content */}
         <div className="flex justify-between w-full p-4 gap-4">

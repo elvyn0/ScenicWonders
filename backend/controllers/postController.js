@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary").v2;
+const { uploadToCloudinary } = require("../utils/cloudinary");
 const Post = require("../models/postModel");
 const fs = require("fs").promises;
 
@@ -13,17 +14,17 @@ const addPost = async (req, res) => {
       return res.status(400).json({ message: "Post image required" });
     }
 
-    const uploadResult = await cloudinary.uploader.upload(image.path, {
-      folder: "social_media_posts",
-    });
+    const uploadResult = await uploadToCloudinary(image.path, "social_media_posts", [
+      { width: 1400, crop: "limit" },
+    ]);
 
     await fs.unlink(image.path);
 
     const post = await Post.create({
       user: userId,
       image: {
-        url: uploadResult.secure_url,
-        publicId: uploadResult.public_id,
+        url: uploadResult.url,
+        publicId: uploadResult.publicId,
       },
       caption,
 
@@ -44,7 +45,15 @@ const addPost = async (req, res) => {
 // Function for list post
 const listPost = async (req, res) => {
   try {
-    const posts = await Post.find().populate("user", " name profilePic").sort({ createdAt: -1 });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 0;
+
+    let query = Post.find().populate("user", "name profilePic").sort({ createdAt: -1 });
+    if (limit > 0) {
+      query = query.skip((page - 1) * limit).limit(limit);
+    }
+
+    const posts = await query;
     res.status(200).json({ success: true, posts });
   } catch (error) {
     console.error("List post Error:", error);

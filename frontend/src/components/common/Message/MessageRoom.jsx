@@ -6,6 +6,7 @@ import MessageInput from "./MessageInput";
 import { useRef } from "react";
 import EmptyMessageState from "../EmptyMessageState";
 import assets from "../../../assets/assets";
+import { getOptimizedImageUrl } from "../../../utils/imageOptimizer";
 function MessageRoom() {
   const { conversationId } = useParams();
   const { api, socket, user } = useContext(AppContext);
@@ -132,8 +133,9 @@ function MessageRoom() {
             <Link to={`/profile/${receiver._id}`} className="no-underline">
               <div className="flex gap-4 py-3 pl-4 border-b bg-blue-100">
                 <img
-                  src={receiver.profilePic?.url || assets.profile_icon}
-                  className="w-12 h-12 rounded-full object-cover"
+                  src={getOptimizedImageUrl(receiver.profilePic?.url, { width: 100, height: 100, crop: "fill" }) || assets.profile_icon}
+                  alt={receiver.name}
+                  className="w-12 h-12 rounded-full object-cover bg-gray-200"
                 />
                 <p className="font-semibold text-gray-800">{receiver.name}</p>
               </div>

@@ -1,6 +1,7 @@
 const Hotel = require("../models/hotelModel");
 const Booking = require("../models/bookingModel");
 const cloudinary = require("cloudinary").v2;
+const { uploadToCloudinary } = require("../utils/cloudinary");
 const fs = require("fs").promises;
 
 // Admin: Create / add hotel
@@ -20,16 +21,14 @@ const createHotel = async (req, res) => {
 
     const uploadedImages = await Promise.all(
       images.map(async (file) => {
-        let result = await cloudinary.uploader.upload(file.path, {
-          folder: "hotels",
-          quality: "auto",
-          fetch_format: "auto",
-        });
+        let result = await uploadToCloudinary(file.path, "hotels", [
+          { width: 1600, crop: "limit" },
+        ]);
         await fs.unlink(file.path);
 
         return {
-          url: result.secure_url,
-          publicId: result.public_id,
+          url: result.url,
+          publicId: result.publicId,
         };
       }),
     );

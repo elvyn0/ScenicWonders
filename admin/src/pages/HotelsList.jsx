@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import api from "../api/axios";
 import { Trash } from "lucide-react";
+import { getOptimizedImageUrl } from "../utils/imageOptimizer";
 
 function HotelsList() {
   const [list, setList] = useState([]);
@@ -75,7 +76,13 @@ function HotelsList() {
         "
           >
             {/* Image */}
-            <img className="w-full h-40 object-cover rounded md:h-auto md:rounded-none" src={item.hotelImage?.url} />
+            <img
+              className="w-full h-40 object-cover rounded md:h-auto md:rounded-none bg-gray-200"
+              src={getOptimizedImageUrl(item.hotelImage?.url, { width: 300 })}
+              alt={item.name}
+              loading="lazy"
+              decoding="async"
+            />
 
             {/* Content */}
             <div className="mt-2 md:mt-0">

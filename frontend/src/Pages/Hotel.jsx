@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
 import BookingCalender2 from "../components/hotels/BookingSearchBar/BookingCalender2";
+import { getOptimizedImageUrl } from "../utils/imageOptimizer";
 
 function Hotel() {
   const navigate = useNavigate();
@@ -177,10 +178,21 @@ function Hotel() {
         {/* Hotel details */}
         {hotel && (
           <div className="lg:col-span-2 flex flex-col gap-2">
-            <img src={hotel.hotelImage?.url} alt={hotel.name} className="w-full h-[350px] object-cover rounded-xl " />
+            <img
+              src={getOptimizedImageUrl(hotel.hotelImage?.url, { width: 1200 })}
+              alt={hotel.name}
+              className="w-full h-[350px] object-cover rounded-xl bg-gray-200"
+            />
             <div className="flex flex-col md:flex-row gap-3 mb-5">
               {hotel.roomImages?.map((img, i) => (
-                <img key={i} src={img.url} className="w-[340px] rounded-lg object-cover " alt={`Room ${i + 1}`} />
+                <img
+                  key={i}
+                  src={getOptimizedImageUrl(img.url, { width: 700 })}
+                  className="w-[340px] rounded-lg object-cover bg-gray-200"
+                  alt={`Room ${i + 1}`}
+                  loading="lazy"
+                  decoding="async"
+                />
               ))}
             </div>
 

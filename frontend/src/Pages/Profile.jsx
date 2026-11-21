@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { EllipsisVertical, Heart } from "lucide-react";
 import EditProfileModel from "../components/EditProfileModel";
 import assets from "../assets/assets";
+import { getOptimizedImageUrl } from "../utils/imageOptimizer";
 
 function Profile() {
   const { api, navigate, setUser, user } = useContext(AppContext);
@@ -169,8 +170,9 @@ function Profile() {
           <div className="flex flex-col items-center text-center gap-3">
             {profile.profilePic ? (
               <img
-                className="w-28 h-28 rounded-full object-cover"
-                src={profile.profilePic?.url || assets.profile_icon}
+                className="w-28 h-28 rounded-full object-cover bg-gray-200"
+                src={getOptimizedImageUrl(profile.profilePic?.url, { width: 250, height: 250, crop: "fill" }) || assets.profile_icon}
+                alt={profile.name}
               />
             ) : (
               <p className="h-32 w-32 rounded-full bg-gray-300 text-sm flex items-center justify-center font-bold text-gray-700">
@@ -233,10 +235,12 @@ function Profile() {
                     className="group rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition"
                   >
                     <NavLink to={`/post/${item._id}`} className="no-underline text-black">
-                      <div className="relative aspect-[3/4] overflow-hidden">
+                      <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 rounded-lg">
                         <img
-                          src={item.image?.url}
-                          alt={item.caption}
+                          src={getOptimizedImageUrl(item.image?.url, { width: 500 })}
+                          alt={item.caption || "Post"}
+                          loading="lazy"
+                          decoding="async"
                           className="h-full w-full object-cover group-hover:scale-105 transition duration-300"
                         />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition" />

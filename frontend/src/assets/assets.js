@@ -72,7 +72,7 @@ const assets = {
   tamilNaduOoty1:
     "https://res.cloudinary.com/elvyncloud/image/upload/f_auto,q_auto/v1776234363/tamilnaduOoty1_zx1ira.jpg",
   tamilNaudDhanushkodi:
-    "https://res.cloudinary.com/elvyncloud/image/f_auto,q_auto/upload/v1776234303/tamilnaduDhanushkodi_wurecz.jpg",
+    "https://res.cloudinary.com/elvyncloud/image/upload/f_auto,q_auto/v1776234303/tamilnaduDhanushkodi_wurecz.jpg",
   tamilNaduRameshwaram:
     "https://res.cloudinary.com/elvyncloud/image/upload/f_auto,q_auto/v1776234375/tamilnaduRameshwaram_k0vdzy.jpg",
   tamilNaduShoreTemple:

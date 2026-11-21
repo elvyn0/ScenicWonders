@@ -5,6 +5,7 @@ import { AppContext } from "../../../context/AppContext";
 import { formatDate } from "../../../utils/formatDate";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import { getOptimizedImageUrl } from "../../../utils/imageOptimizer";
 
 function HotelSummery() {
   const { hotelId } = useParams();
@@ -75,7 +76,13 @@ function HotelSummery() {
           {/* Hotel Info */}
           <div className="flex flex-col sm:flex-row gap-5">
             <div className="sm:w-40 flex-shrink-0">
-              <img src={hotel.hotelImage?.url} className="w-full h-32 object-cover rounded-xl" />
+              <img
+                src={getOptimizedImageUrl(hotel.hotelImage?.url, { width: 400 })}
+                alt={hotel.name}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-32 object-cover rounded-xl bg-gray-200"
+              />
             </div>
 
             <div className="flex flex-col justify-between w-full">
