@@ -29,18 +29,21 @@ const listStories = async (req, res) => {
   try {
     const userId = req.user?._id;
 
-    const stories = await Stories.find().populate("user", "name profilePic").sort({ createdAt: -1 });
+    const stories = await Stories.find()
+      .populate("user", "name profilePic")
+      .sort({ createdAt: -1 })
+      .lean();
 
     const updatedStories = stories.map((s) => {
       let liked = false;
 
-      if (userId) {
+      if (userId && s.likes) {
         liked = s.likes.some((likedId) => likedId.toString() === userId.toString());
       }
 
       return {
-        ...s._doc,
-        likes: s.likes,
+        ...s,
+        likes: s.likes || [],
         liked,
       };
     });
@@ -60,21 +63,22 @@ const singleStory = async (req, res) => {
   try {
     const userId = req.user?._id;
     const { id } = req.params;
-    const story = await Stories.findById(id).populate("user", "name profilePic");
+    const story = await Stories.findById(id).populate("user", "name profilePic").lean();
 
     if (!story) {
       return res.status(404).json({ success: false, message: "Story  not found" });
     }
 
     let liked = false;
-    if (userId) {
+    if (userId && story.likes) {
       liked = story.likes.some((likedId) => likedId.toString() === userId.toString());
     }
 
     res.status(200).json({
       success: true,
       story: {
-        ...story._doc,
+        ...story,
+        likes: story.likes || [],
         liked,
       },
     });
